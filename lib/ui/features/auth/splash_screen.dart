@@ -23,7 +23,7 @@ class SplashScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.blue.withOpacity(0.1),
+                      color: Colors.blue.withValues(alpha: 0.1),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -76,14 +76,14 @@ class SplashScreen extends StatelessWidget {
               const SizedBox(height: 32),
               
               // Chips Fitur
-              Wrap(
+              const Wrap(
                 alignment: WrapAlignment.center,
                 spacing: 12,
                 runSpacing: 12,
                 children: [
-                  _FeatureChip(icon: Icons.view_in_ar, label: '3D Interaktif'),
-                  _FeatureChip(icon: Icons.psychology, label: 'Kuis Menantang'),
-                  _FeatureChip(icon: Icons.school, label: 'Kurikulum SMK TKJ'),
+                  const _FeatureChip(icon: Icons.view_in_ar, label: '3D Interaktif'),
+                  const _FeatureChip(icon: Icons.psychology, label: 'Kuis Menantang'),
+                  const _FeatureChip(icon: Icons.school, label: 'Kurikulum SMK TKJ'),
                 ],
               ),
               const Spacer(),
