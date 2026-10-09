@@ -7,6 +7,7 @@ class ProgressRepository {
   final SharedPreferences _prefs;
 
   ProgressRepository(this._prefs);
+  SharedPreferences get preferences => _prefs;
 
   Future<UserProgressModel> getProgress() async {
     final String? progressJson = _prefs.getString(_progressKey);

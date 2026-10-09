@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Primary Brand Colors
-  static const Color primary = Color(0xFF3B5BFE);
-  static const Color primaryDark = Color(0xFF1A2980);
-  static const Color primaryLight = Color(0xFFE8EDFF);
-  
-  // Background Colors
-  static const Color background = Color(0xFFF5F7FA);
-  static const Color surface = Colors.white;
-  
-  // Text Colors
-  static const Color textDark = Color(0xFF1A1A2E);
-  static const Color textGray = Color(0xFF6B7280);
-  static const Color textLight = Colors.white;
-  
-  // Semantic Colors
-  static const Color success = Color(0xFF10B981);
-  static const Color warning = Color(0xFFF59E0B);
-  static const Color error = Color(0xFFEF4444);
-  
-  // Neutral Colors
-  static const Color border = Color(0xFFE5E7EB);
+  static const primary = Color(0xFF0757D8);
+  static const primaryDark = Color(0xFF062E83);
+  static const primaryLight = Color(0xFFD8F4FF);
+  static const cyan = Color(0xFF04BDF0);
+  static const sky = Color(0xFF5DDCFF);
+  static const orange = Color(0xFFFF7817);
+  static const yellow = Color(0xFFFFC42E);
+  static const ink = Color(0xFF071B51);
+  static const background = Color(0xFF05A8E9);
+  static const surface = Color(0xFFF2FBFF);
+  static const textDark = ink;
+  static const textGray = Color(0xFF37517B);
+  static const textLight = Colors.white;
+  static const success = Color(0xFF18B77D);
+  static const warning = yellow;
+  static const error = Color(0xFFE74545);
+  static const border = Color(0xFF79DFFF);
 }

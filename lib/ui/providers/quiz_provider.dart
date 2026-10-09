@@ -8,6 +8,22 @@ class QuizProvider extends ChangeNotifier {
   int _score = 0;
   int? _selectedAnswer;
   bool _isFinished = false;
+  bool _isMatchResult = false;
+  int _matchCorrect = 0;
+  int _matchTotal = 0;
+  bool get isMatchResult => _isMatchResult;
+  int get correctCount => _isMatchResult ? _matchCorrect : _score;
+  int get resultTotal => _isMatchResult ? _matchTotal : _questions.length;
+  int get scorePoints =>
+      resultTotal == 0 ? 0 : (correctCount * 100 ~/ resultTotal);
+
+  void loadMatchResult(int correct, int total) {
+    _isMatchResult = true;
+    _matchCorrect = correct;
+    _matchTotal = total;
+    _isFinished = true;
+    notifyListeners();
+  }
 
   /// Daftar soal kuis.
   List<QuizQuestionModel> get questions => _questions;
@@ -39,6 +55,7 @@ class QuizProvider extends ChangeNotifier {
 
   /// Muat soal kuis berdasarkan componentId, atau semua soal jika null.
   void loadQuiz(List<QuizQuestionModel> allQuestions, {String? componentId}) {
+    _isMatchResult = false;
     if (componentId != null) {
       _questions =
           allQuestions.where((q) => q.componentId == componentId).toList();
@@ -54,7 +71,9 @@ class QuizProvider extends ChangeNotifier {
 
   /// Jawab soal saat ini.
   void answerQuestion(int answerIndex) {
-    if (_isFinished || currentQuestion == null) return;
+    if (_isFinished || currentQuestion == null || _selectedAnswer != null) {
+      return;
+    }
 
     _selectedAnswer = answerIndex;
     if (answerIndex == currentQuestion!.correctAnswerIndex) {
@@ -77,6 +96,9 @@ class QuizProvider extends ChangeNotifier {
 
   /// Reset kuis ke awal.
   void resetQuiz() {
+    _isMatchResult = false;
+    _matchCorrect = 0;
+    _matchTotal = 0;
     _currentIndex = 0;
     _score = 0;
     _selectedAnswer = null;

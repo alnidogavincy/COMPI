@@ -1,292 +1,263 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../data/dummy_data.dart';
 import '../../core/app_colors.dart';
-import '../../core/app_typography.dart';
+import '../../core/compi_widgets.dart';
 import '../../providers/learning_progress_provider.dart';
-import '../../providers/quiz_provider.dart';
-import '../../../data/repositories/content_repository.dart';
+import '../../providers/student_provider.dart';
 import '../explore_3d/explore_3d_screen.dart';
-import '../games/quiz_screen.dart';
+import '../games/games_screen.dart';
+import '../learning/material_detail_screen.dart';
+import '../profile/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
-    final progressProvider = context.watch<LearningProgressProvider>();
-    final contentRepo = context.read<ContentRepository>();
-    
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
+    final progress = context.watch<LearningProgressProvider>();
+    final name = context.watch<StudentProvider>().identity;
+    final total = dummyMaterials.length;
+    final done = progress.completedCount.clamp(0, total);
+    final next =
+        dummyMaterials
+            .where((m) => !progress.isMaterialCompleted(m.id))
+            .firstOrNull;
+    final nextComponent =
+        next == null
+            ? null
+            : dummyComponents
+                .where((c) => c.id == next.componentId)
+                .firstOrNull;
+    return CircuitBackground(
+      child: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 22),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // ── Header APP ──
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Text('COMPI', style: AppTypography.heading3.copyWith(color: AppColors.primary, fontWeight: FontWeight.w900)),
-                      const SizedBox(width: 8),
-                      Text('Home', style: AppTypography.subtitle),
-                    ],
-                  ),
-                  const CircleAvatar(
-                    radius: 16,
-                    backgroundColor: Colors.black12,
-                    child: Icon(Icons.person, size: 20, color: Colors.white),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-
-              // ── Profil Pengguna ──
-              Row(
-                children: [
-                  Stack(
-                    children: [
-                      const CircleAvatar(
-                        radius: 28,
-                        backgroundColor: AppColors.primary,
-                        child: Icon(Icons.person, size: 30, color: Colors.white),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          width: 14, height: 14,
-                          decoration: BoxDecoration(
-                            color: AppColors.success,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
+              CompiHeader(
+                title: 'SMK TKJ 3D',
+                action: IconButton.filled(
+                  onPressed:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ProfileScreen(),
                         ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Halo, Vika! 👋', style: AppTypography.heading3),
-                        Text('SMK TKJ Kelas X • Modul Perakitan', style: AppTypography.caption),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Stack(
-                      children: [
-                        const Icon(Icons.notifications_none, size: 20, color: AppColors.textDark),
-                        Positioned(
-                          right: 0, top: 0,
-                          child: CircleAvatar(radius: 4, backgroundColor: AppColors.error),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+                      ),
+                  icon: const Icon(Icons.person_outline),
+                ),
               ),
-              const SizedBox(height: 24),
-
-              // ── Progres Belajar ──
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Progres Belajar', style: AppTypography.subtitle),
-                ],
+              Text(
+                'Halo, ${name.isEmpty ? 'Siswa' : name}! 👋',
+                style: const TextStyle(
+                  color: AppColors.ink,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              const Text(
+                'SMK TKJ Kelas X • Modul Perakitan',
+                style: TextStyle(color: AppColors.primaryDark, fontSize: 16),
               ),
               const SizedBox(height: 16),
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  gradient: const LinearGradient(
+                    colors: [AppColors.primary, AppColors.cyan],
+                  ),
                   borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 5)),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.primary),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text('${progressProvider.highestScore} XP Terkumpul', style: AppTypography.tag),
-                          ),
-                          const SizedBox(height: 12),
-                          Text('Progress Belajar: ${(progressProvider.completedCount / 10 * 100).toInt()}%', style: AppTypography.heading3.copyWith(fontSize: 18)),
-                          const SizedBox(height: 4),
-                          Text('${progressProvider.completedCount} dari 10 Materi Perakitan Selesai', style: AppTypography.caption),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              const Icon(Icons.fiber_manual_record, size: 12, color: AppColors.success),
-                              const SizedBox(width: 4),
-                              Text('Status: Aktif Membaca Socket AM4', style: AppTypography.caption.copyWith(color: AppColors.success)),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SizedBox(
-                          width: 70, height: 70,
-                          child: CircularProgressIndicator(
-                            value: progressProvider.completedCount / 10,
-                            strokeWidth: 8,
-                            backgroundColor: AppColors.primaryLight,
-                            color: AppColors.primary,
-                            strokeCap: StrokeCap.round,
-                          ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('${(progressProvider.completedCount / 10 * 100).toInt()}%', style: AppTypography.heading3.copyWith(color: AppColors.primary, fontSize: 16)),
-                            const Text('Target', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textGray)),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-
-              // ── Akses Cepat Praktik ──
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.rocket_launch, color: AppColors.primary, size: 20),
-                      const SizedBox(width: 8),
-                      Text('Akses Cepat', style: AppTypography.heading3.copyWith(fontSize: 18)),
-                    ],
-                  ),
-                  Text('Panduan Alat', style: AppTypography.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: _QuickAccessCard(
-                      title: 'Explore 3D PC',
-                      subtitle: '3D Lab Interaktif',
-                      icon: Icons.view_in_ar,
-                      color: AppColors.primary,
-                      textColor: Colors.white,
-                      buttonText: 'Mulai Eksplorasi →',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Explore3DScreen()),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _QuickAccessCard(
-                      title: 'Tantangan Kuis',
-                      subtitle: 'Uji Kemampuan',
-                      icon: Icons.psychology,
-                      color: AppColors.primaryLight,
-                      textColor: AppColors.textDark,
-                      buttonText: 'Ikuti Kuis →',
-                      onTap: () async {
-                        final questions = await contentRepo.getQuizQuestions();
-                        if (context.mounted) {
-                          context.read<QuizProvider>().loadQuiz(questions);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const QuizScreen()),
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 32),
-
-              // ── Lanjutkan Belajar ──
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Lanjutkan Belajar', style: AppTypography.heading3.copyWith(fontSize: 18)),
-                  Text('Lihat Semua >', style: AppTypography.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)),
-                ],
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _ContinueLearningCard(
-                      title: 'Motherboard',
-                      subtitle: 'Arsitektur PCB',
-                      description: 'Form factor ATX & Chipset',
-                      icon: Icons.developer_board,
-                      progress: 1.0, // Selesai
-                    ),
-                    const SizedBox(width: 16),
-                    _ContinueLearningCard(
-                      title: 'Processor (CPU)',
-                      subtitle: 'Unit Pemrosesan',
-                      description: 'Inti pemrosesan komputer',
-                      icon: Icons.memory,
-                      progress: 0.65,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-              
-              // ── Tips Teknisi ──
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
-                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.yellow, width: 4),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
+                    const Text(
+                      'Belajar KOMPONEN\nKOMPUTER',
+                      style: TextStyle(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
+                        fontWeight: FontWeight.w900,
+                        fontSize: 28,
+                        height: 1.05,
                       ),
-                      child: Text('TIPS TEKNISI HARI INI • SOP K3', style: AppTypography.tag.copyWith(color: AppColors.primaryDark)),
+                    ),
+                    const Text(
+                      'Secara Interaktif',
+                      style: TextStyle(
+                        color: AppColors.yellow,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 21,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Image.asset(
+                      'assets/images/hardware_banner.png',
+                      width: double.infinity,
+                      height: 160,
+                      fit: BoxFit.cover,
                     ),
                     const SizedBox(height: 12),
-                    Text(
-                      'Selalu gunakan gelang anti-statis (ESD wrist strap) saat menyentuh komponen internal PC untuk mencegah kerusakan akibat listrik statis.',
-                      style: AppTypography.body.copyWith(color: AppColors.primaryDark),
+                    CompiButton(
+                      label: 'Mulai Eksplorasi 3D',
+                      icon: Icons.play_arrow,
+                      onPressed:
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const Explore3DScreen(),
+                            ),
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              const SectionBanner(
+                icon: Icons.bar_chart_rounded,
+                title: 'Progress Belajar',
+              ),
+              CompiPanel(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          '${total == 0 ? 0 : (done * 100 ~/ total)}%',
+                          style: const TextStyle(
+                            fontSize: 42,
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            '$done dari $total materi selesai',
+                            style: const TextStyle(
+                              color: AppColors.ink,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    LinearProgressIndicator(
+                      value: total == 0 ? 0 : done / total,
+                      minHeight: 12,
+                      borderRadius: BorderRadius.circular(12),
+                      color: AppColors.orange,
+                      backgroundColor: AppColors.primaryLight,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              const SectionBanner(icon: Icons.settings, title: 'Akses Cepat'),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: _QuickCard(
+                      icon: Icons.view_in_ar,
+                      title: 'Eksplorasi 3D',
+                      detail: 'Putar dan perbesar model',
+                      onTap:
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const Explore3DScreen(),
+                            ),
+                          ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _QuickCard(
+                      icon: Icons.sports_esports,
+                      title: 'Tantangan Kuis',
+                      detail: 'Uji pemahamanmu',
+                      onTap:
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const GamesScreen(),
+                            ),
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              if (next != null && nextComponent != null) ...[
+                const SizedBox(height: 16),
+                const SectionBanner(
+                  icon: Icons.menu_book,
+                  title: 'Lanjutkan Belajar',
+                ),
+                InkWell(
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (_) => MaterialDetailScreen(
+                                component: nextComponent,
+                                material: next,
+                              ),
+                        ),
+                      ),
+                  child: CompiPanel(
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.memory,
+                          color: AppColors.primary,
+                          size: 42,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                nextComponent.name,
+                                style: const TextStyle(
+                                  color: AppColors.ink,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              Text(
+                                next.title,
+                                style: const TextStyle(
+                                  color: AppColors.textGray,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.primary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+              const SizedBox(height: 20),
+              const CompiPanel(
+                child: Row(
+                  children: [
+                    Icon(Icons.lightbulb, color: AppColors.orange),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Tips: kenali fungsi dan posisi komponen sebelum memulai latihan.',
+                        style: TextStyle(color: AppColors.ink),
+                      ),
                     ),
                   ],
                 ),
@@ -299,176 +270,47 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _QuickAccessCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
+class _QuickCard extends StatelessWidget {
   final IconData icon;
-  final Color color;
-  final Color textColor;
-  final String buttonText;
+  final String title;
+  final String detail;
   final VoidCallback onTap;
-
-  const _QuickAccessCard({
-    required this.title,
-    required this.subtitle,
+  const _QuickCard({
     required this.icon,
-    required this.color,
-    required this.textColor,
-    required this.buttonText,
+    required this.title,
+    required this.detail,
     required this.onTap,
   });
-
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(color: color.withOpacity(0.2), blurRadius: 10, offset: const Offset(0, 5)),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: textColor == Colors.white ? Colors.white.withOpacity(0.2) : Colors.white,
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Icon(icon, color: textColor == Colors.white ? Colors.white : AppColors.primary, size: 24),
-            ),
-            const SizedBox(height: 16),
-            Text(subtitle, style: AppTypography.caption.copyWith(color: textColor.withOpacity(0.8), fontSize: 10)),
-            const SizedBox(height: 4),
-            Text(title, style: AppTypography.subtitle.copyWith(color: textColor, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            Text(buttonText, style: AppTypography.caption.copyWith(color: textColor == Colors.white ? Colors.white : AppColors.primary, fontWeight: FontWeight.bold)),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ContinueLearningCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String description;
-  final IconData icon;
-  final double progress;
-
-  const _ContinueLearningCard({
-    required this.title,
-    required this.subtitle,
-    required this.description,
-    required this.icon,
-    required this.progress,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final isCompleted = progress >= 1.0;
-    
-    return Container(
-      width: 240,
-      padding: const EdgeInsets.all(20),
+  Widget build(BuildContext context) => InkWell(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 5)),
-        ],
+        gradient: const LinearGradient(
+          colors: [AppColors.cyan, AppColors.primary],
+        ),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.yellow, width: 2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE8EEFC),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, color: const Color(0xFF2954E3), size: 20),
-              ),
-              isCompleted
-                ? Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.check_circle_outline, size: 12, color: Color(0xFF2954E3)),
-                      const SizedBox(width: 4),
-                      Text('Selesai', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blue[800])),
-                    ],
-                  ),
-                )
-              : Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue[50],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text('${(progress * 100).toInt()}% Progress', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.teal[700])),
-                ),
-            ],
+          Icon(icon, color: Colors.white, size: 40),
+          const SizedBox(height: 8),
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+            ),
           ),
-          const Spacer(),
-          Text(subtitle, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey)),
-          const SizedBox(height: 4),
-          Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
-          const SizedBox(height: 4),
-          Text(description, style: TextStyle(fontSize: 12, color: Colors.grey[600]), maxLines: 1, overflow: TextOverflow.ellipsis),
-          const SizedBox(height: 16),
-          !isCompleted ? const SizedBox.shrink() : SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.refresh, size: 16),
-                label: const Text('Review 3D', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFE8EEFC),
-                  foregroundColor: const Color(0xFF1E293B),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-              ),
-            ),
-          isCompleted ? const SizedBox.shrink() : ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: progress,
-                backgroundColor: Colors.grey[200],
-                color: const Color(0xFF2954E3),
-                minHeight: 6,
-              ),
-            ),
-          isCompleted ? const SizedBox.shrink() : const SizedBox(height: 8),
-          isCompleted ? const SizedBox.shrink() : SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.play_arrow, size: 16, color: Colors.white),
-                label: const Text('Lanjutkan', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2954E3),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-              ),
-            ),
+          Text(
+            detail,
+            style: const TextStyle(color: Colors.white, fontSize: 12),
+          ),
         ],
       ),
-    );
-  }
+    ),
+  );
 }
