@@ -21,7 +21,14 @@ void main() {
         contentRepository: ContentRepository(),
       ),
     );
+    await tester.pump(const Duration(milliseconds: 1000));
+    expect(find.text('Selamat Datang!'), findsNothing);
+    expect(find.text('COMPI'), findsOneWidget);
     await tester.pump(const Duration(milliseconds: 2300));
+    await tester.pumpAndSettle();
+    expect(find.text('Selamat Datang!'), findsOneWidget);
+    await tester.ensureVisible(find.text('Mulai Belajar'));
+    await tester.tap(find.text('Mulai Belajar'));
     await tester.pumpAndSettle();
     expect(find.textContaining('Halo, Siswa Uji'), findsOneWidget);
     expect(tester.takeException(), isNull);

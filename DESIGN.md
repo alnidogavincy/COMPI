@@ -1,5 +1,9 @@
 # COMPI 3D — Design System
 
+## Pembaruan aset dan alur awal
+
+Katalog kini terdiri dari Motherboard, CPU, RAM, GPU, Storage, PSU, Cooling System, dan Casing, dengan 16 materi. Tujuh GLB pengguna ditampilkan di Explore; Cooling hanya memiliki materi dan ilustrasi karena model belum diberikan. Delapan gambar `assets/images/hardware_*.png` tampil pada Library dan detail materi. Aplikasi selalu membuka animasi logo selama 3,2 detik, lalu transisi fade ke form identitas dengan nama sebelumnya terisi. Rincian prompt, asal, dan kredit ada di `docs/HARDWARE_ASSETS.md`. Catatan empat komponen di bawah merupakan kondisi audit awal.
+
 ## Sumber dan prioritas
 
 Kode Flutter aktual menentukan kemampuan dan batas teknis. Delapan screenshot di `D:/AL/11.Downloads/COMPI V2/` menentukan arah visual; PRD/SRD menentukan fungsi; Laporan Final memberi konteks. Folder `references/` dari brief belum ada di repository. Screenshot adalah referensi, bukan aset runtime satu halaman. Ilustrasi hardware terpisah akan disediakan pemilik proyek.

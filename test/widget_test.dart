@@ -11,12 +11,16 @@ void main() {
     final progressRepo = ProgressRepository(prefs);
     final contentRepo = ContentRepository();
 
-    await tester.pumpWidget(CompiApp(
-      progressRepository: progressRepo,
-      contentRepository: contentRepo,
-    ));
+    await tester.pumpWidget(
+      CompiApp(
+        progressRepository: progressRepo,
+        contentRepository: contentRepo,
+      ),
+    );
 
+    await tester.pump(const Duration(milliseconds: 3300));
     await tester.pumpAndSettle();
-    expect(find.text('COMPI'), findsWidgets);
+    expect(find.text('Selamat Datang!'), findsOneWidget);
+    expect(find.text('Identitas Siswa'), findsOneWidget);
   });
 }

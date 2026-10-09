@@ -17,6 +17,12 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _error;
   bool _busy = false;
   @override
+  void initState() {
+    super.initState();
+    _controller.text = context.read<StudentProvider>().identity;
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();

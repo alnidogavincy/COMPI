@@ -5,6 +5,7 @@ import '../../../data/models/component_model.dart';
 import '../../../data/models/learning_material_model.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
+import '../../core/hardware_image.dart';
 import '../../providers/learning_progress_provider.dart';
 import '../explore_3d/explore_3d_screen.dart';
 import '../games/quiz_screen.dart';
@@ -45,19 +46,9 @@ class MaterialDetailScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(22),
                     border: Border.all(color: AppColors.yellow, width: 3),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(_icon(component.id), color: Colors.white, size: 90),
-                      Text(
-                        component.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 23,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ],
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(19),
+                    child: HardwareImage(component: component, height: 180),
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -69,9 +60,9 @@ class MaterialDetailScreen extends StatelessWidget {
                     fontSize: 27,
                   ),
                 ),
-                const Text(
-                  'SMK TKJ • Materi Dasar • Komponen Inti',
-                  style: TextStyle(
+                Text(
+                  'SMK TKJ • Materi Dasar • ${component.category}',
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
@@ -143,20 +134,22 @@ class MaterialDetailScreen extends StatelessWidget {
                               .completeMaterial(material.id),
                 ),
                 const SizedBox(height: 8),
-                CompiButton(
-                  label: 'Lihat Model 3D',
-                  icon: Icons.view_in_ar,
-                  secondary: true,
-                  onPressed:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (_) =>
-                                  Explore3DScreen(initialComponent: component),
+                if (component.hasModel)
+                  CompiButton(
+                    label: 'Lihat Model 3D',
+                    icon: Icons.view_in_ar,
+                    secondary: true,
+                    onPressed:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (_) => Explore3DScreen(
+                                  initialComponent: component,
+                                ),
+                          ),
                         ),
-                      ),
-                ),
+                  ),
                 if (lessons.length > 1) ...[
                   const SizedBox(height: 12),
                   const SectionBanner(
@@ -214,11 +207,4 @@ class MaterialDetailScreen extends StatelessWidget {
       ),
     );
   }
-
-  IconData _icon(String id) => switch (id) {
-    'cpu' => Icons.memory,
-    'ram' => Icons.view_stream,
-    'vga' => Icons.videogame_asset,
-    _ => Icons.developer_board,
-  };
 }

@@ -2,6 +2,7 @@ import 'models/component_model.dart';
 import 'models/learning_material_model.dart';
 import 'models/quiz_question_model.dart';
 import 'models/match_item_model.dart';
+import 'additional_content.dart';
 
 /// Data dummy komponen perangkat keras komputer.
 final List<ComponentModel> dummyComponents = [
@@ -19,7 +20,7 @@ final List<ComponentModel> dummyComponents = [
         'berkomunikasi. Komponen penting pada motherboard antara lain chipset, '
         'slot ekspansi (PCIe), soket CPU, slot RAM, konektor SATA, dan port I/O.',
     category: 'Komponen Utama',
-    modelPath: 'assets/models/motherboard.glb',
+    modelPath: 'assets/models/motherboard_components.glb',
     hotspots: [
       HotspotModel(
         id: 'mb_cpu_socket',
@@ -63,7 +64,7 @@ final List<ComponentModel> dummyComponents = [
         'CPU dipasang pada soket khusus di motherboard dan membutuhkan pendingin '
         '(heatsink/fan) untuk menjaga suhu operasi.',
     category: 'Komponen Utama',
-    modelPath: 'assets/models/cpu.glb',
+    modelPath: 'assets/models/cpu_am4.glb',
     hotspots: [
       HotspotModel(
         id: 'cpu_die',
@@ -98,7 +99,7 @@ final List<ComponentModel> dummyComponents = [
         'pada slot DIMM di motherboard. Data pada RAM akan hilang saat komputer '
         'dimatikan, sehingga disebut memori volatile.',
     category: 'Komponen Utama',
-    modelPath: 'assets/models/ram.glb',
+    modelPath: 'assets/models/memory_ram.glb',
     specs: {
       'JENIS': 'DDR4 / DDR5',
       'KAPASITAS': '4GB - 32GB+',
@@ -138,7 +139,7 @@ final List<ComponentModel> dummyComponents = [
         'memiliki memori VRAM sendiri (GDDR6/GDDR6X) dan dipasang pada slot PCIe x16 '
         'di motherboard. Produsen GPU terkemuka adalah NVIDIA dan AMD.',
     category: 'Komponen Utama',
-    modelPath: 'assets/models/vga.glb',
+    modelPath: 'assets/models/gpu_rtx4090.glb',
     hotspots: [
       HotspotModel(
         id: 'vga_gpu_chip',
@@ -166,10 +167,12 @@ final List<ComponentModel> dummyComponents = [
       ),
     ],
   ),
+  ...additionalComponents,
 ];
 
 /// Data dummy materi pembelajaran.
 final List<LearningMaterialModel> dummyMaterials = [
+  ...additionalMaterials,
   // Motherboard
   const LearningMaterialModel(
     id: 'mat_mb_01',
@@ -258,6 +261,7 @@ final List<LearningMaterialModel> dummyMaterials = [
 
 /// Data dummy soal kuis.
 final List<QuizQuestionModel> dummyQuizQuestions = [
+  ...additionalQuestions,
   // Motherboard
   const QuizQuestionModel(
     id: 'quiz_mb_01',
@@ -273,13 +277,9 @@ final List<QuizQuestionModel> dummyQuizQuestions = [
   ),
   const QuizQuestionModel(
     id: 'quiz_mb_02',
-    question: 'Slot apa yang digunakan untuk memasang kartu grafis pada motherboard?',
-    options: [
-      'Slot DIMM',
-      'Slot SATA',
-      'Slot PCIe x16',
-      'Soket LGA',
-    ],
+    question:
+        'Slot apa yang digunakan untuk memasang kartu grafis pada motherboard?',
+    options: ['Slot DIMM', 'Slot SATA', 'Slot PCIe x16', 'Soket LGA'],
     correctAnswerIndex: 2,
     componentId: 'motherboard',
   ),
@@ -300,12 +300,7 @@ final List<QuizQuestionModel> dummyQuizQuestions = [
   const QuizQuestionModel(
     id: 'quiz_cpu_02',
     question: 'Satuan apa yang digunakan untuk mengukur kecepatan CPU?',
-    options: [
-      'Megabyte (MB)',
-      'Watt (W)',
-      'Gigahertz (GHz)',
-      'Megapixel (MP)',
-    ],
+    options: ['Megabyte (MB)', 'Watt (W)', 'Gigahertz (GHz)', 'Megapixel (MP)'],
     correctAnswerIndex: 2,
     componentId: 'cpu',
   ),
@@ -326,12 +321,7 @@ final List<QuizQuestionModel> dummyQuizQuestions = [
   const QuizQuestionModel(
     id: 'quiz_ram_02',
     question: 'Tipe RAM apa yang paling baru dan umum digunakan saat ini?',
-    options: [
-      'DDR2',
-      'SDRAM',
-      'DDR3',
-      'DDR5',
-    ],
+    options: ['DDR2', 'SDRAM', 'DDR3', 'DDR5'],
     correctAnswerIndex: 3,
     componentId: 'ram',
   ),

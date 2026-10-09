@@ -3,6 +3,7 @@ import '../../../data/dummy_data.dart';
 import '../../../data/models/component_model.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
+import '../../core/hardware_image.dart';
 import '../explore_3d/explore_3d_screen.dart';
 import '../learning/material_detail_screen.dart';
 import '../profile/profile_screen.dart';
@@ -131,10 +132,16 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     (context, constraints) => SliverGrid.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount:
-                            constraints.crossAxisExtent < 320 ? 1 : 2,
+                            constraints.crossAxisExtent < 320
+                                ? 1
+                                : (constraints.crossAxisExtent / 250)
+                                    .floor()
+                                    .clamp(2, 4),
                         crossAxisSpacing: 12,
                         mainAxisSpacing: 12,
-                        mainAxisExtent: 242,
+                        mainAxisExtent:
+                            160 +
+                            125 * MediaQuery.textScalerOf(context).scale(1),
                       ),
                       itemCount: visible.length,
                       itemBuilder:
@@ -191,16 +198,35 @@ class _ComponentCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              height: 128,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [AppColors.primary, AppColors.cyan],
-                ),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(18),
               ),
-              child: Center(
-                child: Icon(_icon(component.id), color: Colors.white, size: 78),
+              child: Stack(
+                children: [
+                  HardwareImage(component: component, height: 140),
+                  Positioned(
+                    top: 6,
+                    right: 6,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryDark,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        component.hasModel ? '3D' : 'Materi',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Padding(
@@ -218,7 +244,7 @@ class _ComponentCard extends StatelessWidget {
                   ),
                   Text(
                     component.name,
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: AppColors.ink,
@@ -243,11 +269,4 @@ class _ComponentCard extends StatelessWidget {
       ),
     );
   }
-
-  IconData _icon(String id) => switch (id) {
-    'cpu' => Icons.memory,
-    'ram' => Icons.view_stream,
-    'vga' => Icons.videogame_asset,
-    _ => Icons.developer_board,
-  };
 }

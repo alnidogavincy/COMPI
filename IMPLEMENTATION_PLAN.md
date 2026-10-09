@@ -1,5 +1,16 @@
 # COMPI 3D — Implementation Plan dan Audit
 
+## Pembaruan implementasi: aset pengguna
+
+- [x] Impor dan validasi tujuh GLB pengguna; sumber asli tidak diubah.
+- [x] Tambahkan Storage, PSU, Cooling System, Casing beserta delapan materi dan empat soal baru. Total 8 komponen, 16 materi, 12 soal. Semua ID materi lama dipertahankan.
+- [x] Buat delapan ilustrasi hardware dan tampilkan pada kartu Library serta detail materi.
+- [x] Animasi logo 3,2 detik lalu form nama; identitas tersimpan terisi otomatis, tanpa melewati form.
+- [x] Cantumkan kredit pembuat model dari metadata GLB di aplikasi dan dokumentasi aset.
+- [ ] Cooling GLB dan pengujian performa semua model di Android target masih menunggu aset/perangkat.
+
+Kondisi empat komponen dan aset menunggu pengguna pada bagian audit berikut adalah catatan sebelum pembaruan ini.
+
 ## Kondisi proyek
 
 Repository adalah Flutter/Dart dengan `provider`, `shared_preferences`, dan `model_viewer_plus`. Struktur utama: `lib/data` (model, konten lokal, repository), `lib/ui/providers`, `lib/ui/core`, dan `lib/ui/features`. Navigasi menggunakan `Navigator` dan tiga tab utama. Model 3D lokal: motherboard, CPU, RAM, VGA. Delapan materi memakai ID stabil `mat_*`; kuis dan Match memakai data lokal. Data progres tersimpan sebagai JSON pada key `user_progress` dan memuat `completedMaterials`, `highestQuizScore`, `unlockedBadges`.
