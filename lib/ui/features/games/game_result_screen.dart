@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../providers/quiz_provider.dart';
+import '../../core/app_colors.dart';
+import '../../core/app_typography.dart';
 
 class GameResultScreen extends StatefulWidget {
   const GameResultScreen({super.key});
@@ -33,15 +35,14 @@ class _GameResultScreenState extends State<GameResultScreen> {
     final quizProvider = context.read<QuizProvider>();
     final score = quizProvider.score * 10;
     
-    // Asumsi 10 soal, jika tidak maka menyesuaikan
     final totalSoal = quizProvider.questions.isEmpty ? 10 : quizProvider.questions.length;
     final accuracy = "${quizProvider.score}/$totalSoal";
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context)),
-        title: const Text('Game Result', style: TextStyle(fontWeight: FontWeight.bold)),
+        leading: IconButton(icon: const Icon(Icons.arrow_back, color: AppColors.textDark), onPressed: () => Navigator.pop(context)),
+        title: Text('Game Result', style: AppTypography.heading3.copyWith(fontSize: 18)),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16.0),
@@ -60,7 +61,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(32),
-                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 20)],
+                boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 20)],
               ),
               child: Column(
                 children: [
@@ -75,7 +76,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                       alignment: Alignment.center,
                       children: [
                         Icon(Icons.emoji_events, size: 80, color: Colors.amber[400]),
-                        Positioned(
+                        const Positioned(
                           top: -5, right: -5,
                           child: CircleAvatar(radius: 12, backgroundColor: Colors.lightBlue, child: Icon(Icons.star, size: 14, color: Colors.white)),
                         )
@@ -87,33 +88,33 @@ class _GameResultScreenState extends State<GameResultScreen> {
                   // Label & Judul
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(color: const Color(0xFFE8EEFC), borderRadius: BorderRadius.circular(16)),
-                    child: const Row(
+                    decoration: BoxDecoration(color: AppColors.primaryLight, borderRadius: BorderRadius.circular(16)),
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.verified, size: 14, color: Color(0xFF2954E3)),
-                        SizedBox(width: 6),
-                        Text('SIMULASI PERAKITAN SELESAI', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF2954E3), letterSpacing: 0.5)),
+                        const Icon(Icons.verified, size: 14, color: AppColors.primary),
+                        const SizedBox(width: 6),
+                        Text('SIMULASI PERAKITAN SELESAI', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: AppColors.primary, letterSpacing: 0.5)),
                       ],
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Text('Tantangan Selesai!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+                  Text('Tantangan Selesai!', style: AppTypography.heading2.copyWith(fontSize: 24)),
                   const SizedBox(height: 8),
-                  Text('Luar biasa! Pemahaman perangkat keras komputer kamu sangat mantap.', textAlign: TextAlign.center, style: TextStyle(fontSize: 14, color: Colors.grey[600], height: 1.4)),
+                  Text('Luar biasa! Pemahaman perangkat keras komputer kamu sangat mantap.', textAlign: TextAlign.center, style: AppTypography.body.copyWith(height: 1.4)),
                   const SizedBox(height: 32),
                   
                   // Statistik Row
                   Container(
                     padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(color: const Color(0xFFF8F9FA), borderRadius: BorderRadius.circular(20)),
+                    decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(20)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _StatItem(label: 'Skor Akhir', value: '$score', suffix: '/100', icon: null),
-                        Container(width: 1, height: 40, color: Colors.grey[300]),
-                        _StatItem(label: 'Waktu', value: '02:15', suffix: '', icon: Icons.timer_outlined),
-                        Container(width: 1, height: 40, color: Colors.grey[300]),
+                        Container(width: 1, height: 40, color: AppColors.border),
+                        const _StatItem(label: 'Waktu', value: '02:15', suffix: '', icon: Icons.timer_outlined),
+                        Container(width: 1, height: 40, color: AppColors.border),
                         _StatItem(label: 'Akurasi', value: accuracy, suffix: '', icon: Icons.check_circle_outline, iconColor: Colors.teal),
                       ],
                     ),
@@ -123,30 +124,30 @@ class _GameResultScreenState extends State<GameResultScreen> {
                   // Pencapaian Card
                   Container(
                     padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(color: Colors.lightBlue[100], borderRadius: BorderRadius.circular(20)),
+                    decoration: BoxDecoration(color: Colors.lightBlue[50], borderRadius: BorderRadius.circular(20)),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                          child: const Icon(Icons.military_tech, color: Color(0xFF2954E3), size: 24),
+                          child: const Icon(Icons.military_tech, color: AppColors.primary, size: 24),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Row(
+                              Row(
                                 children: [
-                                  Text('PENCAPAIAN BARU ', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF2954E3))),
-                                  Text('🥇', style: TextStyle(fontSize: 10)),
+                                  Text('PENCAPAIAN BARU ', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: AppColors.primary)),
+                                  const Text('🥇', style: TextStyle(fontSize: 10)),
                                 ],
                               ),
                               const SizedBox(height: 4),
-                              const Text('Hardware Master TKJ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+                              Text('Hardware Master TKJ', style: AppTypography.caption.copyWith(fontSize: 14, fontWeight: FontWeight.w900, color: AppColors.textDark)),
                               const SizedBox(height: 4),
-                              Text('Berhasil mendiagnosis socket CPU, RAM dual-channel, & kartu PCI...', style: TextStyle(fontSize: 11, color: Colors.blue[900], height: 1.4)),
+                              Text('Berhasil mendiagnosis socket CPU, RAM dual-channel, & kartu PCI...', style: AppTypography.caption.copyWith(fontSize: 11, color: Colors.blue[900], height: 1.4)),
                             ],
                           ),
                         )
@@ -158,19 +159,19 @@ class _GameResultScreenState extends State<GameResultScreen> {
                   // Tips Card
                   Container(
                     padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(color: const Color(0xFFF0F4FA), borderRadius: BorderRadius.circular(16)),
+                    decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(16)),
                     child: Row(
                       children: [
-                        const Icon(Icons.lightbulb_outline, size: 20, color: Color(0xFF2954E3)),
+                        const Icon(Icons.lightbulb_outline, size: 20, color: AppColors.primary),
                         const SizedBox(width: 12),
                         Expanded(
                           child: RichText(
                             text: TextSpan(
-                              style: TextStyle(fontSize: 11, color: Colors.grey[700], height: 1.4),
-                              children: const [
-                                TextSpan(text: 'Sedikit lagi sempurna! Ulangi modul '),
-                                TextSpan(text: 'Front Panel I/O', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
-                                TextSpan(text: ' untuk skor 100%.'),
+                              style: AppTypography.caption.copyWith(fontSize: 11, height: 1.4),
+                              children: [
+                                const TextSpan(text: 'Sedikit lagi sempurna! Ulangi modul '),
+                                TextSpan(text: 'Front Panel I/O', style: AppTypography.caption.copyWith(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textDark)),
+                                const TextSpan(text: ' untuk skor 100%.'),
                               ],
                             ),
                           ),
@@ -192,9 +193,9 @@ class _GameResultScreenState extends State<GameResultScreen> {
                   Navigator.pop(context);
                 },
                 icon: const Icon(Icons.refresh, color: Colors.white, size: 20),
-                label: const Text('Main Lagi', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                label: Text('Main Lagi', style: AppTypography.subtitle.copyWith(fontSize: 16, color: Colors.white)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2954E3),
+                  backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   elevation: 0,
@@ -209,11 +210,11 @@ class _GameResultScreenState extends State<GameResultScreen> {
                   quizProvider.resetQuiz();
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },
-                icon: const Icon(Icons.home_outlined, color: Color(0xFF2954E3), size: 20),
-                label: const Text('Kembali ke Menu Utama', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2954E3))),
+                icon: const Icon(Icons.home_outlined, color: AppColors.primary, size: 20),
+                label: Text('Kembali ke Menu Utama', style: AppTypography.subtitle.copyWith(fontSize: 16, color: AppColors.primary)),
                 style: OutlinedButton.styleFrom(
                   backgroundColor: Colors.white,
-                  side: const BorderSide(color: Colors.transparent), // Kita pakai background putih biasa aja untuk outline
+                  side: const BorderSide(color: Colors.transparent),
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 ),
@@ -240,17 +241,17 @@ class _StatItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(label, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[600])),
+        Text(label, style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            icon == null ? const SizedBox.shrink() : Icon(icon, size: 14, color: iconColor ?? const Color(0xFF1E293B)),
-            icon == null ? const SizedBox.shrink() : const SizedBox(width: 4),
-            Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: iconColor ?? const Color(0xFF2954E3))),
-            suffix.isEmpty ? const SizedBox.shrink() : Text(suffix, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[500])),
+            if (icon != null) Icon(icon, size: 14, color: iconColor ?? AppColors.textDark),
+            if (icon != null) const SizedBox(width: 4),
+            Text(value, style: AppTypography.heading3.copyWith(fontSize: 20, color: iconColor ?? AppColors.primary)),
+            if (suffix.isNotEmpty) Text(suffix, style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold)),
           ],
         )
       ],

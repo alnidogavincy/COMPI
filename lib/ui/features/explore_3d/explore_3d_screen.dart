@@ -3,6 +3,8 @@ import 'package:model_viewer_plus/model_viewer_plus.dart';
 import '../../../data/dummy_data.dart';
 import '../../../data/models/component_model.dart';
 import '../learning/material_detail_screen.dart';
+import '../../core/app_colors.dart';
+import '../../core/app_typography.dart';
 
 class Explore3DScreen extends StatefulWidget {
   final ComponentModel? initialComponent;
@@ -19,18 +21,17 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
   @override
   void initState() {
     super.initState();
-    // Tidak lagi dipaksa Landscape, mengikuti mode Portrait perangkat
     _activeComponent = widget.initialComponent ?? dummyComponents.first;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4FA),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
-            // ── Header Custom ──
+            // ── Header ──
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Row(
@@ -38,12 +39,9 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                 children: [
                   Row(
                     children: [
-                      const Text(
-                        'COMPI',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF2954E3)),
-                      ),
+                      Text('COMPI', style: AppTypography.heading3.copyWith(fontSize: 16, color: AppColors.primary, fontWeight: FontWeight.w900)),
                       const SizedBox(width: 8),
-                      Text('Explore 3D', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey[700])),
+                      Text('Explore 3D', style: AppTypography.subtitle),
                     ],
                   ),
                   const CircleAvatar(
@@ -62,7 +60,7 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                 children: [
                   Positioned.fill(
                     child: ModelViewer(
-                      backgroundColor: const Color(0xFFF0F4FA),
+                      backgroundColor: AppColors.background,
                       src: _activeComponent.modelPath,
                       alt: "3D Model of ${_activeComponent.name}",
                       autoRotate: true,
@@ -78,33 +76,33 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Explore 3D PC', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+                            Text('Explore 3D PC', style: AppTypography.heading2),
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
-                              child: const Row(
+                              child: Row(
                                 children: [
-                                  Icon(Icons.qr_code_scanner, size: 14, color: Color(0xFF2954E3)),
-                                  SizedBox(width: 4),
-                                  Text('X-Ray', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF2954E3))),
+                                  const Icon(Icons.qr_code_scanner, size: 14, color: AppColors.primary),
+                                  const SizedBox(width: 4),
+                                  Text('X-Ray', style: AppTypography.tag),
                                 ],
                               ),
                             )
                           ],
                         ),
                         const SizedBox(height: 4),
-                        Text('Jelajahi, putar, dan perbesar untuk melihat\ndetail setiap komponen.', style: TextStyle(fontSize: 12, color: Colors.grey[600], height: 1.5)),
+                        Text('Jelajahi, putar, dan perbesar untuk melihat\ndetail setiap komponen.', style: AppTypography.caption.copyWith(height: 1.5)),
                         const SizedBox(height: 16),
                         
                         // Action Chips
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
-                            children: [
+                            children: const [
                               _ActionChip(icon: Icons.threed_rotation, label: '360° Rotasi'),
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8),
                               _ActionChip(icon: Icons.pinch, label: 'Pinch Zoom'),
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8),
                               _ActionChip(icon: Icons.touch_app, label: 'Ketuk Pin Hotspot'),
                             ],
                           ),
@@ -128,11 +126,11 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.view_in_ar, color: Color(0xFF2954E3), size: 18),
+                            const Icon(Icons.view_in_ar, color: AppColors.primary, size: 18),
                             const SizedBox(width: 8),
-                            const Text('Lihat Komponen Lain', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF2954E3))),
+                            Text('Lihat Komponen Lain', style: AppTypography.subtitle.copyWith(color: AppColors.primary, fontSize: 12)),
                             const SizedBox(width: 4),
-                            Icon(Icons.keyboard_arrow_down, color: Colors.blue[700]),
+                            Icon(Icons.keyboard_arrow_down, color: AppColors.primaryDark),
                           ],
                         ),
                       ),

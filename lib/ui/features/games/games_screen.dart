@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../data/dummy_data.dart';
 import '../../providers/quiz_provider.dart';
+import '../../providers/learning_progress_provider.dart';
+import '../../core/app_colors.dart';
+import '../../core/app_typography.dart';
 import 'quiz_screen.dart';
 import 'match_up_screen.dart';
 
@@ -10,8 +13,11 @@ class GamesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final progressProvider = context.watch<LearningProgressProvider>();
+    final highestScore = progressProvider.highestScore;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -25,13 +31,13 @@ class GamesScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('COMPI', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF2954E3))),
-                      Text('TKJ Hardware 3D', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[600])),
+                      Text('COMPI', style: AppTypography.heading3.copyWith(fontSize: 16, color: AppColors.primary, fontWeight: FontWeight.w900)),
+                      Text('TKJ Hardware 3D', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: AppColors.textGray)),
                     ],
                   ),
                   Row(
                     children: [
-                      Text('Games Hub', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey[700])),
+                      Text('Games Hub', style: AppTypography.subtitle),
                       const SizedBox(width: 12),
                       const CircleAvatar(radius: 16, backgroundColor: Colors.black12, child: Icon(Icons.person, size: 18, color: Colors.white)),
                     ],
@@ -46,7 +52,7 @@ class GamesScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 5))],
+                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))],
                 ),
                 child: Row(
                   children: [
@@ -54,22 +60,22 @@ class GamesScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.stars, color: Color(0xFF2954E3), size: 20),
+                          const Icon(Icons.stars, color: AppColors.primary, size: 20),
                           const SizedBox(width: 8),
-                          Text('Poin Kamu:', style: TextStyle(fontSize: 12, color: Colors.grey[600], fontWeight: FontWeight.bold)),
+                          Text('Poin Kamu:', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold)),
                           const SizedBox(width: 4),
-                          const Text('950 pts', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF2954E3))),
+                          Text('$highestScore pts', style: AppTypography.heading3.copyWith(fontSize: 16, color: AppColors.primary)),
                         ],
                       ),
                     ),
-                    Container(width: 1, height: 30, color: Colors.grey[200]),
+                    Container(width: 1, height: 30, color: AppColors.border),
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(Icons.emoji_events, color: Colors.cyan, size: 20),
                           const SizedBox(width: 8),
-                          const Text('Top 5 SMK', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: Color(0xFF1E293B))),
+                          Text('Top 5 SMK', style: AppTypography.subtitle.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -81,15 +87,15 @@ class GamesScreen extends StatelessWidget {
               // ── Judul ──
               Row(
                 children: [
-                  const Icon(Icons.sports_esports, color: Color(0xFF2954E3), size: 24),
+                  const Icon(Icons.sports_esports, color: AppColors.primary, size: 24),
                   const SizedBox(width: 8),
-                  const Text('Pilih Mode Tantangan', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+                  Text('Pilih Mode Tantangan', style: AppTypography.heading2.copyWith(fontSize: 22)),
                 ],
               ),
               const SizedBox(height: 8),
               Text(
                 'Uji keahlian perakitan dan pemahaman hardware kamu lewat game interaktif!',
-                style: TextStyle(fontSize: 14, color: Colors.grey[600], height: 1.5),
+                style: AppTypography.body,
               ),
               const SizedBox(height: 24),
 
@@ -97,8 +103,8 @@ class GamesScreen extends StatelessWidget {
               _GameModeCard(
                 title: 'Component Challenge',
                 badgeText: 'Kuis Pilihan Ganda',
-                badgeColor: const Color(0xFFE8EEFC),
-                badgeTextColor: const Color(0xFF2954E3),
+                badgeColor: AppColors.primaryLight,
+                badgeTextColor: AppColors.primary,
                 statsText: '10 Soal',
                 description: 'Jawab kuis pilihan ganda tentang fungsi, arsitektur, dan deskripsi teknis...',
                 features: const ['+150 XP per sesi', 'Soal Acak TKJ'],
@@ -134,21 +140,21 @@ class GamesScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(24),
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 5))],
+                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5))],
                 ),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Row(
+                        Row(
                           children: [
-                            Icon(Icons.emoji_events, color: Colors.amber, size: 24),
-                            SizedBox(width: 8),
-                            Text('Papan Skor Mingguan\nSMK TKJ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+                            const Icon(Icons.emoji_events, color: Colors.amber, size: 24),
+                            const SizedBox(width: 8),
+                            Text('Papan Skor Mingguan\nSMK TKJ', style: AppTypography.heading3.copyWith(fontSize: 16)),
                           ],
                         ),
-                        Text('Lihat\nSemua >', textAlign: TextAlign.right, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.blue[700])),
+                        Text('Lihat\nSemua >', textAlign: TextAlign.right, style: AppTypography.subtitle.copyWith(fontSize: 12, color: AppColors.primary)),
                       ],
                     ),
                     const SizedBox(height: 24),
@@ -170,19 +176,19 @@ class GamesScreen extends StatelessWidget {
                     // Streak Notification
                     Container(
                       padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(color: const Color(0xFFF0F4FA), borderRadius: BorderRadius.circular(12)),
+                      decoration: BoxDecoration(color: AppColors.primaryLight, borderRadius: BorderRadius.circular(12)),
                       child: Row(
                         children: [
-                          const Icon(Icons.lightbulb_outline, size: 20, color: Color(0xFF2954E3)),
+                          const Icon(Icons.lightbulb_outline, size: 20, color: AppColors.primary),
                           const SizedBox(width: 12),
                           Expanded(
                             child: RichText(
                               text: TextSpan(
-                                style: TextStyle(fontSize: 12, color: Colors.grey[700]),
-                                children: const [
-                                  TextSpan(text: 'Mainkan 1 sesi tantangan hari ini untuk mempertahankan status '),
-                                  TextSpan(text: 'Streak 4 Hari', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
-                                  TextSpan(text: ' kamu!'),
+                                style: AppTypography.caption,
+                                children: [
+                                  const TextSpan(text: 'Mainkan 1 sesi tantangan hari ini untuk mempertahankan status '),
+                                  TextSpan(text: 'Streak 4 Hari', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: AppColors.textDark)),
+                                  const TextSpan(text: ' kamu!'),
                                 ],
                               ),
                             ),
@@ -233,7 +239,7 @@ class _GameModeCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 15, offset: const Offset(0, 8))],
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 8))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,26 +262,26 @@ class _GameModeCard extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(color: badgeColor, borderRadius: BorderRadius.circular(8)),
-                          child: Text(badgeText, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: badgeTextColor)),
+                          child: Text(badgeText, style: AppTypography.caption.copyWith(fontSize: 10, fontWeight: FontWeight.bold, color: badgeTextColor)),
                         ),
                         const SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(8)),
+                          decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(8)),
                           child: Row(
                             children: [
-                              Icon(Icons.timer, size: 10, color: Colors.grey[600]),
+                              const Icon(Icons.timer, size: 10, color: AppColors.textGray),
                               const SizedBox(width: 4),
-                              Text(statsText, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[700])),
+                              Text(statsText, style: AppTypography.caption.copyWith(fontSize: 10, fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+                    Text(title, style: AppTypography.heading3.copyWith(fontSize: 18)),
                     const SizedBox(height: 4),
-                    Text(description, style: TextStyle(fontSize: 12, color: Colors.grey[600], height: 1.4)),
+                    Text(description, style: AppTypography.caption.copyWith(height: 1.4)),
                   ],
                 ),
               ),
@@ -287,13 +293,13 @@ class _GameModeCard extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.only(right: 8),
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                decoration: BoxDecoration(color: const Color(0xFFF8F9FA), borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(8)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.check_circle_outline, size: 12, color: const Color(0xFF2954E3)),
+                    const Icon(Icons.check_circle_outline, size: 12, color: AppColors.primary),
                     const SizedBox(width: 4),
-                    Text(f, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[800])),
+                    Text(f, style: AppTypography.caption.copyWith(fontSize: 10, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
@@ -305,9 +311,9 @@ class _GameModeCard extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: onTap,
               icon: Icon(buttonIcon, size: 18, color: Colors.white),
-              label: Text(buttonText, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white)),
+              label: Text(buttonText, style: AppTypography.subtitle.copyWith(fontSize: 14, color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF2954E3),
+                backgroundColor: AppColors.primary,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 elevation: 0,
@@ -343,7 +349,7 @@ class _LeaderboardAvatar extends StatelessWidget {
       width: 80,
       height: height,
       decoration: BoxDecoration(
-        color: isFirst ? const Color(0xFFE8EEFC) : const Color(0xFFF8F9FA),
+        color: isFirst ? AppColors.primaryLight : AppColors.background,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -374,10 +380,10 @@ class _LeaderboardAvatar extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Text(name, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)), maxLines: 1),
-          Text(school, style: TextStyle(fontSize: 9, color: Colors.grey[600]), maxLines: 1),
+          Text(name, style: AppTypography.caption.copyWith(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textDark), maxLines: 1),
+          Text(school, style: AppTypography.caption.copyWith(fontSize: 9), maxLines: 1),
           const SizedBox(height: 4),
-          Text(points, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: const Color(0xFF2954E3))),
+          Text(points, style: AppTypography.caption.copyWith(fontSize: 10, fontWeight: FontWeight.w900, color: AppColors.primary)),
         ],
       ),
     );

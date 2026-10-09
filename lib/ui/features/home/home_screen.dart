@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/app_colors.dart';
+import '../../core/app_typography.dart';
 import '../../providers/learning_progress_provider.dart';
 import '../../providers/quiz_provider.dart';
-import '../../../data/dummy_data.dart';
+import '../../../data/repositories/content_repository.dart';
 import '../explore_3d/explore_3d_screen.dart';
 import '../games/quiz_screen.dart';
 
@@ -11,8 +13,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final progressProvider = context.watch<LearningProgressProvider>();
+    final contentRepo = context.read<ContentRepository>();
+    
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -25,12 +30,9 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Text(
-                        'COMPI',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Color(0xFF2954E3)),
-                      ),
+                      Text('COMPI', style: AppTypography.heading3.copyWith(color: AppColors.primary, fontWeight: FontWeight.w900)),
                       const SizedBox(width: 8),
-                      Text('Home', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey[700])),
+                      Text('Home', style: AppTypography.subtitle),
                     ],
                   ),
                   const CircleAvatar(
@@ -49,8 +51,8 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       const CircleAvatar(
                         radius: 28,
-                        backgroundColor: Colors.blueAccent,
-                        child: Icon(Icons.person, size: 30, color: Colors.white), // Placeholder Avatar
+                        backgroundColor: AppColors.primary,
+                        child: Icon(Icons.person, size: 30, color: Colors.white),
                       ),
                       Positioned(
                         bottom: 0,
@@ -58,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                         child: Container(
                           width: 14, height: 14,
                           decoration: BoxDecoration(
-                            color: Colors.lightBlue,
+                            color: AppColors.success,
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 2),
                           ),
@@ -71,45 +73,24 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Halo, Vina 👋',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
-                        ),
-                        Text(
-                          'Siap belajar hari ini?',
-                          style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                        ),
+                        Text('Halo, Vika! 👋', style: AppTypography.heading3),
+                        Text('SMK TKJ Kelas X • Modul Perakitan', style: AppTypography.caption),
                       ],
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE8EEFC),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.calendar_today, size: 14, color: Color(0xFF2954E3)),
-                        const SizedBox(width: 4),
-                        Text('27 Agu 2026', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.blue[800])),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 8),
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey[200]!),
+                      border: Border.all(color: AppColors.border),
                     ),
-                    child: const Stack(
+                    child: Stack(
                       children: [
-                        Icon(Icons.notifications_none, size: 20),
+                        const Icon(Icons.notifications_none, size: 20, color: AppColors.textDark),
                         Positioned(
                           right: 0, top: 0,
-                          child: CircleAvatar(radius: 4, backgroundColor: Colors.red),
+                          child: CircleAvatar(radius: 4, backgroundColor: AppColors.error),
                         )
                       ],
                     ),
@@ -118,87 +99,11 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              // ── Kata Hari Ini ──
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE8EEFC),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.lightbulb, size: 14, color: Color(0xFF2954E3)),
-                                SizedBox(width: 4),
-                                Text('KATA HARI INI', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF2954E3))),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          const Text(
-                            '"Komputer hari ini, Komputer hebat di masa depan"',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Color(0xFF1E293B), height: 1.3),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Semangat SMK TKJ Hebat!',
-                            style: TextStyle(fontSize: 12, color: Colors.blue[800], fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Container(
-                      width: 70, height: 70,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFD6E4FF),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          const Icon(Icons.laptop_chromebook, size: 40, color: Color(0xFF2954E3)),
-                          Positioned(
-                            top: -5, right: -5,
-                            child: CircleAvatar(
-                              radius: 10, backgroundColor: Colors.lightBlue,
-                              child: Icon(Icons.bolt, size: 14, color: Colors.white),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-
               // ── Progres Belajar ──
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Progres Belajar', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE8EEFC),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text('TKJ Kelas X', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.blue[800])),
-                  ),
+                  const Text('Progres Belajar', style: AppTypography.subtitle),
                 ],
               ),
               const SizedBox(height: 16),
@@ -217,23 +122,24 @@ class HomeScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Container(width: 8, height: 8, decoration: const BoxDecoration(color: Color(0xFF2954E3), shape: BoxShape.circle)),
-                              const SizedBox(width: 6),
-                              const Text('MODUL SEDANG AKTIF', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey)),
-                            ],
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.primary),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text('${progressProvider.highestScore} XP Terkumpul', style: AppTypography.tag),
                           ),
-                          const SizedBox(height: 8),
-                          const Text('Penyimpanan Data (SSD/HDD)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 12),
+                          Text('Progress Belajar: ${(progressProvider.completedCount / 10 * 100).toInt()}%', style: AppTypography.heading3.copyWith(fontSize: 18)),
                           const SizedBox(height: 4),
-                          Text('4 dari 10 Materi Selesai', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                          Text('${progressProvider.completedCount} dari 10 Materi Perakitan Selesai', style: AppTypography.caption),
                           const SizedBox(height: 12),
                           Row(
                             children: [
-                              Icon(Icons.schedule, size: 14, color: Colors.teal[600]),
+                              const Icon(Icons.fiber_manual_record, size: 12, color: AppColors.success),
                               const SizedBox(width: 4),
-                              Text('Estimasi 15 menit lagi', style: TextStyle(fontSize: 12, color: Colors.teal[600], fontWeight: FontWeight.w600)),
+                              Text('Status: Aktif Membaca Socket AM4', style: AppTypography.caption.copyWith(color: AppColors.success)),
                             ],
                           ),
                         ],
@@ -245,18 +151,18 @@ class HomeScreen extends StatelessWidget {
                         SizedBox(
                           width: 70, height: 70,
                           child: CircularProgressIndicator(
-                            value: 0.4,
+                            value: progressProvider.completedCount / 10,
                             strokeWidth: 8,
-                            backgroundColor: const Color(0xFFE8EEFC),
-                            color: const Color(0xFF2954E3),
+                            backgroundColor: AppColors.primaryLight,
+                            color: AppColors.primary,
                             strokeCap: StrokeCap.round,
                           ),
                         ),
-                        const Column(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('40%', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF2954E3))),
-                            Text('Selesai', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.grey)),
+                            Text('${(progressProvider.completedCount / 10 * 100).toInt()}%', style: AppTypography.heading3.copyWith(color: AppColors.primary, fontSize: 16)),
+                            const Text('Target', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppColors.textGray)),
                           ],
                         )
                       ],
@@ -267,17 +173,30 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 32),
 
               // ── Akses Cepat Praktik ──
-              const Text('Akses Cepat Praktik', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.rocket_launch, color: AppColors.primary, size: 20),
+                      const SizedBox(width: 8),
+                      Text('Akses Cepat', style: AppTypography.heading3.copyWith(fontSize: 18)),
+                    ],
+                  ),
+                  Text('Panduan Alat', style: AppTypography.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                ],
+              ),
               const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
                     child: _QuickAccessCard(
-                      title: 'Explore',
-                      subtitle: 'SIMULATOR INTERAKTIF',
+                      title: 'Explore 3D PC',
+                      subtitle: '3D Lab Interaktif',
                       icon: Icons.view_in_ar,
-                      color: const Color(0xFF2954E3),
+                      color: AppColors.primary,
                       textColor: Colors.white,
+                      buttonText: 'Mulai Eksplorasi →',
                       onTap: () {
                         Navigator.push(
                           context,
@@ -289,17 +208,21 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: _QuickAccessCard(
-                      title: 'Tantangan',
-                      subtitle: 'UJI KOMPETENSI',
-                      icon: Icons.sports_esports,
-                      color: const Color(0xFFE8EEFC),
-                      textColor: const Color(0xFF1E293B),
-                      onTap: () {
-                        context.read<QuizProvider>().loadQuiz(dummyQuizQuestions);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const QuizScreen()),
-                        );
+                      title: 'Tantangan Kuis',
+                      subtitle: 'Uji Kemampuan',
+                      icon: Icons.psychology,
+                      color: AppColors.primaryLight,
+                      textColor: AppColors.textDark,
+                      buttonText: 'Ikuti Kuis →',
+                      onTap: () async {
+                        final questions = await contentRepo.getQuizQuestions();
+                        if (context.mounted) {
+                          context.read<QuizProvider>().loadQuiz(questions);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const QuizScreen()),
+                          );
+                        }
                       },
                     ),
                   ),
@@ -311,8 +234,8 @@ class HomeScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Lanjutkan Belajar', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
-                  Text('Lihat Semua >', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue[700])),
+                  Text('Lanjutkan Belajar', style: AppTypography.heading3.copyWith(fontSize: 18)),
+                  Text('Lihat Semua >', style: AppTypography.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)),
                 ],
               ),
               const SizedBox(height: 16),
@@ -339,6 +262,35 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 32),
+              
+              // ── Tips Teknisi ──
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLight,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text('TIPS TEKNISI HARI INI • SOP K3', style: AppTypography.tag.copyWith(color: AppColors.primaryDark)),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Selalu gunakan gelang anti-statis (ESD wrist strap) saat menyentuh komponen internal PC untuk mencegah kerusakan akibat listrik statis.',
+                      style: AppTypography.body.copyWith(color: AppColors.primaryDark),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -353,6 +305,7 @@ class _QuickAccessCard extends StatelessWidget {
   final IconData icon;
   final Color color;
   final Color textColor;
+  final String buttonText;
   final VoidCallback onTap;
 
   const _QuickAccessCard({
@@ -361,6 +314,7 @@ class _QuickAccessCard extends StatelessWidget {
     required this.icon,
     required this.color,
     required this.textColor,
+    required this.buttonText,
     required this.onTap,
   });
 
@@ -369,35 +323,31 @@ class _QuickAccessCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
-            BoxShadow(color: color.withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 8)),
+            BoxShadow(color: color.withOpacity(0.2), blurRadius: 10, offset: const Offset(0, 5)),
           ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: textColor == Colors.white ? Colors.white.withOpacity(0.2) : Colors.white,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Icon(icon, color: textColor == Colors.white ? Colors.white : const Color(0xFF2954E3), size: 24),
-                ),
-                Icon(Icons.arrow_forward, color: textColor.withOpacity(0.7), size: 20),
-              ],
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: textColor == Colors.white ? Colors.white.withOpacity(0.2) : Colors.white,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(icon, color: textColor == Colors.white ? Colors.white : AppColors.primary, size: 24),
             ),
-            const SizedBox(height: 24),
-            Text(subtitle, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: textColor.withOpacity(0.8))),
+            const SizedBox(height: 16),
+            Text(subtitle, style: AppTypography.caption.copyWith(color: textColor.withOpacity(0.8), fontSize: 10)),
             const SizedBox(height: 4),
-            Text(title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: textColor)),
+            Text(title, style: AppTypography.subtitle.copyWith(color: textColor, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            Text(buttonText, style: AppTypography.caption.copyWith(color: textColor == Colors.white ? Colors.white : AppColors.primary, fontWeight: FontWeight.bold)),
           ],
         ),
       ),

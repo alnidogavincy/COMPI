@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../core/app_colors.dart';
+import '../../core/app_typography.dart';
+import '../../providers/learning_progress_provider.dart';
 import '../auth/login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -6,8 +10,13 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final progressProvider = context.watch<LearningProgressProvider>();
+    final completedCount = progressProvider.completedCount;
+    final progressPercent = (completedCount / 10).clamp(0.0, 1.0);
+    final highestScore = progressProvider.highestScore;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -21,13 +30,13 @@ class ProfileScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('COMPI', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF2954E3))),
-                      Text('TKJ Hardware 3D', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[600])),
+                      Text('COMPI', style: AppTypography.heading3.copyWith(fontSize: 16, color: AppColors.primary, fontWeight: FontWeight.w900)),
+                      Text('TKJ Hardware 3D', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: AppColors.textGray)),
                     ],
                   ),
                   Row(
                     children: [
-                      Text('Profile', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey[700])),
+                      Text('Profile', style: AppTypography.subtitle),
                       const SizedBox(width: 12),
                       const CircleAvatar(radius: 16, backgroundColor: Colors.black12, child: Icon(Icons.person, size: 18, color: Colors.white)),
                     ],
@@ -55,11 +64,11 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         Container(
                           padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(color: Color(0xFF2954E3), shape: BoxShape.circle),
+                          decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
                           child: const CircleAvatar(
                             radius: 40,
                             backgroundColor: Colors.white,
-                            child: Icon(Icons.person, size: 40, color: Colors.blueGrey), // Dummy Avatar
+                            child: Icon(Icons.person, size: 40, color: Colors.blueGrey),
                           ),
                         ),
                         Positioned(
@@ -67,36 +76,36 @@ class ProfileScreen extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.all(4),
                             decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                            child: const CircleAvatar(radius: 10, backgroundColor: Color(0xFF2954E3), child: Icon(Icons.check, size: 12, color: Colors.white)),
+                            child: const CircleAvatar(radius: 10, backgroundColor: AppColors.primary, child: Icon(Icons.check, size: 12, color: Colors.white)),
                           ),
                         )
                       ],
                     ),
                     const SizedBox(height: 16),
-                    const Text('Anissa', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+                    Text('Anissa', style: AppTypography.heading2.copyWith(fontSize: 24)),
                     const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(color: const Color(0xFFF0F4FA), borderRadius: BorderRadius.circular(20)),
+                      decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(20)),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.school, size: 12, color: Colors.blue[800]),
+                          Icon(Icons.school, size: 12, color: AppColors.primaryDark),
                           const SizedBox(width: 6),
-                          Text('Siswa TKJ - Kelas X • SMKN 1 Jakarta', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blue[800])),
+                          Text('Siswa TKJ - Kelas X • SMKN 1 Jakarta', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: AppColors.primaryDark)),
                         ],
                       ),
                     ),
                     const SizedBox(height: 16),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(color: const Color(0xFFE8EEFC), borderRadius: BorderRadius.circular(20)),
-                      child: const Row(
+                      decoration: BoxDecoration(color: AppColors.primaryLight, borderRadius: BorderRadius.circular(20)),
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.edit, size: 14, color: Color(0xFF2954E3)),
-                          SizedBox(width: 6),
-                          Text('Edit Profil', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF2954E3))),
+                          const Icon(Icons.edit, size: 14, color: AppColors.primary),
+                          const SizedBox(width: 6),
+                          Text('Edit Profil', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: AppColors.primary)),
                         ],
                       ),
                     ),
@@ -109,14 +118,14 @@ class ProfileScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Row(
+                  Row(
                     children: [
-                      Icon(Icons.bar_chart, color: Color(0xFF2954E3), size: 20),
-                      SizedBox(width: 8),
-                      Text('Statistik Belajar', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+                      const Icon(Icons.bar_chart, color: AppColors.primary, size: 20),
+                      const SizedBox(width: 8),
+                      Text('Statistik Belajar', style: AppTypography.heading3.copyWith(fontSize: 16)),
                     ],
                   ),
-                  Text('SEMESTER GANJIL', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[600])),
+                  Text('SEMESTER GANJIL', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: AppColors.textGray)),
                 ],
               ),
               const SizedBox(height: 16),
@@ -134,26 +143,26 @@ class ProfileScreen extends StatelessWidget {
                             children: [
                               Container(
                                 padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(color: const Color(0xFFE8EEFC), borderRadius: BorderRadius.circular(12)),
-                                child: const Icon(Icons.menu_book, color: Color(0xFF2954E3), size: 16),
+                                decoration: BoxDecoration(color: AppColors.primaryLight, borderRadius: BorderRadius.circular(12)),
+                                child: const Icon(Icons.menu_book, color: AppColors.primary, size: 16),
                               ),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(color: Colors.lightBlue[50], borderRadius: BorderRadius.circular(8)),
-                                child: Text('40%', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blue[800])),
+                                child: Text('${(progressPercent * 100).toInt()}%', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: AppColors.primaryDark)),
                               ),
                             ],
                           ),
                           const SizedBox(height: 16),
-                          Text('Total Materi', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[600])),
+                          Text('Total Materi', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold)),
                           const SizedBox(height: 4),
-                          const Text('4 dari 10', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+                          Text('$completedCount dari 10', style: AppTypography.heading3.copyWith(fontSize: 18)),
                           const SizedBox(height: 4),
-                          Text('Selesai dipelajari', style: TextStyle(fontSize: 10, color: Colors.grey[600])),
+                          Text('Selesai dipelajari', style: AppTypography.caption),
                           const SizedBox(height: 12),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(4),
-                            child: LinearProgressIndicator(value: 0.4, backgroundColor: Colors.grey[200], color: const Color(0xFF2954E3), minHeight: 4),
+                            child: LinearProgressIndicator(value: progressPercent, backgroundColor: AppColors.border, color: AppColors.primary, minHeight: 4),
                           ),
                         ],
                       ),
@@ -183,17 +192,17 @@ class ProfileScreen extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 16),
-                          Text('Rekor Skor Kuis', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[600])),
+                          Text('Rekor Skor Kuis', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold)),
                           const SizedBox(height: 4),
-                          const Text('950 pts', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+                          Text('$highestScore pts', style: AppTypography.heading3.copyWith(fontSize: 18)),
                           const SizedBox(height: 4),
-                          Text('Peringkat Sekolah', style: TextStyle(fontSize: 10, color: Colors.grey[600])),
+                          Text('Peringkat Sekolah', style: AppTypography.caption),
                           const SizedBox(height: 12),
                           Row(
                             children: [
                               const Icon(Icons.location_on, size: 10, color: Colors.teal),
                               const SizedBox(width: 4),
-                              Text('Tingkat SMKN 1', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.teal[700])),
+                              Text('Tingkat SMKN 1', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: Colors.teal[700])),
                             ],
                           )
                         ],
@@ -208,8 +217,8 @@ class ProfileScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Pencapaian Siswa (3)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
-                  Text('Lihat Semua', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.blue[700])),
+                  Text('Pencapaian Siswa (3)', style: AppTypography.heading3.copyWith(fontSize: 16)),
+                  Text('Lihat Semua', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: AppColors.primary)),
                 ],
               ),
               const SizedBox(height: 16),
@@ -219,7 +228,7 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     _AchievementCard(icon: Icons.military_tech, iconColor: Colors.amber, title: 'Pengenal CPU', status: 'Terbuka • Lv.1', statusColor: Colors.amber[700]!),
                     const SizedBox(width: 16),
-                    _AchievementCard(icon: Icons.military_tech, iconColor: Colors.blueGrey, title: 'Pakar RAM', status: 'Terbuka • Lv.2', statusColor: const Color(0xFF2954E3)),
+                    _AchievementCard(icon: Icons.military_tech, iconColor: Colors.blueGrey, title: 'Pakar RAM', status: 'Terbuka • Lv.2', statusColor: AppColors.primary),
                     const SizedBox(width: 16),
                     _AchievementCard(icon: Icons.lock, iconColor: Colors.grey[300]!, title: 'Master GPU', status: 'Terkunci', statusColor: Colors.grey),
                   ],
@@ -228,18 +237,18 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 32),
 
               // ── Menu & Preferensi ──
-              const Text('Menu & Preferensi', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
+              Text('Menu & Preferensi', style: AppTypography.heading3.copyWith(fontSize: 16)),
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10)]),
                 child: Column(
                   children: [
-                    _MenuRow(icon: Icons.manage_accounts, iconBg: const Color(0xFFE8EEFC), iconColor: const Color(0xFF2954E3), title: 'Pengaturan Akun', subtitle: 'Kata sandi, NISN & info data diri', trailingIcon: Icons.chevron_right),
-                    const Divider(height: 1, indent: 64, endIndent: 20),
+                    _MenuRow(icon: Icons.manage_accounts, iconBg: AppColors.primaryLight, iconColor: AppColors.primary, title: 'Pengaturan Akun', subtitle: 'Kata sandi, NISN & info data diri', trailingIcon: Icons.chevron_right),
+                    const Divider(height: 1, indent: 64, endIndent: 20, color: AppColors.border),
                     _MenuRow(icon: Icons.help_outline, iconBg: Colors.cyan[50]!, iconColor: Colors.teal, title: 'Pusat Bantuan & Tutorial', subtitle: 'Panduan interaksi 3D & FAQ COMPI', trailingIcon: Icons.chevron_right),
-                    const Divider(height: 1, indent: 64, endIndent: 20),
-                    _MenuRow(icon: Icons.workspace_premium, iconBg: const Color(0xFFE8EEFC), iconColor: const Color(0xFF2954E3), title: 'Unduh Sertifikat Kompetensi', subtitle: 'Akreditasi praktikum perakitan PC', trailingIcon: Icons.download),
-                    const Divider(height: 1, indent: 64, endIndent: 20),
+                    const Divider(height: 1, indent: 64, endIndent: 20, color: AppColors.border),
+                    _MenuRow(icon: Icons.workspace_premium, iconBg: AppColors.primaryLight, iconColor: AppColors.primary, title: 'Unduh Sertifikat Kompetensi', subtitle: 'Akreditasi praktikum perakitan PC', trailingIcon: Icons.download),
+                    const Divider(height: 1, indent: 64, endIndent: 20, color: AppColors.border),
                     _MenuRow(
                       icon: Icons.logout, iconBg: Colors.red[50]!, iconColor: Colors.red, title: 'Keluar Akun', subtitle: 'Akhiri sesi perangkat ini', trailingIcon: Icons.arrow_forward, isDestructive: true,
                       onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen())),
@@ -258,12 +267,12 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         const CircleAvatar(radius: 3, backgroundColor: Colors.cyan),
                         const SizedBox(width: 6),
-                        Text('COMPI TKJ 3D Simulator v2.4.1', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[700])),
+                        Text('COMPI TKJ 3D Simulator v2.4.1', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Text('Laboratorium Jaringan & Komputer SMKN 1 Jakarta', style: TextStyle(fontSize: 10, color: Colors.grey[500])),
-                    const SizedBox(height: 32), // Padding untuk navigation bar
+                    Text('Laboratorium Jaringan & Komputer SMKN 1 Jakarta', style: AppTypography.caption),
+                    const SizedBox(height: 32),
                   ],
                 ),
               )
@@ -290,26 +299,26 @@ class _AchievementCard extends StatelessWidget {
     return Container(
       width: 140,
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: isLocked ? const Color(0xFFF0F4FA) : Colors.white, borderRadius: BorderRadius.circular(20), boxShadow: [if (!isLocked) BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10)]),
+      decoration: BoxDecoration(color: isLocked ? AppColors.background : Colors.white, borderRadius: BorderRadius.circular(20), boxShadow: [if (!isLocked) BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10)]),
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: Colors.grey[100], shape: BoxShape.circle),
+            decoration: BoxDecoration(color: AppColors.border, shape: BoxShape.circle),
             child: Icon(icon, color: iconColor, size: 24),
           ),
           const SizedBox(height: 12),
-          Text(title, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: isLocked ? Colors.grey : const Color(0xFF1E293B)), maxLines: 1),
+          Text(title, style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold, color: isLocked ? AppColors.textGray : AppColors.textDark), maxLines: 1),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(color: isLocked ? Colors.grey[300] : statusColor.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+            decoration: BoxDecoration(color: isLocked ? AppColors.border : statusColor.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 isLocked ? const SizedBox.shrink() : CircleAvatar(radius: 2, backgroundColor: statusColor),
                 isLocked ? const SizedBox.shrink() : const SizedBox(width: 4),
-                Text(status, style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: isLocked ? Colors.grey[600] : statusColor)),
+                Text(status, style: AppTypography.caption.copyWith(fontSize: 9, fontWeight: FontWeight.bold, color: isLocked ? AppColors.textGray : statusColor)),
               ],
             ),
           )
@@ -352,13 +361,13 @@ class _MenuRow extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: isDestructive ? Colors.red : const Color(0xFF1E293B))),
+                  Text(title, style: AppTypography.caption.copyWith(fontSize: 14, fontWeight: FontWeight.bold, color: isDestructive ? Colors.red : AppColors.textDark)),
                   const SizedBox(height: 2),
-                  Text(subtitle, style: TextStyle(fontSize: 10, color: Colors.grey[600])),
+                  Text(subtitle, style: AppTypography.caption.copyWith(fontSize: 10)),
                 ],
               ),
             ),
-            Icon(trailingIcon, size: 16, color: isDestructive ? Colors.red : Colors.grey),
+            Icon(trailingIcon, size: 16, color: isDestructive ? Colors.red : AppColors.textGray),
           ],
         ),
       ),

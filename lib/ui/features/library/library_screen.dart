@@ -1,15 +1,69 @@
 import 'package:flutter/material.dart';
-import '../../../data/dummy_data.dart';
+import 'package:provider/provider.dart';
+import '../../core/app_colors.dart';
+import '../../core/app_typography.dart';
 import '../../../data/models/component_model.dart';
-import '../explore_3d/explore_3d_screen.dart';
+import '../../../data/repositories/content_repository.dart';
+import '../learning/material_detail_screen.dart';
 
-class LibraryScreen extends StatelessWidget {
+class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
+
+  @override
+  State<LibraryScreen> createState() => _LibraryScreenState();
+}
+
+class _LibraryScreenState extends State<LibraryScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  List<ComponentModel> _allComponents = [];
+  List<ComponentModel> _filteredComponents = [];
+  String _selectedFilter = 'Semua';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadComponents();
+  }
+  
+  Future<void> _loadComponents() async {
+    final repo = context.read<ContentRepository>();
+    final components = await repo.getComponents();
+    if (mounted) {
+      setState(() {
+        _allComponents = components;
+        _filteredComponents = components;
+      });
+    }
+  }
+
+  void _filterComponents(String query) {
+    if (query.isEmpty && _selectedFilter == 'Semua') {
+      setState(() {
+        _filteredComponents = _allComponents;
+      });
+    } else {
+      setState(() {
+        _filteredComponents = _allComponents.where((c) {
+          final matchesQuery = c.name.toLowerCase().contains(query.toLowerCase()) || 
+                               c.shortDescription.toLowerCase().contains(query.toLowerCase());
+          final matchesCategory = _selectedFilter == 'Semua' || c.category == _selectedFilter;
+          return matchesQuery && matchesCategory;
+        }).toList();
+      });
+    }
+  }
+
+  void _setFilter(String filter) {
+    setState(() {
+      _selectedFilter = filter;
+      _filterComponents(_searchController.text);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -19,200 +73,134 @@ class LibraryScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'COMPI',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF2954E3)),
-                      ),
-                      Text('TKJ Hardware 3D', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey[600])),
-                    ],
-                  ),
                   Row(
                     children: [
-                      Text('Library', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey[700])),
-                      const SizedBox(width: 12),
-                      const CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Colors.black12,
-                        child: Icon(Icons.person, size: 18, color: Colors.white),
-                      ),
+                      Text('COMPI', style: AppTypography.heading3.copyWith(color: AppColors.primary, fontWeight: FontWeight.w900)),
+                      const SizedBox(width: 8),
+                      Text('Library', style: AppTypography.subtitle),
                     ],
+                  ),
+                  const CircleAvatar(
+                    radius: 16,
+                    backgroundColor: Colors.black12,
+                    child: Icon(Icons.person, size: 20, color: Colors.white),
                   ),
                 ],
               ),
             ),
             
+            // ── Title & Search ──
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text('KATALOG 3D', style: AppTypography.tag.copyWith(color: Colors.white)),
+                      ),
+                      const SizedBox(width: 8),
+                      Text('${_allComponents.length} Modul Lengkap', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Text('Library Materi', style: AppTypography.heading2),
+                  const SizedBox(height: 4),
+                  Text('Kenali & pelajari arsitektur hardware PC SMK TKJ', style: AppTypography.body),
+                  const SizedBox(height: 24),
+                  
+                  // Search Bar
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: _filterComponents,
+                      decoration: InputDecoration(
+                        hintText: 'Cari materi, socket, DDR...',
+                        hintStyle: TextStyle(color: AppColors.textGray.withOpacity(0.5), fontSize: 14),
+                        prefixIcon: const Icon(Icons.search, color: AppColors.primary),
+                        suffixIcon: const Icon(Icons.tune, color: AppColors.textGray),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  // Filter Chips
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _FilterChip(label: 'Semua', isSelected: _selectedFilter == 'Semua', onTap: () => _setFilter('Semua')),
+                        const SizedBox(width: 8),
+                        _FilterChip(label: 'Komponen Utama', isSelected: _selectedFilter == 'Komponen Utama', onTap: () => _setFilter('Komponen Utama')),
+                        const SizedBox(width: 8),
+                        _FilterChip(label: 'Penyimpanan', isSelected: _selectedFilter == 'Penyimpanan', onTap: () => _setFilter('Penyimpanan')),
+                        const SizedBox(width: 8),
+                        _FilterChip(label: 'Daya', isSelected: _selectedFilter == 'Daya', onTap: () => _setFilter('Daya')),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            // ── Grid of Components ──
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Badge Katalog
                     Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFE8EEFC),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Row(
-                            children: [
-                              Icon(Icons.view_in_ar, size: 12, color: Color(0xFF2954E3)),
-                              SizedBox(width: 4),
-                              Text('KATALOG 3D', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF2954E3))),
-                            ],
-                          ),
-                        ),
+                        Text('MODUL PRAKTIK 3D', style: AppTypography.caption.copyWith(fontWeight: FontWeight.bold)),
                         const SizedBox(width: 8),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
-                            color: Colors.lightBlue[50],
-                            borderRadius: BorderRadius.circular(8),
+                            color: AppColors.primaryLight,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Text('8 Modul Lengkap', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blue[800])),
+                          child: Text('Menampilkan ${_filteredComponents.length} Komponen', style: AppTypography.tag),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    
-                    const Text('Library Materi', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Color(0xFF1E293B))),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Kenali dan pelajari setiap komponen komputer dengan visual yang menarik dan interaktif.',
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600], height: 1.5),
-                    ),
-                    const SizedBox(height: 24),
-                    
-                    // Search Bar
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Cari materi komponen...',
-                              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
-                              prefixIcon: const Icon(Icons.search, color: Color(0xFF2954E3)),
-                              filled: true,
-                              fillColor: Colors.white,
-                              contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                borderSide: BorderSide(color: Colors.grey[200]!),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(16),
-                                borderSide: BorderSide(color: Colors.grey[200]!),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.grey[200]!),
-                          ),
-                          child: const Icon(Icons.tune, color: Color(0xFF2954E3)),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    
-                    // Filter Chips
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          _FilterChip(label: 'Semua', icon: Icons.grid_view, isSelected: true),
-                          const SizedBox(width: 12),
-                          _FilterChip(label: 'Komponen Inti', icon: Icons.settings, isSelected: false),
-                          const SizedBox(width: 12),
-                          _FilterChip(label: 'Penyimpanan', icon: Icons.save, isSelected: false),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    
-                    // Header Grid
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('MODUL PRAKTIK 3D', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey, letterSpacing: 1)),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(color: const Color(0xFFE8EEFC), borderRadius: BorderRadius.circular(6)),
-                          child: Text('Menampilkan 8 Komponen', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blue[800])),
-                        )
                       ],
                     ),
                     const SizedBox(height: 16),
-                    
-                    // Grid View
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                        childAspectRatio: 0.75, // Adjust for card height
-                      ),
-                      itemCount: dummyComponents.length, // menggunakan data dummy yang ada
-                      itemBuilder: (context, index) {
-                        return _LibraryCard(component: dummyComponents[index]);
-                      },
-                    ),
-                    const SizedBox(height: 32),
-                    
-                    // Bottom Banner Simulasi
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2954E3),
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [BoxShadow(color: const Color(0xFF2954E3).withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 10))],
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                                  child: const Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.assignment, size: 12, color: Colors.white),
-                                      SizedBox(width: 4),
-                                      Text('Ujian Lab TKJ', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                const Text('Mode Simulasi Bongkar-Pasang', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.white, height: 1.2)),
-                                const SizedBox(height: 8),
-                                Text('Uji pemahaman orientasi soket dan urutan perakitan dalam kanvas 3D...', style: TextStyle(fontSize: 10, color: Colors.white.withOpacity(0.8))),
-                              ],
+                    Expanded(
+                      child: _filteredComponents.isEmpty
+                          ? Center(child: Text('Tidak ada komponen ditemukan', style: AppTypography.body))
+                          : GridView.builder(
+                              padding: const EdgeInsets.only(bottom: 24),
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 16,
+                                mainAxisSpacing: 16,
+                                childAspectRatio: 0.75,
+                              ),
+                              itemCount: _filteredComponents.length,
+                              itemBuilder: (context, index) {
+                                final component = _filteredComponents[index];
+                                return _LibraryCard(component: component);
+                              },
                             ),
-                          ),
-                          const SizedBox(width: 16),
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                            child: const Icon(Icons.play_arrow, color: Color(0xFF2954E3)),
-                          )
-                        ],
-                      ),
                     ),
                   ],
                 ),
@@ -227,33 +215,30 @@ class LibraryScreen extends StatelessWidget {
 
 class _FilterChip extends StatelessWidget {
   final String label;
-  final IconData icon;
   final bool isSelected;
+  final VoidCallback onTap;
 
-  const _FilterChip({required this.label, required this.icon, required this.isSelected});
+  const _FilterChip({required this.label, required this.isSelected, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFF2954E3) : Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: isSelected ? const Color(0xFF2954E3) : Colors.grey[200]!),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 16, color: isSelected ? Colors.white : Colors.grey[600]),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: isSelected ? Colors.white : Colors.grey[700],
-            ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.primary : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: isSelected ? AppColors.primary : AppColors.border),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.white : AppColors.textGray,
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
           ),
-        ],
+        ),
       ),
     );
   }
@@ -267,93 +252,142 @@ class _LibraryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Explore3DScreen(initialComponent: component)),
-        );
+      onTap: () async {
+        final repo = context.read<ContentRepository>();
+        final materials = await repo.getMaterialsForComponent(component.id);
+        if (context.mounted && materials.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MaterialDetailScreen(
+                component: component,
+                material: materials.first, // Open the first material for now
+              ),
+            ),
+          );
+        }
       },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 5))],
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image Placeholder area
+            // Image area
             Expanded(
-              child: Stack(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey[50],
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-                    ),
-                    child: Icon(Icons.computer, size: 60, color: Colors.blueGrey[200]), // Dummy visual
+              flex: 3,
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: AppColors.background,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
                   ),
-                  Positioned(
-                    top: 12, left: 12,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
-                      child: Text('Dasar', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.blue[800])),
+                ),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Icon(
+                        _getIconForComponent(component.id),
+                        size: 60,
+                        color: AppColors.primary.withOpacity(0.5),
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    top: 12, right: 12,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(color: Colors.white.withOpacity(0.8), shape: BoxShape.circle),
-                      child: const Icon(Icons.view_in_ar, size: 14, color: Color(0xFF2954E3)),
+                    Positioned(
+                      top: 10, left: 10,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.view_in_ar, size: 10, color: AppColors.primary),
+                            const SizedBox(width: 4),
+                            Text('3D', style: AppTypography.tag.copyWith(fontSize: 9)),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            // Details area
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    component.name,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF1E293B)),
-                    maxLines: 1, overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    component.shortDescription,
-                    style: TextStyle(fontSize: 10, color: Colors.grey[600]),
-                    maxLines: 1, overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.schedule, size: 14, color: Colors.teal[600]),
-                          const SizedBox(width: 4),
-                          Text('15 Mnt', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.teal[600])),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(color: const Color(0xFFE8EEFC), shape: BoxShape.circle),
-                        child: const Icon(Icons.arrow_forward, size: 14, color: Color(0xFF2954E3)),
-                      )
-                    ],
-                  )
-                ],
+            // Text area
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          component.name,
+                          style: AppTypography.subtitle.copyWith(fontSize: 14, color: AppColors.textDark),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          component.category,
+                          style: AppTypography.caption.copyWith(fontSize: 11),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.schedule, size: 12, color: AppColors.textGray),
+                            const SizedBox(width: 4),
+                            Text('15 Mnt', style: AppTypography.caption.copyWith(fontSize: 10, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryLight,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(Icons.arrow_forward, size: 14, color: AppColors.primary),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
     );
+  }
+
+  IconData _getIconForComponent(String id) {
+    switch (id) {
+      case 'motherboard': return Icons.developer_board;
+      case 'cpu': return Icons.memory;
+      case 'ram': return Icons.storage;
+      case 'vga': return Icons.developer_board_off; 
+      default: return Icons.computer;
+    }
   }
 }

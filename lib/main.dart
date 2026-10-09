@@ -1,42 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'ui/core/app_theme.dart';
 import 'ui/providers/learning_progress_provider.dart';
 import 'ui/providers/quiz_provider.dart';
 import 'ui/features/auth/splash_screen.dart';
+import 'data/repositories/progress_repository.dart';
+import 'data/repositories/content_repository.dart';
 
-void main() {
-  runApp(const CompiApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final progressRepository = ProgressRepository(prefs);
+  final contentRepository = ContentRepository();
+
+  runApp(CompiApp(
+    progressRepository: progressRepository,
+    contentRepository: contentRepository,
+  ));
 }
 
 class CompiApp extends StatelessWidget {
-  const CompiApp({super.key});
+  final ProgressRepository progressRepository;
+  final ContentRepository contentRepository;
+
+  const CompiApp({
+    super.key, 
+    required this.progressRepository,
+    required this.contentRepository,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => LearningProgressProvider()),
+        Provider<ContentRepository>.value(value: contentRepository),
+        ChangeNotifierProvider(create: (_) => LearningProgressProvider(progressRepository)),
         ChangeNotifierProvider(create: (_) => QuizProvider()),
       ],
       child: MaterialApp(
         title: 'COMPI',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: const Color(0xFFF8F9FA),
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF2954E3), // Warna biru utama mockup
-            primary: const Color(0xFF2954E3),
-            brightness: Brightness.light,
-          ),
-          useMaterial3: true,
-          fontFamily: 'Roboto', // Default font
-          appBarTheme: const AppBarTheme(
-            centerTitle: true,
-            elevation: 0,
-            backgroundColor: Color(0xFFF8F9FA),
-            foregroundColor: Color(0xFF1E293B),
-          ),
-        ),
+        theme: AppTheme.lightTheme,
         home: const SplashScreen(),
       ),
     );

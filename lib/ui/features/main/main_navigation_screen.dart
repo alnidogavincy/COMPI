@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../core/app_colors.dart';
+import '../../core/app_typography.dart';
 import '../home/home_screen.dart';
 import '../library/library_screen.dart';
 import '../games/games_screen.dart';
@@ -25,39 +27,69 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_selectedIndex],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        indicatorColor: const Color(0xFFE8EEFC),
-        onDestinationSelected: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home, color: Color(0xFF2954E3)),
-            label: 'Beranda',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: NavigationBarTheme(
+          data: NavigationBarThemeData(
+            labelTextStyle: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return AppTypography.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold);
+              }
+              return AppTypography.caption;
+            }),
+            iconTheme: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return const IconThemeData(color: AppColors.primary);
+              }
+              return const IconThemeData(color: AppColors.textGray);
+            }),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.menu_book_outlined),
-            selectedIcon: Icon(Icons.menu_book, color: Color(0xFF2954E3)),
-            label: 'Materi',
+          child: NavigationBar(
+            selectedIndex: _selectedIndex,
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
+            indicatorColor: AppColors.primaryLight,
+            height: 65,
+            onDestinationSelected: (int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.home_outlined),
+                selectedIcon: Icon(Icons.home),
+                label: 'Beranda',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.menu_book_outlined),
+                selectedIcon: Icon(Icons.menu_book),
+                label: 'Materi',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.extension_outlined),
+                selectedIcon: Icon(Icons.extension),
+                label: 'Tantangan',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person_outline),
+                selectedIcon: Icon(Icons.person),
+                label: 'Akun',
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.extension_outlined),
-            selectedIcon: Icon(Icons.extension, color: Color(0xFF2954E3)),
-            label: 'Tantangan',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person, color: Color(0xFF2954E3)),
-            label: 'Akun',
-          ),
-        ],
+        ),
       ),
     );
   }
 }
+
