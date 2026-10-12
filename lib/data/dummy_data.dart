@@ -259,97 +259,191 @@ final List<LearningMaterialModel> dummyMaterials = [
   ),
 ];
 
-/// Data dummy soal kuis.
+/// Data dummy soal kuis (Total tepat 25 Soal).
 final List<QuizQuestionModel> dummyQuizQuestions = [
-  ...additionalQuestions,
-  // Motherboard
+  // ── Kategori: Pengenalan Dasar Komponen (Soal 1 - 5) ────────
   const QuizQuestionModel(
-    id: 'quiz_mb_01',
-    question: 'Apa fungsi utama motherboard dalam komputer?',
-    options: [
-      'Menyimpan data secara permanen',
-      'Menghubungkan seluruh komponen komputer',
-      'Memproses grafis untuk ditampilkan ke monitor',
-      'Menjalankan instruksi program',
-    ],
-    correctAnswerIndex: 1,
-    componentId: 'motherboard',
-  ),
-  const QuizQuestionModel(
-    id: 'quiz_mb_02',
-    question:
-        'Slot apa yang digunakan untuk memasang kartu grafis pada motherboard?',
-    options: ['Slot DIMM', 'Slot SATA', 'Slot PCIe x16', 'Soket LGA'],
-    correctAnswerIndex: 2,
-    componentId: 'motherboard',
-  ),
-
-  // CPU
-  const QuizQuestionModel(
-    id: 'quiz_cpu_01',
-    question: 'Apa kepanjangan dari CPU?',
-    options: [
-      'Computer Processing Unit',
-      'Central Processing Unit',
-      'Central Program Utility',
-      'Computer Program Unit',
-    ],
-    correctAnswerIndex: 1,
+    id: 'quiz_cc_01',
+    question: 'Komponen yang berfungsi sebagai pusat pemrosesan data pada komputer adalah …',
+    options: ['RAM', 'CPU', 'PSU', 'Hard Disk'],
+    correctAnswerIndex: 1, // B. CPU
     componentId: 'cpu',
   ),
   const QuizQuestionModel(
-    id: 'quiz_cpu_02',
-    question: 'Satuan apa yang digunakan untuk mengukur kecepatan CPU?',
-    options: ['Megabyte (MB)', 'Watt (W)', 'Gigahertz (GHz)', 'Megapixel (MP)'],
-    correctAnswerIndex: 2,
+    id: 'quiz_cc_02',
+    question: 'Komponen yang berfungsi menyimpan data sementara ketika komputer sedang digunakan adalah …',
+    options: ['RAM', 'SSD', 'Motherboard', 'PSU'],
+    correctAnswerIndex: 0, // A. RAM
+    componentId: 'ram',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_03',
+    question: 'Komponen yang menjadi tempat terpasangnya berbagai komponen utama komputer disebut …',
+    options: ['VGA', 'Processor', 'Motherboard', 'Power Supply'],
+    correctAnswerIndex: 2, // C. Motherboard
+    componentId: 'motherboard',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_04',
+    question: 'Komponen yang berfungsi mengolah dan menghasilkan tampilan grafis ke monitor adalah …',
+    options: ['RAM', 'VGA', 'CPU', 'SSD'],
+    correctAnswerIndex: 1, // B. VGA
+    componentId: 'vga',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_05',
+    question: 'Komponen yang berfungsi menyediakan dan menyalurkan daya listrik ke komponen komputer adalah …',
+    options: ['PSU', 'RAM', 'CPU', 'Motherboard'],
+    correctAnswerIndex: 0, // A. PSU
+    componentId: 'power_supply',
+  ),
+
+  // ── Kategori: Fungsi dan Penggunaan (Soal 6 - 10) ──────────
+  const QuizQuestionModel(
+    id: 'quiz_cc_06',
+    question: 'Jika komputer membutuhkan penyimpanan data secara permanen, komponen yang digunakan adalah …',
+    options: ['RAM', 'CPU', 'SSD', 'Heatsink'],
+    correctAnswerIndex: 2, // C. SSD
+    componentId: 'storage',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_07',
+    question: 'Komponen yang berfungsi membantu mendinginkan processor adalah …',
+    options: ['Heatsink dan fan', 'RAM', 'SSD', 'VGA'],
+    correctAnswerIndex: 0, // A. Heatsink dan fan
+    componentId: 'cooling',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_08',
+    question: 'Manakah yang termasuk perangkat penyimpanan data?',
+    options: ['CPU', 'RAM', 'SSD', 'Heatsink'],
+    correctAnswerIndex: 2, // C. SSD
+    componentId: 'storage',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_09',
+    question: 'Komponen yang biasanya memiliki slot untuk memasang RAM adalah …',
+    options: ['PSU', 'Motherboard', 'VGA', 'SSD'],
+    correctAnswerIndex: 1, // B. Motherboard
+    componentId: 'motherboard',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_10',
+    question: 'Apa fungsi utama CPU pada komputer?',
+    options: ['Menyimpan file secara permanen', 'Mengolah instruksi dan data', 'Menampilkan gambar ke monitor', 'Menyediakan listrik'],
+    correctAnswerIndex: 1, // B. Mengolah instruksi dan data
     componentId: 'cpu',
   ),
 
-  // RAM
+  // ── Kategori: Karakteristik dan Cara Kerja (Soal 11 - 15) ──
   const QuizQuestionModel(
-    id: 'quiz_ram_01',
-    question: 'Mengapa RAM disebut memori volatile?',
-    options: [
-      'Karena harganya mudah berubah',
-      'Karena kecepatannya tidak stabil',
-      'Karena data hilang saat komputer dimatikan',
-      'Karena kapasitasnya bisa bertambah sendiri',
-    ],
-    correctAnswerIndex: 2,
+    id: 'quiz_cc_11',
+    question: 'Komponen manakah yang datanya akan hilang ketika komputer dimatikan?',
+    options: ['SSD', 'HDD', 'RAM', 'Flash Drive'],
+    correctAnswerIndex: 2, // C. RAM
     componentId: 'ram',
   ),
   const QuizQuestionModel(
-    id: 'quiz_ram_02',
-    question: 'Tipe RAM apa yang paling baru dan umum digunakan saat ini?',
-    options: ['DDR2', 'SDRAM', 'DDR3', 'DDR5'],
-    correctAnswerIndex: 3,
-    componentId: 'ram',
+    id: 'quiz_cc_12',
+    question: 'VGA paling berhubungan dengan proses …',
+    options: ['Penyimpanan file', 'Pengolahan grafis', 'Penyediaan daya', 'Pendinginan processor'],
+    correctAnswerIndex: 1, // B. Pengolahan grafis
+    componentId: 'vga',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_13',
+    question: 'Jika pengguna ingin meningkatkan kapasitas penyimpanan komputer, komponen yang dapat ditambahkan adalah …',
+    options: ['SSD', 'Heatsink', 'CPU', 'Fan'],
+    correctAnswerIndex: 0, // A. SSD
+    componentId: 'storage',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_14',
+    question: 'Komponen yang menghubungkan dan menjadi tempat berbagai komponen komputer bekerja bersama adalah …',
+    options: ['Motherboard', 'RAM', 'PSU', 'SSD'],
+    correctAnswerIndex: 0, // A. Motherboard
+    componentId: 'motherboard',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_15',
+    question: 'Apa fungsi PSU pada komputer?',
+    options: ['Mengolah data', 'Menyimpan data', 'Menyalurkan daya listrik', 'Mengolah gambar'],
+    correctAnswerIndex: 2, // C. Menyalurkan daya listrik
+    componentId: 'power_supply',
   ),
 
-  // VGA
+  // ── Kategori: Penerapan Sederhana (Soal 16 - 20) ────────────
   const QuizQuestionModel(
-    id: 'quiz_vga_01',
-    question: 'Apa fungsi utama kartu grafis (GPU)?',
-    options: [
-      'Menyimpan file sistem operasi',
-      'Memproses dan menampilkan grafis ke monitor',
-      'Mengatur kecepatan kipas komputer',
-      'Menghubungkan komputer ke internet',
-    ],
-    correctAnswerIndex: 1,
+    id: 'quiz_cc_16',
+    question: 'Komponen berikut yang termasuk perangkat keras komputer adalah …',
+    options: ['Windows', 'Microsoft Word', 'RAM', 'Google Chrome'],
+    correctAnswerIndex: 2, // C. RAM
+    componentId: 'ram',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_17',
+    question: 'Komponen yang biasanya berbentuk keping kecil dan dipasang pada slot khusus di motherboard adalah …',
+    options: ['RAM', 'PSU', 'Fan casing', 'SSD eksternal'],
+    correctAnswerIndex: 0, // A. RAM
+    componentId: 'ram',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_18',
+    question: 'Mengapa processor membutuhkan sistem pendingin?',
+    options: ['Agar kapasitas penyimpanan bertambah', 'Agar processor tidak mengalami panas berlebih', 'Agar komputer dapat terhubung internet', 'Agar RAM dapat menyimpan data permanen'],
+    correctAnswerIndex: 1, // B. Agar processor tidak mengalami panas berlebih
+    componentId: 'cooling',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_19',
+    question: 'Seorang pengguna ingin memainkan game dengan grafis yang lebih berat. Komponen yang berperan penting dalam pengolahan grafis adalah …',
+    options: ['VGA', 'PSU', 'RAM', 'SSD'],
+    correctAnswerIndex: 0, // A. VGA
     componentId: 'vga',
   ),
   const QuizQuestionModel(
-    id: 'quiz_vga_02',
-    question: 'Apa kepanjangan dari VRAM?',
-    options: [
-      'Virtual Random Access Memory',
-      'Video Read Access Memory',
-      'Video Random Access Memory',
-      'Variable RAM',
-    ],
-    correctAnswerIndex: 2,
+    id: 'quiz_cc_20',
+    question: 'Jika sebuah komponen komputer mengalami kerusakan dan komputer tidak mendapatkan daya listrik, komponen yang perlu diperiksa adalah …',
+    options: ['VGA', 'PSU', 'RAM', 'SSD'],
+    correctAnswerIndex: 1, // B. PSU
+    componentId: 'power_supply',
+  ),
+
+  // ── Kategori Tambahan: Soal 21 - 25 (Pas 25 Soal) ──────────
+  const QuizQuestionModel(
+    id: 'quiz_cc_21',
+    question: 'Manakah port atau slot yang biasanya digunakan untuk menghubungkan monitor ke komputer melalui kartu grafis?',
+    options: ['SATA', 'HDMI / DisplayPort', 'DIMM slot', 'PCIe x1'],
+    correctAnswerIndex: 1, // B. HDMI / DisplayPort
     componentId: 'vga',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_22',
+    question: 'Apa akibatnya jika kapasitas RAM pada komputer terlalu kecil saat membuka banyak aplikasi?',
+    options: ['Komputer menjadi sangat lambat (lag)', 'Kapasitas SSD bertambah', 'Daya listrik PSU naik', 'Processor menjadi dingin'],
+    correctAnswerIndex: 0, // A. Komputer menjadi sangat lambat (lag)
+    componentId: 'ram',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_23',
+    question: 'Bagian pada motherboard tempat menancapkan kartu grafis (GPU) berukuran besar adalah …',
+    options: ['Slot RAM', 'Slot PCIe x16', 'Konektor SATA', 'Soket CPU'],
+    correctAnswerIndex: 1, // B. Slot PCIe x16
+    componentId: 'motherboard',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_24',
+    question: 'Manakah media penyimpanan data yang menggunakan teknologi chip flash tanpa komponen mekanik bergerak?',
+    options: ['Hard Disk Drive (HDD)', 'Solid State Drive (SSD)', 'Kaset CD', 'Disket'],
+    correctAnswerIndex: 1, // B. Solid State Drive (SSD)
+    componentId: 'storage',
+  ),
+  const QuizQuestionModel(
+    id: 'quiz_cc_25',
+    question: 'Sebelum merakit komputer, komponen apa yang harus dipastikan kompatibel terlebih dahulu dengan Processor (CPU)?',
+    options: ['Motherboard', 'Kabel Power', 'Monitor', 'Keyboard'],
+    correctAnswerIndex: 0, // A. Motherboard
+    componentId: 'motherboard',
   ),
 ];
 
