@@ -1,314 +1,167 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../core/app_colors.dart';
+import '../../core/compi_widgets.dart';
+import '../../providers/student_provider.dart';
 import '../main/main_navigation_screen.dart';
+import 'splash_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _controller = TextEditingController();
+  String? _error;
+  bool _busy = false;
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = context.read<StudentProvider>().identity;
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
-      body: SafeArea(
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _start() async {
+    if (_controller.text.trim().isEmpty) {
+      setState(() => _error = 'Masukkan nama atau NISN terlebih dahulu.');
+      return;
+    }
+    setState(() {
+      _error = null;
+      _busy = true;
+    });
+    try {
+      await context.read<StudentProvider>().save(_controller.text);
+      if (mounted)
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
+        );
+    } catch (_) {
+      if (mounted)
+        setState(() => _error = 'Gagal menyimpan identitas. Coba lagi.');
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: CircuitBackground(
+      child: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+          padding: const EdgeInsets.fromLTRB(18, 8, 18, 28),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Logo Kecil di atas
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2954E3),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF2954E3).withOpacity(0.3),
-                      blurRadius: 15,
-                      offset: const Offset(0, 5),
+              CompiHeader(
+                title: 'Media Pembelajaran Perangkat Keras',
+                onBack:
+                    () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const SplashScreen()),
+                    ),
+              ),
+              const SizedBox(height: 10),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(22),
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      'assets/images/hardware_banner.png',
+                      height: 230,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                    const Positioned(
+                      bottom: 12,
+                      left: 12,
+                      child: Chip(label: Text('Simulasi Interaktif 3D')),
                     ),
                   ],
                 ),
-                child: const Icon(Icons.menu_book, color: Colors.white, size: 30),
+              ),
+              const SizedBox(height: 20),
+              CompiPanel(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      'Siswa SMK • Teknik Komputer & Jaringan',
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    const Text(
+                      'Selamat Datang!',
+                      style: TextStyle(
+                        color: AppColors.primaryDark,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    const Text(
+                      'Masukkan identitas kamu untuk mulai belajar perangkat keras komputer.',
+                      style: TextStyle(color: AppColors.textGray, fontSize: 16),
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Identitas Siswa',
+                      style: TextStyle(
+                        color: AppColors.ink,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: _controller,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (_) => _start(),
+                      decoration: InputDecoration(
+                        hintText: 'Nama lengkap atau NISN',
+                        prefixIcon: const Icon(Icons.badge_outlined),
+                        errorText: _error,
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () => _controller.text = 'Vika (TKJ)',
+                        child: const Text('Coba identitas demo: Vika (TKJ)'),
+                      ),
+                    ),
+                    CompiButton(
+                      label: _busy ? 'Menyimpan...' : 'Mulai Belajar',
+                      icon: Icons.arrow_forward,
+                      onPressed: _busy ? null : _start,
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 16),
-              
-              // Badge TKJ Hardware Lab
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE8EEFC),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.memory, size: 14, color: Color(0xFF2954E3)),
-                    SizedBox(width: 6),
-                    Text(
-                      'COMPI • TKJ HARDWARE LAB',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF2954E3),
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-              
-              // Teks Sapaan
               const Text(
-                'Selamat Datang Kembali!',
+                'Identitas disimpan di perangkat ini. Tidak memerlukan akun online.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w900,
-                  color: Color(0xFF1E293B),
-                  letterSpacing: -0.5,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Silakan masuk untuk melanjutkan progres\nbelajar hardware PC kamu.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
-                  height: 1.5,
-                ),
-              ),
-              const SizedBox(height: 40),
-
-              // Form Card
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(32),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.03),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header Masuk Akun
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE8EEFC),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: const Icon(Icons.verified_user, color: Color(0xFF2954E3), size: 20),
-                            ),
-                            const SizedBox(width: 12),
-                            const Text(
-                              'Masuk ke Akun',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF1E293B),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.lightBlue[50],
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 6, height: 6,
-                                decoration: const BoxDecoration(
-                                  color: Colors.blue,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                'Siswa TKJ',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.blue[800],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 32),
-                    
-                    // Input Email
-                    const Text('Email Sekolah / Username', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF1E293B))),
-                    const SizedBox(height: 8),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: 'contoh@smk.sch.id',
-                        hintStyle: TextStyle(color: Colors.grey[400]),
-                        prefixIcon: const Icon(Icons.school_outlined, color: Colors.grey),
-                        filled: true,
-                        fillColor: const Color(0xFFF8F9FA),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    
-                    // Input Password
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Kata Sandi', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF1E293B))),
-                        Text('Lupa Kata Sandi?', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.blue[700])),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: '••••••••',
-                        hintStyle: TextStyle(color: Colors.grey[400]),
-                        prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
-                        suffixIcon: const Icon(Icons.visibility_outlined, color: Colors.grey),
-                        filled: true,
-                        fillColor: const Color(0xFFF8F9FA),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    
-                    // Tombol Masuk
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Lanjut ke Menu Navigasi Utama
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MainNavigationScreen(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF2954E3),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Masuk',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                            ),
-                            SizedBox(width: 8),
-                            Icon(Icons.arrow_forward, color: Colors.white, size: 20),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    
-                    // Divider
-                    Row(
-                      children: [
-                        const Expanded(child: Divider()),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text('atau masuk dengan', style: TextStyle(fontSize: 12, color: Colors.grey[500])),
-                        ),
-                        const Expanded(child: Divider()),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    
-                    // Tombol Google
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: const Color(0xFFF8F9FA),
-                          side: BorderSide.none,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Placeholder G Logo
-                            Icon(Icons.g_mobiledata, color: Colors.blue[600], size: 28),
-                            const SizedBox(width: 8),
-                            const Text(
-                              'Masuk dengan Google',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF1E293B)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    
-                    // Daftar Akun
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Belum punya akun? ', style: TextStyle(color: Colors.black54)),
-                        Text(
-                          'Daftar',
-                          style: TextStyle(
-                            color: Colors.blue[700],
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 32),
-              
-              // Footer
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.wifi, size: 16, color: Colors.grey),
-                  SizedBox(width: 8),
-                  Text('Terkoneksi ke Lab Jaringan SMK v2.4', style: TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w600)),
-                ],
+                style: TextStyle(color: Colors.white),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }

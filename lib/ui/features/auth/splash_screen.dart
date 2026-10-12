@@ -1,8 +1,22 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import '../../core/app_colors.dart';
+import '../../core/compi_widgets.dart';
 import 'login_screen.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _reveal;
+  late final Animation<double> _scale;
+  Timer? _timer;
+  bool _navigated = false;
 
   @override
   Widget build(BuildContext context) {
@@ -117,76 +131,149 @@ class SplashScreen extends StatelessWidget {
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2200),
+    );
+    _reveal = CurvedAnimation(
+      parent: _controller,
+      curve: const Interval(0, .65, curve: Curves.easeOut),
+    );
+    _scale = Tween(begin: .65, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0, .85, curve: Curves.easeOutBack),
+      ),
+    );
+    _controller.forward();
+    _timer = Timer(const Duration(milliseconds: 3200), _continue);
+  }
+
+  void _continue() {
+    if (!mounted || _navigated) return;
+    _navigated = true;
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 550),
+        pageBuilder: (_, animation, secondaryAnimation) => const LoginScreen(),
+        transitionsBuilder:
+            (_, animation, secondaryAnimation, child) =>
+                FadeTransition(opacity: animation, child: child),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: CircuitBackground(
+      child: SafeArea(
+        child: LayoutBuilder(
+          builder:
+              (context, constraints) => SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 440),
+                        child: FadeTransition(
+                          opacity: _reveal,
+                          child: CompiPanel(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ScaleTransition(
+                                  scale: _scale,
+                                  child: AnimatedBuilder(
+                                    animation: _controller,
+                                    builder:
+                                        (context, child) => Transform.rotate(
+                                          angle: -.15 * (1 - _reveal.value),
+                                          child: child,
+                                        ),
+                                    child: Image.asset(
+                                      'assets/images/splash_cube.png',
+                                      height: 210,
+                                      semanticLabel: 'Logo COMPI 3D',
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                const FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'COMPI',
+                                        style: TextStyle(
+                                          fontSize: 46,
+                                          fontWeight: FontWeight.w900,
+                                          color: AppColors.primaryDark,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        '3D',
+                                        style: TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.w900,
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                const Text(
+                                  'Media Pembelajaran Perangkat Keras',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  'Kenali • Eksplorasi • Pelajari',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: AppColors.textGray),
+                                ),
+                                const SizedBox(height: 26),
+                                AnimatedBuilder(
+                                  animation: _controller,
+                                  builder:
+                                      (context, _) => LinearProgressIndicator(
+                                        value: _controller.value,
+                                        minHeight: 6,
+                                        color: AppColors.orange,
+                                        backgroundColor: AppColors.primaryLight,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward, color: Colors.white, size: 20),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Sudah punya akun? ', style: TextStyle(color: Colors.black54)),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Masuk',
-                      style: TextStyle(
-                        color: Colors.blue[700],
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
-              const SizedBox(height: 32),
-            ],
-          ),
         ),
       ),
-    );
-  }
-}
-
-class _FeatureChip extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  const _FeatureChip({required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE8EEFC),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16, color: const Color(0xFF2954E3)),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF1A3B99),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+    ),
+  );
 }

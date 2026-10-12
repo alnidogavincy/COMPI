@@ -6,6 +6,8 @@ class ComponentModel {
   final String fullDescription;
   final String category;
   final String modelPath;
+  bool get hasModel => modelPath.isNotEmpty;
+  String get imagePath => 'assets/images/hardware_$id.png';
   final List<HotspotModel> hotspots;
   final Map<String, String>? specs; // Menambahkan spesifikasi hardware
 
@@ -60,7 +62,8 @@ class ComponentModel {
       fullDescription: json['fullDescription'] as String,
       category: json['category'] as String,
       modelPath: json['modelPath'] as String,
-      hotspots: (json['hotspots'] as List<dynamic>?)
+      hotspots:
+          (json['hotspots'] as List<dynamic>?)
               ?.map((h) => HotspotModel.fromJson(h as Map<String, dynamic>))
               .toList() ??
           [],

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "motherboard",
+    "source": "C:\\Users\\alnid\\.codex\\generated_images\\01a120ca-329d-7f50-9863-fee87234e1fd\\exec-e69d11f8-1da0-4a06-95f7-89a668142c44.png",
+    "destination": "assets/images/hardware_motherboard.png",
+    "prompt": "Use case: stylized-concept. Asset type: COMPI Indonesian computer hardware learning app card illustration. Create a polished realistic 3D product illustration of one black ATX desktop motherboard, clearly showing CPU socket, RAM slots and PCIe slots, three-quarter isometric angle, centered and fully contained with 12% margin. Landscape 3:2 composition. Vivid cyan and royal blue circuit-grid backdrop, cyan rim lighting, metallic detail, educational game art matching a colorful SMK hardware learning app. No text, no labels, no logo, no border, no buttons, no watermark. Subject must be clearly readable at thumbnail size."
+  },
+  {
+    "id": "cpu",
+    "source": "C:\\Users\\alnid\\.codex\\generated_images\\01a120ca-329d-7f50-9863-fee87234e1fd\\exec-ca85c08f-aff3-403b-912d-54c78a6ab682.png",
+    "destination": "assets/images/hardware_cpu.png",
+    "prompt": "Use case: stylized-concept. Asset type: COMPI Indonesian computer hardware learning app card illustration. Create a polished realistic 3D product illustration of one desktop CPU processor with silver metal heatspreader, green substrate and gold edge contacts, three-quarter isometric angle, centered and fully contained with 12% margin. Landscape 3:2 composition. Vivid cyan and royal blue circuit-grid backdrop, cyan rim lighting, metallic detail, educational game art matching a colorful SMK hardware learning app. No text, no labels, no logo, no border, no buttons, no watermark. Subject must be clearly readable at thumbnail size."
+  },
+  {
+    "id": "ram",
+    "source": "C:\\Users\\alnid\\.codex\\generated_images\\01a120ca-329d-7f50-9863-fee87234e1fd\\exec-75c860ad-f739-4a89-b545-65e5f6ff5a46.png",
+    "destination": "assets/images/hardware_ram.png",
+    "prompt": "Use case: stylized-concept. Asset type: COMPI Indonesian computer hardware learning app card illustration. Create a polished realistic 3D product illustration of two black desktop RAM memory DIMM sticks with cyan and purple light strips and gold connector fingers, three-quarter isometric angle, centered and fully contained with 12% margin. Landscape 3:2 composition. Vivid cyan and royal blue circuit-grid backdrop, cyan rim lighting, metallic detail, educational game art matching a colorful SMK hardware learning app. No text, no labels, no logo, no border, no buttons, no watermark. Subject must be clearly readable at thumbnail size."
+  },
+  {
+    "id": "vga",
+    "source": "C:\\Users\\alnid\\.codex\\generated_images\\01a120ca-329d-7f50-9863-fee87234e1fd\\exec-e14ed53e-8496-4921-9484-4fd33bc99fbb.png",
+    "destination": "assets/images/hardware_vga.png",
+    "prompt": "Use case: stylized-concept. Asset type: COMPI Indonesian computer hardware learning app card illustration. Create a polished realistic 3D product illustration of one large black triple-fan desktop graphics card with visible heatsink and PCIe connector, three-quarter isometric angle, centered and fully contained with 12% margin. Landscape 3:2 composition. Vivid cyan and royal blue circuit-grid backdrop, cyan rim lighting, metallic detail, educational game art matching a colorful SMK hardware learning app. No text, no labels, no logo, no border, no buttons, no watermark. Subject must be clearly readable at thumbnail size."
+  },
+  {
+    "id": "storage",
+    "source": "C:\\Users\\alnid\\.codex\\generated_images\\01a120ca-329d-7f50-9863-fee87234e1fd\\exec-4e068a10-4e81-4246-830e-a9dd876df44e.png",
+    "destination": "assets/images/hardware_storage.png",
+    "prompt": "Use case: stylized-concept. Asset type: COMPI Indonesian computer hardware learning app card illustration. Create a polished realistic 3D product illustration of a clearly separated group of one M.2 SSD circuit stick, one 2.5 inch SATA SSD and one hard disk drive with visible platter, three-quarter isometric angle, centered and fully contained with 12% margin. Landscape 3:2 composition. Vivid cyan and royal blue circuit-grid backdrop, cyan rim lighting, metallic detail, educational game art matching a colorful SMK hardware learning app. No text, no labels, no logo, no border, no buttons, no watermark. Subject must be clearly readable at thumbnail size."
+  },
+  {
+    "id": "psu",
+    "source": "C:\\Users\\alnid\\.codex\\generated_images\\01a120ca-329d-7f50-9863-fee87234e1fd\\exec-0a0d84a6-0db6-43eb-9ee3-2571e0b108c3.png",
+    "destination": "assets/images/hardware_psu.png",
+    "prompt": "Use case: stylized-concept. Asset type: COMPI Indonesian computer hardware learning app card illustration. Create a polished realistic 3D product illustration of one black desktop modular power supply unit showing circular fan grille and a small bundle of cables, three-quarter isometric angle, centered and fully contained with 12% margin. Landscape 3:2 composition. Vivid cyan and royal blue circuit-grid backdrop, cyan rim lighting, metallic detail, educational game art matching a colorful SMK hardware learning app. No text, no labels, no logo, no border, no buttons, no watermark. Subject must be clearly readable at thumbnail size."
+  },
+  {
+    "id": "cooling",
+    "source": "C:\\Users\\alnid\\.codex\\generated_images\\01a120ca-329d-7f50-9863-fee87234e1fd\\exec-f08a4e87-784c-4c45-8d60-041284f9d4b5.png",
+    "destination": "assets/images/hardware_cooling.png",
+    "prompt": "Use case: stylized-concept. Asset type: COMPI Indonesian computer hardware learning app card illustration. Create a polished realistic 3D product illustration of one tower CPU air cooler with metallic heatsink fins and a cyan-lit fan beside one dual-fan liquid cooling radiator with its tubes and pump, three-quarter isometric angle, centered and fully contained with 12% margin. Landscape 3:2 composition. Vivid cyan and royal blue circuit-grid backdrop, cyan rim lighting, metallic detail, educational game art matching a colorful SMK hardware learning app. No text, no labels, no logo, no border, no buttons, no watermark. Subject must be clearly readable at thumbnail size."
+  },
+  {
+    "id": "casing",
+    "source": "C:\\Users\\alnid\\.codex\\generated_images\\01a120ca-329d-7f50-9863-fee87234e1fd\\exec-23f7b9e6-8107-4151-9066-ccfce6d212b7.png",
+    "destination": "assets/images/hardware_casing.png",
+    "prompt": "Use case: stylized-concept. Asset type: COMPI Indonesian computer hardware learning app card illustration. Create a polished realistic 3D product illustration of one empty black mid-tower computer chassis, side panel removed to clearly show empty interior, motherboard tray and front case fans, three-quarter isometric angle, centered and fully contained with 12% margin. Landscape 3:2 composition. Vivid cyan and royal blue circuit-grid backdrop, cyan rim lighting, metallic detail, educational game art matching a colorful SMK hardware learning app. No text, no labels, no logo, no border, no buttons, no watermark. Subject must be clearly readable at thumbnail size."
+  }
+]
