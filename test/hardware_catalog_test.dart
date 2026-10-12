@@ -1,13 +1,26 @@
 import 'dart:io';
 import 'package:compi/data/dummy_data.dart';
+import 'package:compi/data/model_credits.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test('Cooling System has a bundled GLB and attribution', () {
+    final cooling = dummyComponents.singleWhere((c) => c.id == 'cooling');
+    expect(cooling.hasModel, isTrue);
+    expect(cooling.modelPath, 'assets/models/cooling.glb');
+    final file = File(cooling.modelPath).openSync();
+    try {
+      expect(file.readSync(4), [103, 108, 84, 70]);
+    } finally {
+      file.closeSync();
+    }
+    expect(modelCredits[cooling.modelPath], contains('Corsair H150i'));
+  });
   test(
-    'eight illustrated components have lessons and seven actual GLB models',
+    'eight illustrated components have lessons and eight actual GLB models',
     () {
       expect(dummyComponents.length, 8);
-      expect(dummyComponents.where((c) => c.hasModel).length, 7);
+      expect(dummyComponents.where((c) => c.hasModel).length, 8);
       expect(dummyMaterials.length, 16);
       expect(
         dummyMaterials.map((m) => m.id).toSet().length,
@@ -35,7 +48,7 @@ void main() {
       }
       expect(
         dummyComponents.singleWhere((c) => c.id == 'cooling').hasModel,
-        isFalse,
+        isTrue,
       );
       for (final id in [
         'mat_mb_01',

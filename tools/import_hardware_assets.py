@@ -3,6 +3,11 @@ from pathlib import Path
 import json
 import shutil
 import struct
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--only', help='Import only this destination; retain other installed models.')
+args = parser.parse_args()
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = Path(r'D:\AL\11.Downloads\File Asset 3D')
@@ -14,11 +19,14 @@ MODELS = {
     'psu_power_supply_unit.glb': 'psu.glb',
     'random_access_memory.glb': 'memory_ram.glb',
     'storage_ssd_hdd_m.2.glb': 'storage.glb',
+    r'D:\AL\11.Downloads\corsair_h150i_elitie_cpu_liquid_cooler.glb': 'cooling.glb',
 }
 
 credits = {}
 for original, destination in MODELS.items():
-    source = SOURCE / original
+    target = ROOT / 'assets' / 'models' / destination
+    importing = args.only is None or args.only == destination
+    source = SOURCE / original if importing else target
     with source.open('rb') as stream:
         magic, version, size = struct.unpack('<4sII', stream.read(12))
         assert magic == b'glTF' and version == 2 and size == source.stat().st_size, original
@@ -27,7 +35,8 @@ for original, destination in MODELS.items():
         document = json.loads(stream.read(length))
     external = [x['uri'] for group in ('buffers', 'images') for x in document.get(group, []) if 'uri' in x and not x['uri'].startswith('data:')]
     assert not external, f'{original} has external dependencies: {external}'
-    shutil.copy2(source, ROOT / 'assets' / 'models' / destination)
+    if importing:
+        shutil.copy2(source, target)
     extra = document.get('asset', {}).get('extras', {})
     credits['assets/models/' + destination] = '\n'.join([extra.get('title', original), extra.get('author', ''), extra.get('license', ''), extra.get('source', ''), 'Model asli; tidak dimodifikasi.'])
     print(json.dumps({'file': destination, 'megabytes': round(size / 1048576, 2), 'meshes': len(document.get('meshes', [])), 'extensions': document.get('extensionsRequired', []), 'asset': document.get('asset', {})}, ensure_ascii=True))

@@ -55,3 +55,11 @@ Blue Lantern (https://sketchfab.com/genoris2)
 CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 https://sketchfab.com/3d-models/storage-ssd-hdd-m2-bdd5fd67a7674359ab8648204b5c0575
 Model asli; tidak dimodifikasi.
+
+## assets/models/cooling.glb
+
+Corsair H150i Elitie CPU Liquid Cooler
+MpPower™ (https://sketchfab.com/MG990)
+CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+https://sketchfab.com/3d-models/corsair-h150i-elitie-cpu-liquid-cooler-faa8f55407404fd2870e35ab6a8f03bb
+Model asli; tidak dimodifikasi.

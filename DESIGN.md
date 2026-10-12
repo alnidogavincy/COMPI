@@ -2,7 +2,7 @@
 
 ## Pembaruan aset dan alur awal
 
-Katalog kini terdiri dari Motherboard, CPU, RAM, GPU, Storage, PSU, Cooling System, dan Casing, dengan 16 materi. Tujuh GLB pengguna ditampilkan di Explore; Cooling hanya memiliki materi dan ilustrasi karena model belum diberikan. Delapan gambar `assets/images/hardware_*.png` tampil pada Library dan detail materi. Aplikasi selalu membuka animasi logo selama 3,2 detik, lalu transisi fade ke form identitas dengan nama sebelumnya terisi. Rincian prompt, asal, dan kredit ada di `docs/HARDWARE_ASSETS.md`. Catatan empat komponen di bawah merupakan kondisi audit awal.
+Katalog kini terdiri dari Motherboard, CPU, RAM, GPU, Storage, PSU, Cooling System, dan Casing, dengan 16 materi. Delapan GLB pengguna tersedia di Explore, termasuk Corsair H150i pada Cooling System yang ditambahkan 12 Oktober 2026. Delapan gambar `assets/images/hardware_*.png` tampil pada Library dan detail materi. Aplikasi selalu membuka animasi logo selama 3,2 detik, lalu transisi fade ke form identitas dengan nama sebelumnya terisi. Rincian prompt, asal, dan kredit ada di `docs/HARDWARE_ASSETS.md`. Catatan empat komponen di bawah merupakan kondisi audit awal.
 
 ## Sumber dan prioritas
 

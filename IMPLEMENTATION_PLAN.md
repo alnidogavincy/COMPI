@@ -7,7 +7,8 @@
 - [x] Buat delapan ilustrasi hardware dan tampilkan pada kartu Library serta detail materi.
 - [x] Animasi logo 3,2 detik lalu form nama; identitas tersimpan terisi otomatis, tanpa melewati form.
 - [x] Cantumkan kredit pembuat model dari metadata GLB di aplikasi dan dokumentasi aset.
-- [ ] Cooling GLB dan pengujian performa semua model di Android target masih menunggu aset/perangkat.
+- [x] Cooling GLB Corsair H150i ditambahkan pada 12 Oktober 2026; tersedia melalui materi dan Explore 3D.
+- [ ] Pengujian performa semua model di Android target masih menunggu perangkat.
 
 Kondisi empat komponen dan aset menunggu pengguna pada bagian audit berikut adalah catatan sebelum pembaruan ini.
 

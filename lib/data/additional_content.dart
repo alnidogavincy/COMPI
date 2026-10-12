@@ -34,7 +34,7 @@ const additionalComponents = [
     shortDescription: 'Air cooler & liquid cooler • pengendali suhu.',
     fullDescription:
         'Sistem pendingin memindahkan panas dari komponen ke udara sekitar. Air cooler menggunakan heatsink dan kipas, sedangkan liquid cooler menggunakan cairan, pompa, dan radiator. Thermal paste membantu kontak antara permukaan prosesor dan pendingin. Aliran udara casing mendukung pelepasan panas.',
-    modelPath: '',
+    modelPath: 'assets/models/cooling.glb',
     specs: {'TIPE': 'Air / Liquid', 'BAGIAN': 'Heatsink / Fan / Radiator'},
   ),
   ComponentModel(

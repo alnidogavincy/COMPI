@@ -14,4 +14,6 @@ const modelCredits = <String, String>{
       "random access memory\nARComputerFundamentals (https://sketchfab.com/adilaijaz10)\nCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\nhttps://sketchfab.com/3d-models/random-access-memory-b95a4a106326440091517251acfa1c20\nModel asli; tidak dimodifikasi.",
   "assets/models/storage.glb":
       "Storage (SSD, HDD, M.2)\nBlue Lantern (https://sketchfab.com/genoris2)\nCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\nhttps://sketchfab.com/3d-models/storage-ssd-hdd-m2-bdd5fd67a7674359ab8648204b5c0575\nModel asli; tidak dimodifikasi.",
+  "assets/models/cooling.glb":
+      "Corsair H150i Elitie CPU Liquid Cooler\nMpPower\u2122 (https://sketchfab.com/MG990)\nCC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\nhttps://sketchfab.com/3d-models/corsair-h150i-elitie-cpu-liquid-cooler-faa8f55407404fd2870e35ab6a8f03bb\nModel asli; tidak dimodifikasi.",
 };

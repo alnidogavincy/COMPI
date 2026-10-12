@@ -59,5 +59,7 @@ Use case: stylized-concept. Asset type: COMPI Indonesian computer hardware learn
 
 Tujuh GLB diberikan pengguna; disalin tanpa mengubah berkas asli. Total sekitar 41 MB. Header GLB v2 dan dependensi buffer/gambar internal telah diperiksa. Model motherboard memiliki 720 mesh dan perlu diuji pada Android target.
 
-Atribusi dari metadata model tersedia di `assets/models/CREDITS.md` dan panel Kredit model 3D pada Explore. Model casing berlisensi CC-BY-NC-4.0; enam model lain mencantumkan CC-BY-4.0. Cooling System belum memiliki GLB, sehingga memiliki materi dan ilustrasi tanpa tombol 3D.
+Atribusi dari metadata model tersedia di `assets/models/CREDITS.md` dan panel Kredit model 3D pada Explore. Model casing berlisensi CC-BY-NC-4.0; tujuh model lain mencantumkan CC-BY-4.0.
+
+Pada 12 Oktober 2026, file pengguna `corsair_h150i_elitie_cpu_liquid_cooler.glb` disalin tanpa modifikasi ke `assets/models/cooling.glb` (18,8 MB, 58 mesh). GLB v2 valid, tanpa dependensi buffer/gambar eksternal atau ekstensi wajib tambahan. Cooling System kini memiliki tombol 3D dan tersedia pada pilihan komponen Explore. Total delapan model sekitar 60 MB. Pengujian render/performa Cooling di perangkat Android belum dilakukan.
 
