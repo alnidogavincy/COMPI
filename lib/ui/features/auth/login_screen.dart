@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _start() async {
     if (_controller.text.trim().isEmpty) {
-      setState(() => _error = 'Masukkan nama atau NISN terlebih dahulu.');
+      setState(() => _error = 'Masukkan nama terlebih dahulu.');
       return;
     }
     setState(() {
@@ -127,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       textInputAction: TextInputAction.done,
                       onSubmitted: (_) => _start(),
                       decoration: InputDecoration(
-                        hintText: 'Nama lengkap atau NISN',
+                        hintText: 'Nama lengkap',
                         prefixIcon: const Icon(Icons.badge_outlined),
                         errorText: _error,
                         filled: true,
@@ -140,8 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () => _controller.text = 'Vika (TKJ)',
-                        child: const Text('Coba identitas demo: Vika (TKJ)'),
+                        onPressed: () => _controller.text = 'Vikas',
+                        child: const Text('Contoh identitas: Vika'),
                       ),
                     ),
                     CompiButton(
