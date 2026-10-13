@@ -54,7 +54,7 @@ class CompiApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'COMPI',
+        title: 'Compi',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         home: const SplashScreen(),

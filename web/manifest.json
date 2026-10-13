@@ -1,6 +1,6 @@
 {
-    "name": "compi",
-    "short_name": "compi",
+    "name": "Compi",
+    "short_name": "Compi",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

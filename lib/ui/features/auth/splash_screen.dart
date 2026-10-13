@@ -91,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen>
                                           child: child,
                                         ),
                                     child: Image.asset(
-                                      'assets/images/splash_cube.png',
+                                      'assets/images/app_logo.png',
                                       height: 210,
                                       semanticLabel: 'Logo COMPI 3D',
                                     ),
