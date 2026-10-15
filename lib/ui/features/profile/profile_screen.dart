@@ -5,9 +5,36 @@ import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
 import '../../providers/learning_progress_provider.dart';
 import '../../providers/student_provider.dart';
+import '../auth/login_screen.dart';
+import 'model_credits_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _loggingOut = false;
+
+  Future<void> _logout() async {
+    setState(() => _loggingOut = true);
+    try {
+      await context.read<StudentProvider>().logout();
+      if (!mounted) return;
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        (_) => false,
+      );
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _loggingOut = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Gagal logout. Silakan coba lagi.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final student = context.watch<StudentProvider>();
@@ -46,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                         style: const TextStyle(
                           color: AppColors.ink,
                           fontSize: 24,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       const Text(
@@ -69,7 +96,7 @@ class ProfileScreen extends StatelessWidget {
                         style: const TextStyle(
                           color: AppColors.ink,
                           fontSize: 18,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -87,7 +114,7 @@ class ProfileScreen extends StatelessWidget {
                         'Skor tertinggi: ${progress.highestScore}/100',
                         style: const TextStyle(
                           color: AppColors.primary,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w700,
                           fontSize: 20,
                         ),
                       ),
@@ -108,6 +135,19 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
                 const SizedBox(height: 20),
+                CompiButton(
+                  label: 'Kredit Model 3D',
+                  icon: Icons.attribution,
+                  secondary: true,
+                  onPressed:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ModelCreditsScreen(),
+                        ),
+                      ),
+                ),
+                const SizedBox(height: 12),
                 CompiButton(
                   label: 'Ubah Identitas',
                   icon: Icons.edit,
@@ -150,6 +190,16 @@ class ProfileScreen extends StatelessWidget {
                         context.mounted)
                       await student.save(value);
                   },
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton.icon(
+                  onPressed: _loggingOut ? null : _logout,
+                  icon: const Icon(Icons.logout),
+                  label: Text(_loggingOut ? 'Keluar...' : 'Logout'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFB91C1C),
+                    foregroundColor: Colors.white,
+                  ),
                 ),
               ],
             ),

@@ -6,6 +6,7 @@ import '../../../data/models/learning_material_model.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
 import '../../core/hardware_image.dart';
+import '../../core/app_typography.dart';
 import '../../providers/learning_progress_provider.dart';
 import '../explore_3d/explore_3d_screen.dart';
 import '../games/quiz_screen.dart';
@@ -39,6 +40,7 @@ class MaterialDetailScreen extends StatelessWidget {
                 ),
                 Container(
                   height: 180,
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [AppColors.primary, AppColors.cyan],
@@ -48,7 +50,10 @@ class MaterialDetailScreen extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(19),
-                    child: HardwareImage(component: component, height: 180),
+                    child: HardwareImage(
+                      component: component,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -56,7 +61,8 @@ class MaterialDetailScreen extends StatelessWidget {
                   component.name,
                   style: const TextStyle(
                     color: AppColors.ink,
-                    fontWeight: FontWeight.w900,
+                    fontFamily: AppTypography.displayFamily,
+                    fontWeight: FontWeight.w400,
                     fontSize: 27,
                   ),
                 ),
@@ -64,7 +70,7 @@ class MaterialDetailScreen extends StatelessWidget {
                   'SMK TKJ • Materi Dasar • ${component.category}',
                   style: const TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 12),

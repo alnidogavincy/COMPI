@@ -48,7 +48,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w700,
                     fontSize: 30,
                   ),
                 ),
@@ -60,7 +60,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                         '${result.scorePoints}/100',
                         style: const TextStyle(
                           color: AppColors.primary,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w700,
                           fontSize: 54,
                         ),
                       ),
@@ -69,7 +69,7 @@ class _GameResultScreenState extends State<GameResultScreen> {
                         style: const TextStyle(
                           color: AppColors.ink,
                           fontSize: 18,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       const SizedBox(height: 8),

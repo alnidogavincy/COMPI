@@ -64,7 +64,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                       'Kenali & pelajari arsitektur hardware PC',
                       style: TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         fontSize: 18,
                       ),
                     ),
@@ -221,7 +221,7 @@ class _ComponentCard extends StatelessWidget {
                         component.hasModel ? '3D' : 'Materi',
                         style: const TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
@@ -238,7 +238,7 @@ class _ComponentCard extends StatelessWidget {
                     '${materials.length} MATERI',
                     style: const TextStyle(
                       color: AppColors.primary,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w700,
                       fontSize: 11,
                     ),
                   ),
@@ -248,7 +248,7 @@ class _ComponentCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: AppColors.ink,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w700,
                       fontSize: 17,
                     ),
                   ),

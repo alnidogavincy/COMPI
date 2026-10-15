@@ -2,26 +2,27 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 class AppTypography {
-  static const String fontFamily = 'Roboto';
+  static const String fontFamily = 'Poppins';
+  static const String displayFamily = 'Acme';
 
   static const TextStyle heading1 = TextStyle(
-    fontFamily: fontFamily,
+    fontFamily: displayFamily,
     fontSize: 28,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w400,
     color: AppColors.textDark,
   );
 
   static const TextStyle heading2 = TextStyle(
-    fontFamily: fontFamily,
+    fontFamily: displayFamily,
     fontSize: 24,
-    fontWeight: FontWeight.w900,
+    fontWeight: FontWeight.w400,
     color: AppColors.textDark,
   );
 
   static const TextStyle heading3 = TextStyle(
-    fontFamily: fontFamily,
+    fontFamily: displayFamily,
     fontSize: 20,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w400,
     color: AppColors.textDark,
   );
 
@@ -46,11 +47,11 @@ class AppTypography {
     fontWeight: FontWeight.w500,
     color: AppColors.textGray,
   );
-  
+
   static const TextStyle tag = TextStyle(
     fontFamily: fontFamily,
     fontSize: 10,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w600,
     color: AppColors.primary,
   );
 }

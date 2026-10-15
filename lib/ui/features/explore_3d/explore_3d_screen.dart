@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import '../../../data/dummy_data.dart';
-import '../../../data/model_credits.dart';
 import '../../../data/models/component_model.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
@@ -91,7 +90,7 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w700,
+                                    fontWeight: FontWeight.w600,
                                     shadows: [
                                       Shadow(
                                         color: Colors.black,
@@ -118,7 +117,7 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                               _active.name,
                               style: const TextStyle(
                                 color: AppColors.ink,
-                                fontWeight: FontWeight.w900,
+                                fontWeight: FontWeight.w700,
                                 fontSize: 24,
                               ),
                             ),
@@ -195,21 +194,6 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      if (modelCredits.containsKey(_active.modelPath))
-                        CompiPanel(
-                          child: ExpansionTile(
-                            title: const Text('Kredit model 3D'),
-                            children: [
-                              SelectableText(
-                                modelCredits[_active.modelPath]!,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.textGray,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       const Text(
                         'Pilih model komponen untuk mempelajari bentuknya dari berbagai sudut.',
                         style: TextStyle(color: Colors.white, fontSize: 12),

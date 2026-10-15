@@ -58,7 +58,7 @@ class _QuizScreenState extends State<QuizScreen> {
                               style: TextStyle(
                                 color: AppColors.yellow,
                                 fontSize: 22,
-                                fontWeight: FontWeight.w900,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                             Text(
@@ -72,7 +72,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         '${quiz.scorePoints} poin',
                         style: const TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ],
@@ -95,7 +95,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         'Pertanyaan ${quiz.currentIndex + 1}/${quiz.totalQuestions}',
                         style: const TextStyle(
                           color: AppColors.primary,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       const SizedBox(height: 14),
@@ -105,7 +105,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         style: const TextStyle(
                           color: AppColors.ink,
                           fontSize: 22,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       const SizedBox(height: 14),
@@ -170,7 +170,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                               String.fromCharCode(65 + i),
                                               style: const TextStyle(
                                                 color: Colors.white,
-                                                fontWeight: FontWeight.w900,
+                                                fontWeight: FontWeight.w700,
                                               ),
                                             ),
                                           ),
@@ -179,7 +179,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                             question.options[i],
                                             style: const TextStyle(
                                               color: AppColors.ink,
-                                              fontWeight: FontWeight.w800,
+                                              fontWeight: FontWeight.w700,
                                             ),
                                           ),
                                         ],
@@ -199,7 +199,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                 : 'Jawaban yang benar: ${question.options[question.correctAnswerIndex]}',
                             style: const TextStyle(
                               color: AppColors.primaryDark,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),

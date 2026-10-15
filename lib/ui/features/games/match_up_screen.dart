@@ -63,7 +63,7 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
                       'Pilih nama komponen, lalu ketuk fungsi yang sesuai.',
                       style: TextStyle(
                         color: AppColors.ink,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -80,7 +80,7 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: 8),
@@ -106,7 +106,7 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: 8),
@@ -125,7 +125,7 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
                               c.shortDescription,
                               style: const TextStyle(
                                 color: AppColors.ink,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),

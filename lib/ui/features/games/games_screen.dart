@@ -60,7 +60,7 @@ class GamesScreen extends StatelessWidget {
                       style: TextStyle(
                         color: AppColors.yellow,
                         fontSize: 29,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     const Text(
@@ -72,7 +72,7 @@ class GamesScreen extends StatelessWidget {
                       'Skor tertinggi: $best/100',
                       style: const TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w700,
                         fontSize: 18,
                       ),
                     ),
@@ -115,7 +115,7 @@ class GamesScreen extends StatelessWidget {
                   'Dua mode latihan tersedia. Skor tertinggi tersimpan di perangkat ini.',
                   style: TextStyle(
                     color: AppColors.ink,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -163,7 +163,7 @@ class _ModeCard extends StatelessWidget {
                 style: const TextStyle(
                   color: AppColors.ink,
                   fontSize: 19,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: 4),

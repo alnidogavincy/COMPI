@@ -107,7 +107,7 @@ class _SplashScreenState extends State<SplashScreen>
                                         'COMPI',
                                         style: TextStyle(
                                           fontSize: 46,
-                                          fontWeight: FontWeight.w900,
+                                          fontWeight: FontWeight.w700,
                                           color: AppColors.primaryDark,
                                         ),
                                       ),
@@ -116,7 +116,7 @@ class _SplashScreenState extends State<SplashScreen>
                                         '3D',
                                         style: TextStyle(
                                           fontSize: 28,
-                                          fontWeight: FontWeight.w900,
+                                          fontWeight: FontWeight.w700,
                                           color: AppColors.primary,
                                         ),
                                       ),
@@ -130,7 +130,7 @@ class _SplashScreenState extends State<SplashScreen>
                                   style: TextStyle(
                                     color: AppColors.primary,
                                     fontSize: 18,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                                 const SizedBox(height: 10),

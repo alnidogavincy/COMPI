@@ -6,14 +6,20 @@ import 'app_colors.dart';
 class HardwareImage extends StatelessWidget {
   final ComponentModel component;
   final double? height;
-  const HardwareImage({super.key, required this.component, this.height});
+  final BoxFit fit;
+  const HardwareImage({
+    super.key,
+    required this.component,
+    this.height,
+    this.fit = BoxFit.cover,
+  });
 
   @override
   Widget build(BuildContext context) => Image.asset(
     component.imagePath,
     width: double.infinity,
     height: height,
-    fit: BoxFit.cover,
+    fit: fit,
     semanticLabel: 'Ilustrasi ${component.name}',
     cacheWidth: 900,
     errorBuilder:

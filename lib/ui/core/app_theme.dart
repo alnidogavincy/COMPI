@@ -4,7 +4,7 @@ import 'app_colors.dart';
 class AppTheme {
   static ThemeData get lightTheme => ThemeData(
     useMaterial3: true,
-    fontFamily: 'Roboto',
+    fontFamily: 'Poppins',
     scaffoldBackgroundColor: AppColors.background,
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary,
@@ -21,7 +21,7 @@ class AppTheme {
         backgroundColor: AppColors.orange,
         foregroundColor: Colors.white,
         minimumSize: const Size(48, 52),
-        textStyle: const TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
+        textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       ),
     ),

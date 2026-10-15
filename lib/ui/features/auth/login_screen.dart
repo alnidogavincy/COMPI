@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
+import '../../core/app_typography.dart';
+import '../../core/hardware_showcase.dart';
 import '../../providers/student_provider.dart';
 import '../main/main_navigation_screen.dart';
 import 'splash_screen.dart';
@@ -74,12 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(22),
                 child: Stack(
                   children: [
-                    Image.asset(
-                      'assets/images/hardware_banner.png',
-                      height: 230,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
+                    const HardwareShowcase(),
                     const Positioned(
                       bottom: 12,
                       left: 12,
@@ -97,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Siswa SMK • Teknik Komputer & Jaringan',
                       style: TextStyle(
                         color: AppColors.primary,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     const SizedBox(height: 14),
@@ -106,7 +103,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         color: AppColors.primaryDark,
                         fontSize: 32,
-                        fontWeight: FontWeight.w900,
+                        fontFamily: AppTypography.displayFamily,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     const Text(
@@ -118,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Identitas Siswa',
                       style: TextStyle(
                         color: AppColors.ink,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     const SizedBox(height: 8),

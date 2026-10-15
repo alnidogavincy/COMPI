@@ -12,7 +12,9 @@ Kode Flutter aktual menentukan kemampuan dan batas teknis. Delapan screenshot di
 
 - Karakter: media belajar TKJ yang ekspresif dan terasa seperti permainan edukasi. Hampir seluruh bidang memakai biru, cyan, pola grid/circuit, dan aksen sudut oranye/kuning. Panel baca memakai biru sangat muda agar teks gelap terbaca.
 - Token aktif di `lib/ui/core/app_colors.dart`: `primary #0757D8`, `primaryDark #062E83`, `cyan #04BDF0`, `sky #5DDCFF`, `orange #FF7817`, `yellow #FFC42E`, `ink #071B51`, `surface #F2FBFF`.
-- Heading besar dan tebal; body minimum sekitar 14–16sp. Konten penting tetap berupa teks Flutter, bukan teks yang dibakar ke gambar. Gunakan `Roboto` sampai font merek disediakan.
+- Judul utama dan banner bagian memakai Acme Regular; isi, label, dan tombol memakai Poppins dengan penekanan maksimal Bold (700). Body minimum sekitar 14–16sp. Kedua font dibundel untuk penggunaan offline beserta lisensi OFL. Konten penting tetap berupa teks Flutter.
+- Login dan hero Beranda memakai `hardware_showcase.png` dari pengguna dengan rasio asli 1672:941. Gambar detail materi memakai `BoxFit.contain` dan padding agar seluruh komponen terlihat dalam panel setinggi 180dp.
+- Semua atribusi model dikumpulkan di Profil → Kredit Model 3D, dengan panel untuk masing-masing model dan teks sumber yang dapat disalin.
 - Spacing dasar 8dp, jarak halaman 16dp, radius panel sekitar 18–24dp, target sentuh minimal 48dp. Seluruh konten tinggi memakai scroll; inset sistem dipenuhi lewat `SafeArea`.
 - Komponen bersama: `CircuitBackground`, `CompiHeader`, `CompiPanel`, `SectionBanner`, `CompiButton` di `lib/ui/core/compi_widgets.dart`. Navigasi utama memiliki tiga tab: Beranda, Materi, Praktik. Profil diakses lewat tombol pada header.
 

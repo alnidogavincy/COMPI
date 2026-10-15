@@ -10,6 +10,14 @@ class StudentProvider extends ChangeNotifier {
   String get identity => _identity;
   bool get hasIdentity => _identity.trim().isNotEmpty;
 
+  Future<void> logout() async {
+    if (!await _prefs.remove(key)) {
+      throw StateError('Gagal keluar dari akun');
+    }
+    _identity = '';
+    notifyListeners();
+  }
+
   Future<void> save(String value) async {
     final next = value.trim();
     if (next.isEmpty) {

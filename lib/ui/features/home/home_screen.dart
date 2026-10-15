@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../../../data/dummy_data.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
+import '../../core/app_typography.dart';
+import '../../core/hardware_showcase.dart';
 import '../../providers/learning_progress_provider.dart';
 import '../../providers/student_provider.dart';
 import '../explore_3d/explore_3d_screen.dart';
@@ -53,11 +55,12 @@ class HomeScreen extends StatelessWidget {
                 style: const TextStyle(
                   color: AppColors.ink,
                   fontSize: 30,
-                  fontWeight: FontWeight.w900,
+                  fontFamily: AppTypography.displayFamily,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               const Text(
-                'SMK TKJ Kelas X • Modul Perakitan',
+                'Selamat datang di aplikasi pembelajaran interaktif komponen komputer.',
                 style: TextStyle(color: AppColors.primaryDark, fontSize: 16),
               ),
               const SizedBox(height: 16),
@@ -74,29 +77,25 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Belajar KOMPONEN\nKOMPUTER',
+                      'BELAJAR KOMPONEN\nKOMPUTER',
                       style: TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.w900,
+                        fontFamily: AppTypography.displayFamily,
+                        fontWeight: FontWeight.w400,
                         fontSize: 28,
-                        height: 1.05,
+                        height: 1.2,
                       ),
                     ),
                     const Text(
                       'Secara Interaktif',
                       style: TextStyle(
                         color: AppColors.yellow,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w700,
                         fontSize: 21,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Image.asset(
-                      'assets/images/hardware_banner.png',
-                      width: double.infinity,
-                      height: 160,
-                      fit: BoxFit.cover,
-                    ),
+                    const HardwareShowcase(),
                     const SizedBox(height: 12),
                     CompiButton(
                       label: 'Mulai Eksplorasi 3D',
@@ -127,7 +126,7 @@ class HomeScreen extends StatelessWidget {
                           '${total == 0 ? 0 : (done * 100 ~/ total)}%',
                           style: const TextStyle(
                             fontSize: 42,
-                            fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w700,
                             color: AppColors.primary,
                           ),
                         ),
@@ -137,7 +136,7 @@ class HomeScreen extends StatelessWidget {
                             '$done dari $total materi selesai',
                             style: const TextStyle(
                               color: AppColors.ink,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
@@ -225,7 +224,7 @@ class HomeScreen extends StatelessWidget {
                                 nextComponent.name,
                                 style: const TextStyle(
                                   color: AppColors.ink,
-                                  fontWeight: FontWeight.w900,
+                                  fontWeight: FontWeight.w700,
                                   fontSize: 18,
                                 ),
                               ),
@@ -302,7 +301,7 @@ class _QuickCard extends StatelessWidget {
             title,
             style: const TextStyle(
               color: Colors.white,
-              fontWeight: FontWeight.w900,
+              fontWeight: FontWeight.w700,
             ),
           ),
           Text(

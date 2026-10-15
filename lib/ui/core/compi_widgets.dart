@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
+import 'app_typography.dart';
 
 class CircuitBackground extends StatelessWidget {
   final Widget child;
@@ -86,33 +87,52 @@ class CompiHeader extends StatelessWidget {
             icon: const Icon(Icons.arrow_back),
           )
         else
-          Image.asset('assets/images/app_logo.png', width: 42, height: 42),
-        const SizedBox(width: 10),
+          // Remove transparent PNG margins in layout, preserving the artwork.
+          ClipRect(
+            child: Align(
+              widthFactor: .685,
+              heightFactor: .685,
+              child: Image.asset(
+                'assets/images/app_logo.png',
+                width: 82,
+                height: 82,
+                semanticLabel: 'Logo Compi',
+              ),
+            ),
+          ),
+        const SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'COMPI 3D',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w900,
-                  shadows: [
-                    Shadow(
-                      color: AppColors.primaryDark,
-                      blurRadius: 3,
-                      offset: Offset(1, 2),
-                    ),
-                  ],
+              const FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'COMPI 3D',
+                  style: TextStyle(
+                    fontFamily: AppTypography.displayFamily,
+                    color: Colors.white,
+                    fontSize: 24,
+                    height: 1.2,
+                    fontWeight: FontWeight.w400,
+                    shadows: [
+                      Shadow(
+                        color: AppColors.primaryDark,
+                        blurRadius: 3,
+                        offset: Offset(1, 2),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+              const SizedBox(height: 4),
               Text(
                 title,
                 style: const TextStyle(
                   color: AppColors.primaryDark,
                   fontSize: 13,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],
@@ -178,7 +198,8 @@ class SectionBanner extends StatelessWidget {
             style: const TextStyle(
               color: Colors.white,
               fontSize: 20,
-              fontWeight: FontWeight.w900,
+              fontFamily: AppTypography.displayFamily,
+              fontWeight: FontWeight.w400,
             ),
           ),
         ),
