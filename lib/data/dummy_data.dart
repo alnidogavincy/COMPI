@@ -457,7 +457,7 @@ final List<QuizQuestionModel> dummyQuizQuestions = [
 final List<MatchItemModel> dummyMatchItems = [
   const MatchItemModel(
     id: 'match_mb',
-    imageName: 'motherboard.png',
+    imageName: 'hardware_motherboard.png',
     targetLabel: 'Motherboard',
   ),
   const MatchItemModel(
