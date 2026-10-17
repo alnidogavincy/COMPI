@@ -165,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               controller: controller,
                               autofocus: true,
                               decoration: const InputDecoration(
-                                labelText: 'Nama atau NISN',
+                                labelText: 'Nama',
                               ),
                             ),
                             actions: [
