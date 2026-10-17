@@ -1,3 +1,4 @@
+
 import 'models/component_model.dart';
 import 'models/learning_material_model.dart';
 import 'models/quiz_question_model.dart';
@@ -179,19 +180,22 @@ final List<LearningMaterialModel> dummyMaterials = [
     componentId: 'motherboard',
     title: 'Pengenalan Motherboard',
     content:
-        'Motherboard adalah fondasi dari sebuah komputer. Semua komponen '
-        'utama terhubung melalui motherboard. Motherboard menentukan jenis '
-        'CPU, RAM, dan kartu ekspansi yang kompatibel dengan sistem.',
+        'Motherboard adalah papan sirkuit utama yang menjadi tempat terhubungnya berbagai komponen komputer. '
+        'Komponen seperti CPU, RAM, kartu grafis, dan media penyimpanan bekerja sama melalui jalur komunikasi pada motherboard. '
+        'Motherboard juga menyalurkan daya dari konektor power ke bagian-bagian tertentu serta menyediakan konektor untuk perangkat tambahan. '
+        'Jenis motherboard menentukan kompatibilitas komponen, misalnya jenis soket CPU, tipe RAM, dan slot ekspansi yang tersedia. '
+        'Motherboard umumnya berada di dalam casing komputer. Saat memilih motherboard, perhatikan ukuran papan, soket processor, dukungan RAM, dan konektor yang dibutuhkan.'
   ),
   const LearningMaterialModel(
     id: 'mat_mb_02',
     componentId: 'motherboard',
     title: 'Komponen pada Motherboard',
     content:
-        'Motherboard memiliki banyak komponen penting seperti chipset '
-        '(Northbridge & Southbridge), slot RAM (DIMM), slot PCIe, soket CPU, '
-        'konektor SATA untuk penyimpanan, header front panel, dan port I/O '
-        'belakang (USB, HDMI, Ethernet, Audio).',
+        'Motherboard memiliki beberapa bagian dengan fungsi berbeda. Soket CPU adalah tempat memasang processor, sedangkan slot DIMM digunakan untuk memasang modul RAM. '
+        'Slot PCI Express (PCIe) digunakan untuk memasang kartu ekspansi, misalnya kartu grafis atau kartu tambahan lainnya. Konektor SATA dapat digunakan untuk menghubungkan HDD atau SSD yang memakai antarmuka SATA. '
+        'Konektor daya utama dan konektor daya CPU menyalurkan listrik ke motherboard serta processor. Header front panel menghubungkan tombol power dan lampu indikator pada casing. '
+        'Pada bagian belakang motherboard terdapat port I/O, seperti USB, Ethernet untuk jaringan kabel, serta port audio. Sebagian motherboard juga menyediakan HDMI atau DisplayPort, tetapi port tampilan tersebut hanya berfungsi jika sistem mendukung grafis terintegrasi. '
+        'Chipset membantu mengatur komunikasi antara processor dan perangkat tertentu. Desain motherboard modern berbeda-beda, sehingga posisi dan jumlah slot maupun konektornya tidak selalu sama.'
   ),
 
   // CPU
@@ -200,20 +204,20 @@ final List<LearningMaterialModel> dummyMaterials = [
     componentId: 'cpu',
     title: 'Apa itu CPU?',
     content:
-        'CPU (Central Processing Unit) sering disebut sebagai otak komputer. '
-        'CPU bertanggung jawab untuk mengeksekusi instruksi dari perangkat lunak. '
-        'Kecepatan CPU diukur dalam GHz dan jumlah core menentukan kemampuan '
-        'multitasking.',
+        'CPU (Central Processing Unit) atau processor adalah komponen yang menjalankan instruksi program dan mengolah data. CPU sering disebut sebagai otak komputer karena berperan penting dalam menjalankan sistem operasi, aplikasi, dan berbagai perintah pengguna. '
+        'Secara sederhana, CPU mengambil instruksi, menerjemahkan instruksi tersebut, lalu menjalankan operasi yang diperlukan. Operasinya dapat berupa perhitungan matematika, perbandingan logika, dan pengaturan jalannya proses komputer. '
+        'Kecepatan kerja CPU sering dinyatakan dalam GHz, tetapi performa tidak ditentukan oleh kecepatan saja. Jumlah core, rancangan arsitektur, cache, dan kebutuhan aplikasi juga berpengaruh. Core adalah unit pemrosesan di dalam CPU; beberapa core memungkinkan lebih banyak pekerjaan diproses secara bersamaan. '
+        'CPU dipasang pada soket yang sesuai di motherboard. Karena menghasilkan panas saat bekerja, CPU biasanya dilengkapi heatsink dan kipas atau sistem pendingin lain. Jenis soket dan dukungan motherboard harus cocok dengan processor yang digunakan.'
   ),
   const LearningMaterialModel(
     id: 'mat_cpu_02',
     componentId: 'cpu',
     title: 'Arsitektur CPU Modern',
     content:
-        'CPU modern menggunakan arsitektur x86-64 (Intel/AMD) atau ARM. '
-        'Setiap CPU memiliki ALU (Arithmetic Logic Unit), Control Unit, '
-        'Register, dan Cache (L1, L2, L3). Multi-core CPU memungkinkan '
-        'eksekusi instruksi secara paralel untuk performa lebih tinggi.',
+        'CPU modern tersusun dari beberapa bagian yang bekerja bersama. ALU (Arithmetic Logic Unit) menjalankan operasi aritmatika dan logika, sedangkan Control Unit mengatur jalannya instruksi. Register merupakan tempat penyimpanan sangat kecil dan cepat yang digunakan saat pemrosesan berlangsung. '
+        'Cache adalah memori berkecepatan tinggi di dalam atau dekat CPU yang menyimpan data dan instruksi yang sering digunakan. Cache umumnya memiliki beberapa tingkat, seperti L1, L2, dan L3. Cache membantu CPU mengakses data lebih cepat dibandingkan jika harus selalu mengambilnya dari RAM. '
+        'CPU juga memiliki core, dan pada beberapa model satu core dapat menangani lebih dari satu thread. Core dan thread dapat membantu menjalankan beberapa tugas, tetapi hasilnya tetap bergantung pada rancangan CPU dan dukungan perangkat lunak. '
+        'Arsitektur x86-64 banyak digunakan pada komputer desktop dan laptop berbasis Intel atau AMD, sedangkan ARM digunakan pada berbagai perangkat, termasuk sebagian komputer dan perangkat mobile. Arsitektur adalah rancangan dan kumpulan aturan yang digunakan CPU untuk menjalankan instruksi. Tidak semua CPU memiliki susunan atau kemampuan yang sama.'
   ),
 
   // RAM
@@ -222,19 +226,20 @@ final List<LearningMaterialModel> dummyMaterials = [
     componentId: 'ram',
     title: 'Fungsi RAM',
     content:
-        'RAM menyimpan data dan instruksi yang sedang aktif digunakan oleh CPU. '
-        'Tanpa RAM yang cukup, komputer akan lambat karena harus membaca data '
-        'dari penyimpanan yang jauh lebih lambat (HDD/SSD).',
+        'RAM (Random Access Memory) adalah memori utama yang menyimpan data dan instruksi yang sedang dibutuhkan oleh sistem operasi serta aplikasi. Ketika aplikasi dibuka, sebagian data yang diperlukan dimuat ke RAM agar CPU dapat mengaksesnya dengan cepat. '
+        'RAM bersifat volatile, artinya data yang tersimpan di dalamnya akan hilang ketika aliran listrik terputus atau komputer dimatikan. Karena itu, RAM berbeda dengan HDD atau SSD yang digunakan untuk menyimpan file dalam jangka panjang. '
+        'Kapasitas RAM memengaruhi jumlah dan ukuran aplikasi yang dapat dijalankan dengan nyaman secara bersamaan. Jika RAM tidak mencukupi, sistem dapat menggunakan sebagian ruang penyimpanan sebagai memori virtual, tetapi proses ini umumnya lebih lambat daripada menggunakan RAM langsung. '
+        'RAM desktop biasanya dipasang pada slot DIMM di motherboard, sedangkan laptop tertentu menggunakan modul SO-DIMM atau RAM yang terpasang langsung. Saat menambah RAM, periksa tipe yang didukung motherboard, kapasitas maksimum, dan jumlah slot yang tersedia.'
   ),
   const LearningMaterialModel(
     id: 'mat_ram_02',
     componentId: 'ram',
     title: 'Jenis-jenis RAM',
     content:
-        'RAM modern yang umum digunakan adalah DDR4 dan DDR5. DDR5 menawarkan '
-        'bandwidth lebih tinggi dan efisiensi daya yang lebih baik. Kapasitas '
-        'RAM untuk penggunaan umum berkisar 8-16 GB, sedangkan untuk profesional '
-        'bisa mencapai 64 GB atau lebih.',
+        'RAM memiliki beberapa jenis dan generasi. DDR (Double Data Rate) merupakan keluarga teknologi RAM yang mengirimkan data dua kali dalam satu siklus clock. DDR4 dan DDR5 adalah dua generasi yang banyak dijumpai pada komputer modern. '
+        'DDR4 dan DDR5 memiliki perbedaan pada rancangan, kecepatan transfer, kebutuhan daya, serta bentuk posisi lekukan konektornya. Keduanya tidak dapat dipertukarkan secara langsung karena slot dan dukungan motherboard berbeda. '
+        'Kapasitas RAM dinyatakan dalam GB, sedangkan kecepatan transfer biasanya dinyatakan dalam MT/s; pada spesifikasi sehari-hari sering juga ditulis dengan angka MHz. Kapasitas yang dibutuhkan bergantung pada sistem operasi dan aplikasi. Komputer untuk tugas dasar dapat memiliki kebutuhan berbeda dari komputer untuk desain, editing, atau pekerjaan berat. '
+        'RAM juga dapat dipasang dalam konfigurasi satu atau beberapa modul. Pada platform yang mendukungnya, penggunaan dua modul yang sesuai dapat mengaktifkan mode dual-channel dan meningkatkan bandwidth memori. Namun, peningkatan kinerja bergantung pada perangkat dan jenis beban kerja.'
   ),
 
   // VGA
@@ -243,19 +248,20 @@ final List<LearningMaterialModel> dummyMaterials = [
     componentId: 'vga',
     title: 'Peran Kartu Grafis',
     content:
-        'Kartu grafis (GPU) bertanggung jawab untuk merender gambar yang '
-        'ditampilkan di monitor. GPU sangat penting untuk gaming, desain grafis, '
-        'editing video, dan komputasi paralel seperti machine learning.',
+        'Kartu grafis atau VGA adalah perangkat keras yang mengolah data grafis agar dapat ditampilkan sebagai gambar pada monitor. GPU (Graphics Processing Unit) merupakan prosesor grafis yang melakukan banyak perhitungan untuk membentuk tampilan, efek visual, dan objek tiga dimensi. '
+        'Kartu grafis dapat membantu pekerjaan seperti bermain game, desain grafis, pemodelan 3D, dan penyuntingan video. Besarnya manfaat bergantung pada kebutuhan aplikasi dan kemampuan GPU. Untuk pekerjaan dasar, grafis terintegrasi yang berada di dalam CPU atau sistem juga dapat mencukupi tanpa kartu grafis terpisah. '
+        'Kartu grafis terpisah umumnya dipasang pada slot PCIe di motherboard dan memiliki konektor keluaran layar, misalnya HDMI atau DisplayPort. Sebagian kartu grafis juga memerlukan kabel daya tambahan dari power supply. Bentuk, ukuran, dan kebutuhan dayanya berbeda-beda. '
+        'Selain GPU, kartu grafis dapat memiliki VRAM dan sistem pendingin berupa heatsink serta kipas. Saat memilih kartu grafis, perhatikan dukungan motherboard, ruang di dalam casing, kapasitas power supply, dan konektor monitor.'
   ),
   const LearningMaterialModel(
     id: 'mat_vga_02',
     componentId: 'vga',
     title: 'VRAM dan Performa GPU',
     content:
-        'VRAM (Video RAM) adalah memori khusus pada kartu grafis yang menyimpan '
-        'data tekstur, frame buffer, dan data grafis lainnya. Semakin besar '
-        'VRAM, semakin baik kemampuan GPU dalam menangani resolusi tinggi dan '
-        'tekstur detail. GPU modern menggunakan GDDR6 atau GDDR6X.',
+        'VRAM (Video Random Access Memory) adalah memori yang digunakan GPU untuk menyimpan data grafis yang sedang diproses, seperti tekstur, gambar, dan frame buffer. VRAM membantu GPU mengakses data visual tanpa harus terus-menerus mengambilnya dari memori utama. '
+        'Kapasitas VRAM yang lebih besar dapat membantu ketika aplikasi menggunakan resolusi tinggi, tekstur berukuran besar, atau model 3D yang kompleks. Namun, VRAM yang besar tidak selalu membuat kartu grafis lebih cepat karena performa juga dipengaruhi kemampuan GPU, bandwidth memori, sistem pendingin, dan kebutuhan aplikasi. '
+        'Kartu grafis modern dapat menggunakan jenis memori seperti GDDR6 atau GDDR6X, bergantung pada modelnya. Jenis dan kapasitas VRAM biasanya ditentukan oleh produsen kartu grafis dan tidak sama pada setiap produk. '
+        'Saat GPU bekerja berat, suhu komponen dapat meningkat. Heatsink membantu menyerap dan menyebarkan panas, sedangkan kipas membantu membuang panas dari kartu grafis. Pendinginan yang baik membantu menjaga kestabilan kerja dan mengurangi risiko penurunan performa akibat suhu tinggi.'
   ),
 ];
 
