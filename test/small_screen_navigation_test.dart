@@ -1,8 +1,12 @@
 import 'package:compi/data/repositories/content_repository.dart';
 import 'package:compi/data/repositories/progress_repository.dart';
+import 'package:compi/data/dummy_data.dart';
 import 'package:compi/main.dart';
+import 'package:compi/ui/features/learning/material_detail_screen.dart';
+import 'package:compi/ui/providers/learning_progress_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -39,6 +43,38 @@ void main() {
     await tester.tap(find.text('Praktik').last);
     await tester.pumpAndSettle();
     expect(find.text('Pilih Mode Tantangan'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('materi CPU dapat dilanjutkan ke materi pertama RAM', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final progressProvider = LearningProgressProvider(
+      ProgressRepository(prefs),
+    );
+    final cpu = dummyComponents.singleWhere(
+      (component) => component.id == 'cpu',
+    );
+    final cpuMaterial = dummyMaterials.singleWhere(
+      (material) => material.id == 'mat_cpu_01',
+    );
+
+    await tester.pumpWidget(
+      ChangeNotifierProvider.value(
+        value: progressProvider,
+        child: MaterialApp(
+          home: MaterialDetailScreen(component: cpu, material: cpuMaterial),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Lanjut ke RAM (Memori)'));
+    await tester.tap(find.text('Lanjut ke RAM (Memori)'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Fungsi RAM'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

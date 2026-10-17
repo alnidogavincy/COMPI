@@ -23,6 +23,23 @@ class MaterialDetailScreen extends StatelessWidget {
     final progress = context.watch<LearningProgressProvider>();
     final lessons =
         dummyMaterials.where((m) => m.componentId == component.id).toList();
+    final componentIndex = dummyComponents.indexWhere(
+      (candidate) => candidate.id == component.id,
+    );
+    final nextComponent =
+        dummyComponents
+            .skip(componentIndex + 1)
+            .where(
+              (candidate) =>
+                  dummyMaterials.any((m) => m.componentId == candidate.id),
+            )
+            .firstOrNull;
+    final nextMaterial =
+        nextComponent == null
+            ? null
+            : dummyMaterials
+                .where((m) => m.componentId == nextComponent.id)
+                .firstOrNull;
     final completed = progress.isMaterialCompleted(material.id);
     return Scaffold(
       body: CircuitBackground(
@@ -184,6 +201,24 @@ class MaterialDetailScreen extends StatelessWidget {
                               )
                               .toList(),
                     ),
+                  ),
+                ],
+                if (nextComponent != null && nextMaterial != null) ...[
+                  const SizedBox(height: 12),
+                  CompiButton(
+                    label: 'Lanjut ke ${nextComponent.name}',
+                    icon: Icons.arrow_forward,
+                    onPressed:
+                        () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (_) => MaterialDetailScreen(
+                                  component: nextComponent,
+                                  material: nextMaterial,
+                                ),
+                          ),
+                        ),
                   ),
                 ],
               ],
