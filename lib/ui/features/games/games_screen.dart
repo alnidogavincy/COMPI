@@ -87,9 +87,9 @@ class GamesScreen extends StatelessWidget {
               const SizedBox(height: 10),
               _ModeCard(
                 icon: Icons.memory,
-                title: 'Component Challenge',
+                title: 'Latihan Pemahaman',
                 description:
-                    'Pilih komponen berdasarkan fungsi atau deskripsinya.',
+                  'Asah pemahamanmu dengan soal dari seluruh materi pembelajaran.',
                 action: () {
                   context.read<QuizProvider>().loadQuiz(dummyQuizQuestions);
                   Navigator.push(

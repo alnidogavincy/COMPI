@@ -9,8 +9,6 @@ import '../../core/hardware_image.dart';
 import '../../core/app_typography.dart';
 import '../../providers/learning_progress_provider.dart';
 import '../explore_3d/explore_3d_screen.dart';
-import '../games/quiz_screen.dart';
-import '../../providers/quiz_provider.dart';
 
 class MaterialDetailScreen extends StatelessWidget {
   final ComponentModel component;
@@ -188,24 +186,6 @@ class MaterialDetailScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-                const SizedBox(height: 8),
-                CompiButton(
-                  label: 'Lanjut ke Kuis',
-                  icon: Icons.sports_esports,
-                  secondary: true,
-                  onPressed: () {
-                    final questions =
-                        dummyQuizQuestions
-                            .where((q) => q.componentId == component.id)
-                            .toList();
-                    if (questions.isEmpty) return;
-                    context.read<QuizProvider>().loadQuiz(questions);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const QuizScreen()),
-                    );
-                  },
-                ),
               ],
             ),
           ),
