@@ -1,6 +1,7 @@
 import 'package:compi/data/repositories/progress_repository.dart';
 import 'package:compi/ui/core/app_theme.dart';
 import 'package:compi/ui/features/auth/login_screen.dart';
+import 'package:compi/ui/features/profile/developer_identity_screen.dart';
 import 'package:compi/ui/features/profile/profile_screen.dart';
 import 'package:compi/data/model_credits.dart';
 import 'package:compi/ui/features/profile/model_credits_screen.dart';
@@ -48,6 +49,21 @@ void main() {
     navigator.currentState!.push(
       MaterialPageRoute(builder: (_) => const ProfileScreen()),
     );
+    await tester.pumpAndSettle();
+    expect(find.text('Identitas Pengembang'), findsOneWidget);
+    expect(find.text('Nama belum diisi'), findsNothing);
+    await tester.tap(find.text('Identitas Pengembang'));
+    await tester.pumpAndSettle();
+    expect(find.byType(DeveloperIdentityScreen), findsOneWidget);
+    expect(find.text('Nama belum diisi'), findsNWidgets(3));
+    expect(find.text('NPM'), findsNWidgets(3));
+    expect(find.text('Asal'), findsNWidgets(3));
+    expect(find.text('Alamat'), findsNWidgets(3));
+    expect(find.text('Media Sosial'), findsNWidgets(3));
+    expect(find.text('Belum diisi'), findsNWidgets(12));
+    expect(find.text('S1 Pendidikan Teknologi Informasi'), findsNWidgets(3));
+    expect(find.text('Universitas Lampung'), findsNWidgets(3));
+    await tester.tap(find.byIcon(Icons.arrow_back));
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Kredit Model 3D'));
     await tester.tap(find.text('Kredit Model 3D'));

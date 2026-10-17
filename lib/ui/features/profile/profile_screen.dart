@@ -6,6 +6,7 @@ import '../../core/compi_widgets.dart';
 import '../../providers/learning_progress_provider.dart';
 import '../../providers/student_provider.dart';
 import '../auth/login_screen.dart';
+import 'developer_identity_screen.dart';
 import 'model_credits_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -136,19 +137,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
                 const SizedBox(height: 20),
                 CompiButton(
-                  label: 'Kredit Model 3D',
-                  icon: Icons.attribution,
-                  secondary: true,
-                  onPressed:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const ModelCreditsScreen(),
-                        ),
-                      ),
-                ),
-                const SizedBox(height: 12),
-                CompiButton(
                   label: 'Ubah Identitas',
                   icon: Icons.edit,
                   secondary: true,
@@ -190,6 +178,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         context.mounted)
                       await student.save(value);
                   },
+                ),
+                const SizedBox(height: 18),
+                CompiButton(
+                  label: 'Identitas Pengembang',
+                  icon: Icons.groups_2_outlined,
+                  secondary: true,
+                  onPressed:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const DeveloperIdentityScreen(),
+                        ),
+                      ),
+                ),
+                const SizedBox(height: 12),
+                CompiButton(
+                  label: 'Kredit Model 3D',
+                  icon: Icons.attribution,
+                  secondary: true,
+                  onPressed:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ModelCreditsScreen(),
+                        ),
+                      ),
                 ),
                 const SizedBox(height: 12),
                 ElevatedButton.icon(
