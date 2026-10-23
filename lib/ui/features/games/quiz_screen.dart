@@ -54,7 +54,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Quiz Challenge',
+                              'UJI PEMAHAMAN',
                               style: TextStyle(
                                 color: AppColors.yellow,
                                 fontSize: 22,

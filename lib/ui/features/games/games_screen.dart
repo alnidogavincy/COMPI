@@ -56,7 +56,7 @@ class GamesScreen extends StatelessWidget {
                       size: 70,
                     ),
                     const Text(
-                      'QUIZ CHALLENGE',
+                      'UJI PEMAHAMAN',
                       style: TextStyle(
                         color: AppColors.yellow,
                         fontSize: 29,
