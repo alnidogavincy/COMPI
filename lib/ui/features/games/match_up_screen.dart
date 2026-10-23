@@ -91,7 +91,7 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Seret setiap gambar ke nama komponen pilihanmu. Jawaban akan dikoreksi setelah dikirim.',
+                      'Seret gambar ke nama komponen yang sesuai. Jawaban dikoreksi setelah dikirim.',
                       style: TextStyle(
                         color: AppColors.ink,
                         fontWeight: FontWeight.w700,
@@ -110,9 +110,9 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Expanded(flex: 2, child: _columnHeading('GAMBAR')),
+                  Expanded(child: _columnHeading('GAMBAR')),
                   const SizedBox(width: 12),
-                  Expanded(flex: 3, child: _columnHeading('NAMA KOMPONEN')),
+                  Expanded(child: _columnHeading('NAMA KOMPONEN')),
                 ],
               ),
               const SizedBox(height: 8),
@@ -120,18 +120,13 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    flex: 2,
                     child: Column(
                       children:
                           _imageOptions.map((component) {
-                            final isMatched = _answers.containsKey(
-                              component.id,
-                            );
+                            final isPlaced = _answers.containsKey(component.id);
                             final isCorrect =
-                                isMatched &&
+                                isPlaced &&
                                 _answers[component.id] == component.id;
-                            final imageWidth =
-                                (MediaQuery.sizeOf(context).width - 44) * 0.4;
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 10),
                               child: Draggable<String>(
@@ -140,31 +135,29 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
                                 ),
                                 data: component.id,
                                 maxSimultaneousDrags:
-                                    _isSubmitted || isMatched ? 0 : 1,
+                                    _isSubmitted || isPlaced ? 0 : 1,
                                 feedback: Material(
                                   color: Colors.transparent,
                                   child: SizedBox(
-                                    width: imageWidth,
+                                    width:
+                                        (MediaQuery.sizeOf(context).width -
+                                            44) /
+                                        2,
                                     child: _imageCard(
                                       component,
-                                      isMatched,
+                                      isPlaced,
                                       isCorrect,
-                                      _isSubmitted,
                                     ),
                                   ),
                                 ),
-                                childWhenDragging: Opacity(
-                                  opacity: 0.35,
-                                  child: _emptyImageSlot(component),
-                                ),
+                                childWhenDragging: _emptyImageSlot(component),
                                 child:
-                                    isMatched
+                                    isPlaced
                                         ? _emptyImageSlot(component)
                                         : _imageCard(
                                           component,
-                                          isMatched,
+                                          isPlaced,
                                           isCorrect,
-                                          _isSubmitted,
                                         ),
                               ),
                             );
@@ -173,33 +166,26 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    flex: 3,
                     child: Column(
                       children:
                           _nameOptions.map((component) {
-                            final isMatched = _answers.containsValue(
-                              component.id,
-                            );
-                            final assignedImage =
+                            final imageId =
                                 _answers.entries
                                     .where(
                                       (entry) => entry.value == component.id,
                                     )
                                     .firstOrNull
                                     ?.key;
-                            final isCorrect = assignedImage == component.id;
+                            final image =
+                                imageId == null
+                                    ? null
+                                    : _imageOptions.firstWhere(
+                                      (option) => option.id == imageId,
+                                    );
+                            final isCorrect = imageId == component.id;
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 10),
-                              child: _nameTarget(
-                                component,
-                                isMatched,
-                                assignedImage == null
-                                    ? null
-                                    : dummyComponents.firstWhere(
-                                      (image) => image.id == assignedImage,
-                                    ),
-                                isCorrect,
-                              ),
+                              child: _nameTarget(component, image, isCorrect),
                             );
                           }).toList(),
                     ),
@@ -242,69 +228,57 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
     ),
   );
 
-  Widget _imageCard(
-    ComponentModel component,
-    bool isMatched,
-    bool isCorrect,
-    bool showResult,
-  ) => CompiPanel(
-    padding: const EdgeInsets.all(6),
-    child: Container(
-      height: 104,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color:
-              showResult
-                  ? isCorrect
-                      ? AppColors.success
-                      : AppColors.error
-                  : isMatched
-                  ? AppColors.primary
-                  : AppColors.border,
-          width: showResult || isMatched ? 3 : 1,
-        ),
-      ),
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: Image.asset(
-                component.imagePath,
-                fit: BoxFit.contain,
-                semanticLabel: 'Gambar ${component.name} untuk diseret',
-              ),
+  Widget _imageCard(ComponentModel component, bool isPlaced, bool isCorrect) =>
+      CompiPanel(
+        padding: const EdgeInsets.all(6),
+        child: Container(
+          height: 150,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color:
+                  _isSubmitted
+                      ? isCorrect
+                          ? AppColors.success
+                          : AppColors.error
+                      : AppColors.border,
+              width: _isSubmitted ? 3 : 1,
             ),
           ),
-          if (showResult && isMatched)
-            Positioned(
-              top: 2,
-              right: 2,
-              child: Icon(
-                isCorrect ? Icons.check_circle : Icons.cancel,
-                color: isCorrect ? AppColors.success : AppColors.error,
-                size: 20,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Image.asset(
+                    component.imagePath,
+                    fit: BoxFit.contain,
+                    semanticLabel: 'Gambar ${component.name} untuk diseret',
+                  ),
+                ),
               ),
-            ),
-          if (isMatched && !showResult)
-            const Positioned(
-              top: 2,
-              right: 2,
-              child: Icon(Icons.link, color: AppColors.primary, size: 20),
-            ),
-        ],
-      ),
-    ),
-  );
+              if (_isSubmitted && isPlaced)
+                Positioned(
+                  top: 2,
+                  right: 2,
+                  child: Icon(
+                    isCorrect ? Icons.check_circle : Icons.cancel,
+                    color: isCorrect ? AppColors.success : AppColors.error,
+                    size: 20,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      );
 
   Widget _emptyImageSlot(ComponentModel component) => CompiPanel(
     key: ValueKey('empty-source-${component.id}'),
     padding: const EdgeInsets.all(6),
     child: Container(
-      height: 104,
+      height: 150,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
@@ -319,7 +293,6 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
     ComponentModel target,
     ComponentModel image,
     bool isCorrect,
-    bool isMatched,
   ) => Draggable<String>(
     key: ValueKey('placed-image-drag-source-${target.id}'),
     data: image.id,
@@ -328,14 +301,15 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
       color: Colors.transparent,
       child: SizedBox(
         width: 112,
-        height: 124,
-        child: _imageCard(image, isMatched, isCorrect, _isSubmitted),
+        height: 132,
+        child: _imageCard(image, true, isCorrect),
       ),
     ),
     childWhenDragging: _emptyTargetSlot(target),
     child: Container(
-      width: 82,
-      height: 106,
+      key: ValueKey('placed-image-${target.id}'),
+      height: 80,
+      width: double.infinity,
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -352,7 +326,6 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
       ),
       child: Image.asset(
         image.imagePath,
-        key: ValueKey('placed-image-${target.id}'),
         fit: BoxFit.contain,
         semanticLabel: 'Gambar ${image.name} ditempatkan pada ${target.name}',
       ),
@@ -361,9 +334,9 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
 
   Widget _emptyTargetSlot(ComponentModel component) => Container(
     key: ValueKey('empty-target-${component.id}'),
-    width: 56,
-    height: 64,
-    padding: const EdgeInsets.all(4),
+    height: 80,
+    width: double.infinity,
+    alignment: Alignment.center,
     decoration: BoxDecoration(
       color: AppColors.primaryLight,
       borderRadius: BorderRadius.circular(10),
@@ -378,8 +351,7 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
 
   Widget _nameTarget(
     ComponentModel component,
-    bool isMatched,
-    ComponentModel? assignedImage,
+    ComponentModel? image,
     bool isCorrect,
   ) => DragTarget<String>(
     key: ValueKey('match-target-${component.id}'),
@@ -387,113 +359,63 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
     onAcceptWithDetails: (details) => _placeImage(details.data, component.id),
     builder: (context, candidates, rejected) {
       final isHovering = candidates.isNotEmpty;
-      final resultColor =
-          !isMatched
-              ? AppColors.border
-              : isCorrect
-              ? AppColors.success
-              : AppColors.error;
-      return SizedBox(
-        height: 122,
-        child: CompiPanel(
+      final hasImage = image != null;
+      final resultColor = isCorrect ? AppColors.success : AppColors.error;
+      return CompiPanel(
+        key: ValueKey('answer-card-${component.id}'),
+        padding: const EdgeInsets.all(6),
+        child: Container(
+          height: 150,
+          width: double.infinity,
           padding: const EdgeInsets.all(6),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
+          decoration: BoxDecoration(
+            color:
+                _isSubmitted && hasImage
+                    ? resultColor.withValues(alpha: 0.12)
+                    : isHovering
+                    ? AppColors.primaryLight
+                    : Colors.white,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
               color:
-                  _isSubmitted && isMatched
-                      ? resultColor.withValues(alpha: 0.12)
+                  _isSubmitted && hasImage
+                      ? resultColor
                       : isHovering
-                      ? AppColors.primaryLight
-                      : Colors.white,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color:
-                    _isSubmitted && isMatched
-                        ? resultColor
-                        : isHovering
-                        ? AppColors.primary
-                        : AppColors.border,
-                width: (_isSubmitted && isMatched) || isHovering ? 2 : 1,
+                      ? AppColors.primary
+                      : AppColors.border,
+              width: (_isSubmitted && hasImage) || isHovering ? 2 : 1,
+            ),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child:
+                    hasImage
+                        ? _placedImage(component, image, isCorrect)
+                        : _emptyTargetSlot(component),
               ),
-            ),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 82,
-                  height: 106,
-                  child:
-                      assignedImage == null
-                          ? _emptyTargetSlot(component)
-                          : Container(
-                            padding: const EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color:
-                                    _isSubmitted && isMatched
-                                        ? resultColor
-                                        : AppColors.border,
-                              ),
-                            ),
-                            child: _placedImage(
-                              component,
-                              assignedImage,
-                              isCorrect,
-                              isMatched,
-                            ),
-                          ),
+              const SizedBox(height: 5),
+              Text(
+                component.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColors.ink,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
                 ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        component.name,
-                        style: const TextStyle(
-                          color: AppColors.ink,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      if (!_isSubmitted)
-                        Text(
-                          assignedImage == null ? 'Belum diisi' : 'Terisi',
-                          style: const TextStyle(
-                            color: AppColors.textGray,
-                            fontSize: 10,
-                          ),
-                        ),
-                      if (_isSubmitted && assignedImage != null)
-                        Text(
-                          isCorrect ? 'Benar!' : 'Belum tepat',
-                          style: TextStyle(
-                            color:
-                                isCorrect ? AppColors.success : AppColors.error,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                    ],
+              ),
+              if (_isSubmitted && hasImage)
+                Text(
+                  isCorrect ? 'Benar!' : 'Belum tepat',
+                  style: TextStyle(
+                    color: isCorrect ? AppColors.success : AppColors.error,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                if (_isSubmitted && isMatched)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 3),
-                    child: Icon(
-                      isCorrect ? Icons.check_circle : Icons.cancel,
-                      color: resultColor,
-                      size: 18,
-                    ),
-                  ),
-              ],
-            ),
+            ],
           ),
         ),
       );

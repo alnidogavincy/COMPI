@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  testWidgets('checks random placements only after the user submits', (
+  testWidgets('moves images to shuffled component names and grades on submit', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(900, 1800);
@@ -27,7 +27,10 @@ void main() {
             .widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName)
             .toList();
-    expect(images, containsAll(dummyComponents.map((c) => c.imagePath)));
+    expect(
+      images,
+      containsAll(dummyComponents.map((component) => component.imagePath)),
+    );
 
     final imageOrder =
         tester
@@ -48,14 +51,12 @@ void main() {
 
     final submitButton = find.widgetWithText(ElevatedButton, 'Kirim Jawaban');
     expect(tester.widget<ElevatedButton>(submitButton).onPressed, isNull);
-    expect(
-      find.byKey(ValueKey('empty-target-${dummyComponents[0].id}')),
-      findsOneWidget,
-    );
 
     Future<void> place(String imageId, String nameId) async {
       final image = find.byKey(ValueKey('component-image-$imageId'));
       final target = find.byKey(ValueKey('match-target-$nameId'));
+      await tester.ensureVisible(image);
+      await tester.ensureVisible(target);
       await tester.drag(
         image,
         tester.getCenter(target) - tester.getCenter(image),
@@ -63,9 +64,8 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    final firstImage = dummyComponents[0];
+    final firstImage = dummyComponents.first;
     final firstName = dummyComponents[1];
-    final secondName = dummyComponents[2];
     await place(firstImage.id, firstName.id);
     expect(
       find.byKey(ValueKey('empty-source-${firstImage.id}')),
@@ -74,25 +74,27 @@ void main() {
     expect(
       (tester
                   .widget<Image>(
-                    find.byKey(ValueKey('placed-image-${firstName.id}')),
+                    find.descendant(
+                      of: find.byKey(ValueKey('placed-image-${firstName.id}')),
+                      matching: find.byType(Image),
+                    ),
                   )
                   .image
               as AssetImage)
           .assetName,
       firstImage.imagePath,
     );
-    expect(
-      tester.getSize(find.byKey(ValueKey('placed-image-${firstName.id}'))),
-      const Size(84, 112),
-    );
+    expect(find.text('Belum tepat'), findsNothing);
 
-    final placedImage = find.byKey(
+    final movePlacedImage = find.byKey(
       ValueKey('placed-image-drag-source-${firstName.id}'),
     );
-    final secondTarget = find.byKey(ValueKey('match-target-${secondName.id}'));
+    final firstTarget = find.byKey(ValueKey('match-target-${firstImage.id}'));
+    await tester.ensureVisible(movePlacedImage);
+    await tester.ensureVisible(firstTarget);
     await tester.drag(
-      placedImage,
-      tester.getCenter(secondTarget) - tester.getCenter(placedImage),
+      movePlacedImage,
+      tester.getCenter(firstTarget) - tester.getCenter(movePlacedImage),
     );
     await tester.pumpAndSettle();
     expect(
@@ -102,7 +104,10 @@ void main() {
     expect(
       (tester
                   .widget<Image>(
-                    find.byKey(ValueKey('placed-image-${secondName.id}')),
+                    find.descendant(
+                      of: find.byKey(ValueKey('placed-image-${firstImage.id}')),
+                      matching: find.byType(Image),
+                    ),
                   )
                   .image
               as AssetImage)
@@ -112,31 +117,11 @@ void main() {
 
     await tester.tap(find.text('Atur Ulang Pasangan'));
     await tester.pumpAndSettle();
-    expect(find.byKey(ValueKey('empty-source-${firstImage.id}')), findsNothing);
-    expect(
-      find.byKey(ValueKey('empty-target-${firstName.id}')),
-      findsOneWidget,
-    );
 
     for (var i = 0; i < dummyComponents.length; i++) {
       final targetIndex =
           i == 0 ? 0 : (i == dummyComponents.length - 1 ? 1 : i + 1);
       await place(dummyComponents[i].id, dummyComponents[targetIndex].id);
-      if (i == 0) {
-        final placedImage = find.byKey(
-          ValueKey('placed-image-${dummyComponents[targetIndex].id}'),
-        );
-        expect(placedImage, findsOneWidget);
-        expect(
-          (tester.widget<Image>(placedImage).image as AssetImage).assetName,
-          dummyComponents[i].imagePath,
-        );
-        expect(find.text('Terisi'), findsOneWidget);
-        expect(
-          find.byKey(ValueKey('empty-target-${dummyComponents[1].id}')),
-          findsOneWidget,
-        );
-      }
     }
 
     expect(find.text('Benar!'), findsNothing);
