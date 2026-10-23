@@ -4,25 +4,25 @@ import '../../core/compi_widgets.dart';
 
 const _developers = [
   _DeveloperProfile(
-    name: '',
-    npm: '',
-    origin: '',
-    address: '',
-    socialMedia: '',
+    name: 'Muhammad Alnido Gavincy',
+    npm: '2413025059',
+    origin: 'Bandar Lampung',
+    socialMedia: '@alnido.gav19',
+    photoPath: 'assets/images/alnido.jpg',
   ),
   _DeveloperProfile(
-    name: '',
-    npm: '',
-    origin: '',
-    address: '',
-    socialMedia: '',
+    name: 'Raehan',
+    npm: '2413025033',
+    origin: 'Tulang Bawang Barat',
+    socialMedia: '@_raehann25',
+    photoPath: 'assets/images/raehan.jpg',
   ),
   _DeveloperProfile(
-    name: '',
-    npm: '',
-    origin: '',
-    address: '',
-    socialMedia: '',
+    name: 'Anissa Vika Anandari',
+    npm: '2413025005',
+    origin: 'Lampung Tengah',
+    socialMedia: '@ansvika__',
+    photoPath: 'assets/images/vika.jpg',
   ),
 ];
 
@@ -30,7 +30,6 @@ class _DeveloperProfile {
   final String name;
   final String npm;
   final String origin;
-  final String address;
   final String socialMedia;
   final String? photoPath;
 
@@ -38,7 +37,6 @@ class _DeveloperProfile {
     required this.name,
     required this.npm,
     required this.origin,
-    required this.address,
     required this.socialMedia,
     this.photoPath,
   });
@@ -135,10 +133,8 @@ class _DeveloperCard extends StatelessWidget {
         const SizedBox(height: 8),
         _DeveloperInfoRow(label: 'Asal', value: _value(developer.origin)),
         const SizedBox(height: 8),
-        _DeveloperInfoRow(label: 'Alamat', value: _value(developer.address)),
-        const SizedBox(height: 8),
         _DeveloperInfoRow(
-          label: 'Media Sosial',
+          label: 'Instagram',
           value: _value(developer.socialMedia),
         ),
       ],
