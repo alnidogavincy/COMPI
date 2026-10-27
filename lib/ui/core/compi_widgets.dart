@@ -85,15 +85,25 @@ class CompiBrandHeader extends StatelessWidget {
             Expanded(
               child: Align(
                 alignment: Alignment.centerLeft,
-                // Compensate for the PNG's transparent left margin.
-                child: FractionalTranslation(
-                  translation: const Offset(-.05, 0),
-                  child: Image.asset(
-                    'assets/images/compi_header.png',
-                    width: 180,
+                // Frame only the artwork in the original transparent PNG.
+                child: SizedBox(
+                  width: 180,
+                  child: FittedBox(
                     fit: BoxFit.contain,
-                    alignment: Alignment.centerLeft,
-                    semanticLabel: 'COMPI — Computer Interactive 3D',
+                    child: ClipRect(
+                      child: Align(
+                        widthFactor: 1417 / 2048,
+                        heightFactor: 426 / 2048,
+                        alignment: const Alignment(243 / 631, 252 / 1622),
+                        child: Image.asset(
+                          'assets/images/compi_header_v2.png',
+                          width: 260,
+                          height: 260,
+                          fit: BoxFit.contain,
+                          semanticLabel: 'COMPI — Computer Interactive 3D',
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
