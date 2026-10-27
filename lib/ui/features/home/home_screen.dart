@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CompiHeader(
+              CompiBrandHeader(
                 title: 'SMK TKJ 3D',
                 action: IconButton.filled(
                   onPressed:

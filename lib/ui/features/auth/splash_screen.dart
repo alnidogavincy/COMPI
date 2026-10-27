@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
+import 'splash_loading_bar.dart';
 import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,8 +15,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  late final Animation<double> _reveal;
-  late final Animation<double> _scale;
+  late final CurvedAnimation _reveal;
   Timer? _timer;
   bool _navigated = false;
 
@@ -23,20 +24,14 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2200),
+      duration: const Duration(milliseconds: 3500),
     );
     _reveal = CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0, .65, curve: Curves.easeOut),
-    );
-    _scale = Tween(begin: .65, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0, .85, curve: Curves.easeOutBack),
-      ),
+      curve: const Interval(0, .18, curve: Curves.easeOut),
     );
     _controller.forward();
-    _timer = Timer(const Duration(milliseconds: 3200), _continue);
+    _timer = Timer(const Duration(milliseconds: 3500), _continue);
   }
 
   void _continue() {
@@ -45,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 550),
+        transitionDuration: const Duration(milliseconds: 400),
         pageBuilder: (_, animation, secondaryAnimation) => const LoginScreen(),
         transitionsBuilder:
             (_, animation, secondaryAnimation, child) =>
@@ -57,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void dispose() {
     _timer?.cancel();
+    _reveal.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -77,79 +73,51 @@ class _SplashScreenState extends State<SplashScreen>
                         constraints: const BoxConstraints(maxWidth: 440),
                         child: FadeTransition(
                           opacity: _reveal,
-                          child: CompiPanel(
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(12, 20, 12, 24),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              image: const DecorationImage(
+                                image: AssetImage(
+                                  'assets/images/splash_mist.png',
+                                ),
+                                fit: BoxFit.cover,
+                                opacity: .65,
+                              ),
+                              borderRadius: BorderRadius.circular(24),
+                              border: Border.all(
+                                color: AppColors.border.withValues(alpha: .65),
+                                width: 2,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primaryDark.withValues(
+                                    alpha: .12,
+                                  ),
+                                  blurRadius: 24,
+                                  offset: const Offset(0, 8),
+                                ),
+                              ],
+                            ),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                ScaleTransition(
-                                  scale: _scale,
-                                  child: AnimatedBuilder(
-                                    animation: _controller,
-                                    builder:
-                                        (context, child) => Transform.rotate(
-                                          angle: -.15 * (1 - _reveal.value),
-                                          child: child,
-                                        ),
-                                    child: Image.asset(
-                                      'assets/images/app_logo.png',
-                                      height: 210,
-                                      semanticLabel: 'Logo COMPI 3D',
-                                    ),
+                                _BlendWithPanel(
+                                  child: Image.asset(
+                                    'assets/images/splash_brand.png',
+                                    fit: BoxFit.contain,
+                                    semanticLabel:
+                                        'COMPI — Computer Interactive 3D',
                                   ),
                                 ),
                                 const SizedBox(height: 16),
-                                const FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        'COMPI',
-                                        style: TextStyle(
-                                          fontSize: 46,
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.primaryDark,
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        '3D',
-                                        style: TextStyle(
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.primary,
-                                        ),
-                                      ),
-                                    ],
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
                                   ),
-                                ),
-                                const SizedBox(height: 12),
-                                const Text(
-                                  'Media Pembelajaran Perangkat Keras',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
+                                  child: SplashLoadingBar(
+                                    animation: _controller,
                                   ),
-                                ),
-                                const SizedBox(height: 10),
-                                const Text(
-                                  'Kenali • Eksplorasi • Pelajari',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: AppColors.textGray),
-                                ),
-                                const SizedBox(height: 26),
-                                AnimatedBuilder(
-                                  animation: _controller,
-                                  builder:
-                                      (context, _) => LinearProgressIndicator(
-                                        value: _controller.value,
-                                        minHeight: 6,
-                                        color: AppColors.orange,
-                                        backgroundColor: AppColors.primaryLight,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
                                 ),
                               ],
                             ),
@@ -164,4 +132,25 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     ),
   );
+}
+
+// The supplied artwork has an opaque white background. Multiply lets the
+// panel's mist show through white pixels without modifying the source PNG.
+class _BlendWithPanel extends SingleChildRenderObjectWidget {
+  const _BlendWithPanel({required super.child});
+
+  @override
+  RenderObject createRenderObject(BuildContext context) => _PanelBlendRender();
+}
+
+class _PanelBlendRender extends RenderProxyBox {
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    context.canvas.saveLayer(
+      offset & size,
+      Paint()..blendMode = BlendMode.multiply,
+    );
+    super.paint(context, offset);
+    context.canvas.restore();
+  }
 }

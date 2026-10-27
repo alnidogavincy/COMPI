@@ -67,6 +67,55 @@ class _CircuitPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
+/// Shared branding for the three main tabs. The parent supplies page gutters.
+class CompiBrandHeader extends StatelessWidget {
+  const CompiBrandHeader({super.key, required this.title, this.action});
+
+  final String title;
+  final Widget? action;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(top: 12, bottom: 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                // Compensate for the PNG's transparent left margin.
+                child: FractionalTranslation(
+                  translation: const Offset(-.05, 0),
+                  child: Image.asset(
+                    'assets/images/compi_header.png',
+                    width: 180,
+                    fit: BoxFit.contain,
+                    alignment: Alignment.centerLeft,
+                    semanticLabel: 'COMPI — Computer Interactive 3D',
+                  ),
+                ),
+              ),
+            ),
+            if (action != null) ...[const SizedBox(width: 12), action!],
+          ],
+        ),
+        const SizedBox(height: 6),
+        Text(
+          title,
+          textAlign: TextAlign.left,
+          style: const TextStyle(
+            color: AppColors.primaryDark,
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 class CompiHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onBack;

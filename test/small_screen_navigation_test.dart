@@ -27,8 +27,11 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 1000));
     expect(find.text('Selamat Datang!'), findsNothing);
-    expect(find.text('COMPI'), findsOneWidget);
-    await tester.pump(const Duration(milliseconds: 2300));
+    expect(
+      find.image(const AssetImage('assets/images/splash_brand.png')),
+      findsOneWidget,
+    );
+    await tester.pump(const Duration(milliseconds: 2500));
     await tester.pumpAndSettle();
     expect(find.text('Selamat Datang!'), findsOneWidget);
     await tester.ensureVisible(find.text('Mulai Belajar'));

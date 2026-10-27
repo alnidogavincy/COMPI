@@ -47,7 +47,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    CompiHeader(
+                    CompiBrandHeader(
                       title: 'Library Materi',
                       action: IconButton.filled(
                         onPressed:

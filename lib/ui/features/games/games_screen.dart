@@ -21,7 +21,7 @@ class GamesScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CompiHeader(
+              CompiBrandHeader(
                 title: 'Latihan Perangkat Keras',
                 action: IconButton.filled(
                   onPressed:
@@ -89,7 +89,7 @@ class GamesScreen extends StatelessWidget {
                 icon: Icons.memory,
                 title: 'Latihan Pemahaman',
                 description:
-                  'Asah pemahamanmu dengan soal dari seluruh materi pembelajaran.',
+                    'Asah pemahamanmu dengan soal dari seluruh materi pembelajaran.',
                 action: () {
                   context.read<QuizProvider>().loadQuiz(dummyQuizQuestions);
                   Navigator.push(

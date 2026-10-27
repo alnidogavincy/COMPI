@@ -18,7 +18,9 @@ void main() {
       ),
     );
 
-    await tester.pump(const Duration(milliseconds: 3300));
+    await tester.pump(const Duration(milliseconds: 3400));
+    expect(find.text('Selamat Datang!'), findsNothing);
+    await tester.pump(const Duration(milliseconds: 100));
     await tester.pumpAndSettle();
     expect(find.text('Selamat Datang!'), findsOneWidget);
     expect(find.text('Identitas Siswa'), findsOneWidget);
