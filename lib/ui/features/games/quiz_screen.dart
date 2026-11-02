@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
 import '../../providers/quiz_provider.dart';
+import '../../providers/audio_provider.dart';
 import 'game_result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -18,8 +19,9 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     final quiz = context.watch<QuizProvider>();
     final question = quiz.currentQuestion;
-    if (question == null)
+    if (question == null) {
       return const Scaffold(body: Center(child: Text('Soal belum tersedia')));
+    }
     return Scaffold(
       body: CircuitBackground(
         child: SafeArea(
@@ -131,58 +133,63 @@ class _QuizScreenState extends State<QuizScreen> {
                                       constraints.maxWidth < 290
                                           ? constraints.maxWidth
                                           : (constraints.maxWidth - 10) / 2,
-                                  child: InkWell(
-                                    onTap:
-                                        _submitted
-                                            ? null
-                                            : () =>
-                                                setState(() => _selected = i),
-                                    child: Container(
-                                      constraints: const BoxConstraints(
-                                        minHeight: 122,
-                                      ),
-                                      padding: const EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        color:
-                                            correct
-                                                ? const Color(0xFFD9FFE7)
-                                                : selected
-                                                ? AppColors.primaryLight
-                                                : Colors.white,
-                                        borderRadius: BorderRadius.circular(18),
-                                        border: Border.all(
+                                  child: PhysicalButton(
+                                    child: InkWell(
+                                      onTap:
+                                          _submitted
+                                              ? null
+                                              : () =>
+                                                  setState(() => _selected = i),
+                                      child: Container(
+                                        constraints: const BoxConstraints(
+                                          minHeight: 122,
+                                        ),
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
                                           color:
                                               correct
-                                                  ? AppColors.success
+                                                  ? const Color(0xFFD9FFE7)
                                                   : selected
-                                                  ? AppColors.primary
-                                                  : AppColors.border,
-                                          width: 3,
+                                                  ? AppColors.primaryLight
+                                                  : Colors.white,
+                                          borderRadius: BorderRadius.circular(
+                                            18,
+                                          ),
+                                          border: Border.all(
+                                            color:
+                                                correct
+                                                    ? AppColors.success
+                                                    : selected
+                                                    ? AppColors.primary
+                                                    : AppColors.border,
+                                            width: 3,
+                                          ),
                                         ),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor: AppColors.primary,
-                                            child: Text(
-                                              String.fromCharCode(65 + i),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundColor:
+                                                  AppColors.primary,
+                                              child: Text(
+                                                String.fromCharCode(65 + i),
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 12),
+                                            Text(
+                                              question.options[i],
                                               style: const TextStyle(
-                                                color: Colors.white,
+                                                color: AppColors.ink,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 12),
-                                          Text(
-                                            question.options[i],
-                                            style: const TextStyle(
-                                              color: AppColors.ink,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -221,6 +228,11 @@ class _QuizScreenState extends State<QuizScreen> {
                           : () {
                             if (!_submitted) {
                               quiz.answerQuestion(_selected!);
+                              context.read<AudioProvider?>()?.effect(
+                                _selected == question.correctAnswerIndex
+                                    ? 'cluck'
+                                    : 'wrong',
+                              );
                               setState(() => _submitted = true);
                               return;
                             }

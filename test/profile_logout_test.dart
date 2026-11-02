@@ -52,6 +52,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Identitas Pengembang'), findsOneWidget);
     expect(find.text('Nama belum diisi'), findsNothing);
+    await tester.ensureVisible(find.text('Identitas Pengembang'));
     await tester.tap(find.text('Identitas Pengembang'));
     await tester.pumpAndSettle();
     expect(find.byType(DeveloperIdentityScreen), findsOneWidget);

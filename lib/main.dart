@@ -5,6 +5,7 @@ import 'ui/core/app_theme.dart';
 import 'ui/providers/learning_progress_provider.dart';
 import 'ui/providers/quiz_provider.dart';
 import 'ui/providers/student_provider.dart';
+import 'ui/providers/audio_provider.dart';
 import 'ui/features/auth/splash_screen.dart';
 import 'data/repositories/progress_repository.dart';
 import 'data/repositories/content_repository.dart';
@@ -41,6 +42,9 @@ class CompiApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => AudioProvider(progressRepository.preferences),
+        ),
         Provider<ContentRepository>.value(value: contentRepository),
         ChangeNotifierProvider(
           create: (_) => LearningProgressProvider(progressRepository),
@@ -57,6 +61,11 @@ class CompiApp extends StatelessWidget {
         title: 'Compi',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
+        builder:
+            (context, child) => Listener(
+              onPointerDown: (_) => context.read<AudioProvider>().activate(),
+              child: child!,
+            ),
         home: const SplashScreen(),
       ),
     );

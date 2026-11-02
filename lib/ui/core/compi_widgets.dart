@@ -1,6 +1,40 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_typography.dart';
+import 'physical_button.dart';
+import 'package:provider/provider.dart';
+import '../providers/student_provider.dart';
+export 'physical_button.dart';
+
+class StudentAvatar extends StatelessWidget {
+  const StudentAvatar({super.key, this.radius = 16});
+  final double radius;
+  @override
+  Widget build(BuildContext context) {
+    final photo = context.watch<StudentProvider?>()?.photo;
+    final fallback = Icon(
+      Icons.person_outline,
+      color: Colors.white,
+      size: radius * 1.3,
+    );
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: AppColors.primary,
+      child:
+          photo == null
+              ? fallback
+              : ClipOval(
+                child: Image.memory(
+                  photo,
+                  width: radius * 2,
+                  height: radius * 2,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, _, _) => fallback,
+                ),
+              ),
+    );
+  }
+}
 
 class CircuitBackground extends StatelessWidget {
   final Widget child;
@@ -130,20 +164,31 @@ class CompiHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onBack;
   final Widget? action;
-  const CompiHeader({super.key, required this.title, this.onBack, this.action});
+  final Widget? leading;
+  const CompiHeader({
+    super.key,
+    required this.title,
+    this.onBack,
+    this.action,
+    this.leading,
+  });
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
     child: Row(
       children: [
-        if (onBack != null)
-          IconButton.filled(
-            style: IconButton.styleFrom(
-              backgroundColor: AppColors.orange,
-              foregroundColor: Colors.white,
+        if (leading != null)
+          leading!
+        else if (onBack != null)
+          PhysicalButton(
+            child: IconButton.filled(
+              style: IconButton.styleFrom(
+                backgroundColor: AppColors.orange,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: onBack,
+              icon: const Icon(Icons.arrow_back),
             ),
-            onPressed: onBack,
-            icon: const Icon(Icons.arrow_back),
           )
         else
           // Remove transparent PNG margins in layout, preserving the artwork.
@@ -282,16 +327,19 @@ class CompiButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox(
     width: double.infinity,
-    child: ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon),
-      label: Text(label),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: secondary ? AppColors.primaryLight : AppColors.orange,
-        foregroundColor: secondary ? AppColors.primaryDark : Colors.white,
-        side: BorderSide(
-          color: secondary ? AppColors.cyan : AppColors.yellow,
-          width: 2,
+    child: PhysicalButton(
+      child: ElevatedButton.icon(
+        onPressed: onPressed,
+        icon: Icon(icon),
+        label: Text(label),
+        style: ElevatedButton.styleFrom(
+          backgroundColor:
+              secondary ? AppColors.primaryLight : AppColors.orange,
+          foregroundColor: secondary ? AppColors.primaryDark : Colors.white,
+          side: BorderSide(
+            color: secondary ? AppColors.cyan : AppColors.yellow,
+            width: 2,
+          ),
         ),
       ),
     ),

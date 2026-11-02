@@ -5,6 +5,7 @@ import '../../../data/models/component_model.dart';
 import '../../../data/models/learning_material_model.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
+import '../../providers/audio_provider.dart';
 import '../../core/hardware_image.dart';
 import '../../core/app_typography.dart';
 import '../../providers/learning_progress_provider.dart';
@@ -126,14 +127,16 @@ class MaterialDetailScreen extends StatelessWidget {
                       children:
                           component.hotspots
                               .map(
-                                (h) => ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: const Icon(
-                                    Icons.memory,
-                                    color: AppColors.primary,
+                                (h) => PhysicalButton(
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    leading: const Icon(
+                                      Icons.memory,
+                                      color: AppColors.primary,
+                                    ),
+                                    title: Text(h.label),
+                                    subtitle: Text(h.description),
                                   ),
-                                  title: Text(h.label),
-                                  subtitle: Text(h.description),
                                 ),
                               )
                               .toList(),
@@ -150,9 +153,12 @@ class MaterialDetailScreen extends StatelessWidget {
                   onPressed:
                       completed
                           ? null
-                          : () => context
-                              .read<LearningProgressProvider>()
-                              .completeMaterial(material.id),
+                          : () {
+                            context
+                                .read<LearningProgressProvider>()
+                                .completeMaterial(material.id);
+                            context.read<AudioProvider?>()?.effect('star');
+                          },
                 ),
                 const SizedBox(height: 8),
                 if (component.hasModel)
@@ -183,20 +189,22 @@ class MaterialDetailScreen extends StatelessWidget {
                           lessons
                               .where((m) => m.id != material.id)
                               .map(
-                                (m) => ListTile(
-                                  title: Text(m.title),
-                                  trailing: const Icon(Icons.arrow_forward),
-                                  onTap:
-                                      () => Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (_) => MaterialDetailScreen(
-                                                component: component,
-                                                material: m,
-                                              ),
+                                (m) => PhysicalButton(
+                                  child: ListTile(
+                                    title: Text(m.title),
+                                    trailing: const Icon(Icons.arrow_forward),
+                                    onTap:
+                                        () => Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (_) => MaterialDetailScreen(
+                                                  component: component,
+                                                  material: m,
+                                                ),
+                                          ),
                                         ),
-                                      ),
+                                  ),
                                 ),
                               )
                               .toList(),

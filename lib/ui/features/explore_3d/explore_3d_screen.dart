@@ -37,10 +37,12 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
               CompiHeader(
                 title: 'Eksplorasi Hardware 3D',
                 onBack: () => Navigator.pop(context),
-                action: IconButton.filled(
-                  tooltip: 'Reset sudut',
-                  onPressed: () => setState(() => _viewerRevision++),
-                  icon: const Icon(Icons.refresh),
+                action: PhysicalButton(
+                  child: IconButton.filled(
+                    tooltip: 'Reset sudut',
+                    onPressed: () => setState(() => _viewerRevision++),
+                    icon: const Icon(Icons.refresh),
+                  ),
                 ),
               ),
               Expanded(
@@ -179,15 +181,17 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                               dummyComponents
                                   .where((component) => component.hasModel)
                                   .map(
-                                    (component) => ChoiceChip(
-                                      label: Text(component.name),
-                                      selected: component.id == _active.id,
-                                      selectedColor: AppColors.yellow,
-                                      onSelected:
-                                          (_) => setState(() {
-                                            _active = component;
-                                            _viewerRevision++;
-                                          }),
+                                    (component) => PhysicalButton(
+                                      child: ChoiceChip(
+                                        label: Text(component.name),
+                                        selected: component.id == _active.id,
+                                        selectedColor: AppColors.yellow,
+                                        onSelected:
+                                            (_) => setState(() {
+                                              _active = component;
+                                              _viewerRevision++;
+                                            }),
+                                      ),
                                     ),
                                   )
                                   .toList(),

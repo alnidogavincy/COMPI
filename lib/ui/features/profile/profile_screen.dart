@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../core/profile_photo.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../../data/dummy_data.dart';
 import '../../core/app_colors.dart';
@@ -17,6 +19,38 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _loggingOut = false;
+  bool _savingPhoto = false;
+
+  Future<void> _pickPhoto() async {
+    setState(() => _savingPhoto = true);
+    try {
+      final selected = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 512,
+        maxHeight: 512,
+        imageQuality: 80,
+      );
+      if (selected == null || !mounted) return;
+      if (await selected.length() > 10 * 1024 * 1024) {
+        throw const FormatException('Pilih gambar di bawah 10 MB.');
+      }
+      final bytes = await prepareProfilePhoto(await selected.readAsBytes());
+      if (!mounted) return;
+      await context.read<StudentProvider>().savePhoto(bytes);
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Foto gagal disimpan. Pilih JPG/PNG di bawah 10 MB dan izinkan akses galeri.',
+            ),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _savingPhoto = false);
+    }
+  }
 
   Future<void> _logout() async {
     setState(() => _loggingOut = true);
@@ -52,20 +86,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 CompiHeader(
                   title: 'Profil & Progress',
                   onBack: () => Navigator.pop(context),
+                  action: const SoundToggle(),
                 ),
                 const SizedBox(height: 20),
                 CompiPanel(
                   child: Column(
                     children: [
-                      const CircleAvatar(
-                        radius: 40,
-                        backgroundColor: AppColors.primary,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                          size: 48,
+                      const StudentAvatar(radius: 40),
+                      PhysicalButton(
+                        child: TextButton.icon(
+                          onPressed: _savingPhoto ? null : _pickPhoto,
+                          icon: const Icon(Icons.add_a_photo_outlined),
+                          label: Text(
+                            _savingPhoto
+                                ? 'Menyimpan foto...'
+                                : 'Ubah Foto Profil',
+                          ),
                         ),
                       ),
+                      if (student.photo != null)
+                        PhysicalButton(
+                          child: TextButton(
+                            onPressed:
+                                _savingPhoto
+                                    ? null
+                                    : () async {
+                                      try {
+                                        await student.savePhoto(null);
+                                      } catch (_) {
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                'Foto gagal dihapus. Coba lagi.',
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    },
+                            child: const Text('Hapus Foto'),
+                          ),
+                        ),
                       const SizedBox(height: 10),
                       Text(
                         student.identity.isEmpty
@@ -157,17 +221,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(dialogContext),
-                                child: const Text('Batal'),
+                              PhysicalButton(
+                                child: TextButton(
+                                  onPressed: () => Navigator.pop(dialogContext),
+                                  child: const Text('Batal'),
+                                ),
                               ),
-                              TextButton(
-                                onPressed:
-                                    () => Navigator.pop(
-                                      dialogContext,
-                                      controller.text,
-                                    ),
-                                child: const Text('Simpan'),
+                              PhysicalButton(
+                                child: TextButton(
+                                  onPressed:
+                                      () => Navigator.pop(
+                                        dialogContext,
+                                        controller.text,
+                                      ),
+                                  child: const Text('Simpan'),
+                                ),
                               ),
                             ],
                           ),
@@ -175,8 +243,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     controller.dispose();
                     if (value != null &&
                         value.trim().isNotEmpty &&
-                        context.mounted)
+                        context.mounted) {
                       await student.save(value);
+                    }
                   },
                 ),
                 const SizedBox(height: 18),
@@ -206,13 +275,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                 ),
                 const SizedBox(height: 12),
-                ElevatedButton.icon(
-                  onPressed: _loggingOut ? null : _logout,
-                  icon: const Icon(Icons.logout),
-                  label: Text(_loggingOut ? 'Keluar...' : 'Logout'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFB91C1C),
-                    foregroundColor: Colors.white,
+                PhysicalButton(
+                  child: ElevatedButton.icon(
+                    onPressed: _loggingOut ? null : _logout,
+                    icon: const Icon(Icons.logout),
+                    label: Text(_loggingOut ? 'Keluar...' : 'Logout'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFB91C1C),
+                      foregroundColor: Colors.white,
+                    ),
                   ),
                 ),
               ],

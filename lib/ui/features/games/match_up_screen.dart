@@ -5,6 +5,7 @@ import '../../../data/models/component_model.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
 import '../../providers/quiz_provider.dart';
+import '../../providers/audio_provider.dart';
 import 'game_result_screen.dart';
 
 class MatchUpScreen extends StatefulWidget {
@@ -60,6 +61,9 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
       dummyComponents.length,
     );
     setState(() => _isSubmitted = true);
+    context.read<AudioProvider?>()?.effect(
+      correct == dummyComponents.length ? 'star' : 'wrong',
+    );
   }
 
   void _viewResults() {
@@ -204,11 +208,13 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
                         : _submit,
               ),
               if (!_isSubmitted)
-                TextButton(
-                  onPressed: () => setState(_answers.clear),
-                  child: const Text(
-                    'Atur Ulang Pasangan',
-                    style: TextStyle(color: Colors.white),
+                PhysicalButton(
+                  child: TextButton(
+                    onPressed: () => setState(_answers.clear),
+                    child: const Text(
+                      'Atur Ulang Pasangan',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
             ],

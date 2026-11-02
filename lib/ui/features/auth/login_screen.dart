@@ -6,7 +6,6 @@ import '../../core/app_typography.dart';
 import '../../core/hardware_showcase.dart';
 import '../../providers/student_provider.dart';
 import '../main/main_navigation_screen.dart';
-import 'splash_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -41,14 +40,16 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     try {
       await context.read<StudentProvider>().save(_controller.text);
-      if (mounted)
+      if (mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
         );
+      }
     } catch (_) {
-      if (mounted)
+      if (mounted) {
         setState(() => _error = 'Gagal menyimpan identitas. Coba lagi.');
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -63,21 +64,17 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CompiHeader(
+              const CompiHeader(
                 title: 'Media Pembelajaran Perangkat Keras',
-                onBack:
-                    () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const SplashScreen()),
-                    ),
+                leading: SoundToggle(),
               ),
               const SizedBox(height: 10),
               ClipRRect(
                 borderRadius: BorderRadius.circular(22),
-                child: Stack(
+                child: const Stack(
                   children: [
-                    const HardwareShowcase(),
-                    const Positioned(
+                    HardwareShowcase(),
+                    Positioned(
                       bottom: 12,
                       left: 12,
                       child: Chip(label: Text('Simulasi Interaktif 3D')),
@@ -137,9 +134,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () => _controller.text = 'Vikas',
-                        child: const Text('Contoh identitas: Vika'),
+                      child: PhysicalButton(
+                        child: TextButton(
+                          onPressed: () => _controller.text = 'Vikas',
+                          child: const Text('Contoh identitas: Vika'),
+                        ),
                       ),
                     ),
                     CompiButton(

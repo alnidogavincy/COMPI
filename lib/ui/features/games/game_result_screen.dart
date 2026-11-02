@@ -4,6 +4,7 @@ import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
 import '../../providers/learning_progress_provider.dart';
 import '../../providers/quiz_provider.dart';
+import '../../providers/audio_provider.dart';
 
 class GameResultScreen extends StatefulWidget {
   const GameResultScreen({super.key});
@@ -19,10 +20,18 @@ class _GameResultScreenState extends State<GameResultScreen> {
     if (!_saved) {
       _saved = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted)
+        if (mounted) {
+          context.read<AudioProvider?>()?.effect(
+            result.scorePoints == 100
+                ? 'applause'
+                : (result.scorePoints >= 70 ? 'win' : 'tuit'),
+          );
+        }
+        if (mounted) {
           context.read<LearningProgressProvider>().updateQuizScore(
             result.scorePoints,
           );
+        }
       });
     }
     return Scaffold(

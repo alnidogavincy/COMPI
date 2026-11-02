@@ -23,15 +23,17 @@ class GamesScreen extends StatelessWidget {
             children: [
               CompiBrandHeader(
                 title: 'Latihan Perangkat Keras',
-                action: IconButton.filled(
-                  onPressed:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const ProfileScreen(),
+                action: PhysicalButton(
+                  child: IconButton.filled(
+                    onPressed:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ProfileScreen(),
+                          ),
                         ),
-                      ),
-                  icon: const Icon(Icons.person_outline),
+                    icon: const StudentAvatar(),
+                  ),
                 ),
               ),
               Container(
@@ -174,9 +176,11 @@ class _ModeCard extends StatelessWidget {
               const SizedBox(height: 8),
               SizedBox(
                 height: 42,
-                child: ElevatedButton(
-                  onPressed: action,
-                  child: const Text('Mulai →'),
+                child: PhysicalButton(
+                  child: ElevatedButton(
+                    onPressed: action,
+                    child: const Text('Mulai →'),
+                  ),
                 ),
               ),
             ],

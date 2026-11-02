@@ -39,15 +39,17 @@ class HomeScreen extends StatelessWidget {
             children: [
               CompiBrandHeader(
                 title: 'SMK TKJ 3D',
-                action: IconButton.filled(
-                  onPressed:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const ProfileScreen(),
+                action: PhysicalButton(
+                  child: IconButton.filled(
+                    onPressed:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ProfileScreen(),
+                          ),
                         ),
-                      ),
-                  icon: const Icon(Icons.person_outline),
+                    icon: const StudentAvatar(),
+                  ),
                 ),
               ),
               Text(
@@ -195,53 +197,55 @@ class HomeScreen extends StatelessWidget {
                   icon: Icons.menu_book,
                   title: 'Lanjutkan Belajar',
                 ),
-                InkWell(
-                  onTap:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (_) => MaterialDetailScreen(
-                                component: nextComponent,
-                                material: next,
-                              ),
-                        ),
-                      ),
-                  child: CompiPanel(
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.memory,
-                          color: AppColors.primary,
-                          size: 42,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                nextComponent.name,
-                                style: const TextStyle(
-                                  color: AppColors.ink,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18,
+                PhysicalButton(
+                  child: InkWell(
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (_) => MaterialDetailScreen(
+                                  component: nextComponent,
+                                  material: next,
                                 ),
-                              ),
-                              Text(
-                                next.title,
-                                style: const TextStyle(
-                                  color: AppColors.textGray,
-                                ),
-                              ),
-                            ],
                           ),
                         ),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          color: AppColors.primary,
-                        ),
-                      ],
+                    child: CompiPanel(
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.memory,
+                            color: AppColors.primary,
+                            size: 42,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  nextComponent.name,
+                                  style: const TextStyle(
+                                    color: AppColors.ink,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Text(
+                                  next.title,
+                                  style: const TextStyle(
+                                    color: AppColors.textGray,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            color: AppColors.primary,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -281,34 +285,36 @@ class _QuickCard extends StatelessWidget {
     required this.onTap,
   });
   @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: onTap,
-    child: Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [AppColors.cyan, AppColors.primary],
+  Widget build(BuildContext context) => PhysicalButton(
+    child: InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [AppColors.cyan, AppColors.primary],
+          ),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: AppColors.yellow, width: 2),
         ),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.yellow, width: 2),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: Colors.white, size: 40),
-          const SizedBox(height: 8),
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, color: Colors.white, size: 40),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-          Text(
-            detail,
-            style: const TextStyle(color: Colors.white, fontSize: 12),
-          ),
-        ],
+            Text(
+              detail,
+              style: const TextStyle(color: Colors.white, fontSize: 12),
+            ),
+          ],
+        ),
       ),
     ),
   );

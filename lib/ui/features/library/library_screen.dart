@@ -49,15 +49,17 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   children: [
                     CompiBrandHeader(
                       title: 'Library Materi',
-                      action: IconButton.filled(
-                        onPressed:
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const ProfileScreen(),
+                      action: PhysicalButton(
+                        child: IconButton.filled(
+                          onPressed:
+                              () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const ProfileScreen(),
+                                ),
                               ),
-                            ),
-                        icon: const Icon(Icons.person_outline),
+                          icon: const StudentAvatar(),
+                        ),
                       ),
                     ),
                     const Text(
@@ -91,15 +93,17 @@ class _LibraryScreenState extends State<LibraryScreen> {
                                 .map(
                                   (category) => Padding(
                                     padding: const EdgeInsets.only(right: 8),
-                                    child: ChoiceChip(
-                                      label: Text(category),
-                                      selected: _filter == category,
-                                      onSelected:
-                                          (_) => setState(
-                                            () => _filter = category,
-                                          ),
-                                      selectedColor: AppColors.yellow,
-                                      backgroundColor: AppColors.surface,
+                                    child: PhysicalButton(
+                                      child: ChoiceChip(
+                                        label: Text(category),
+                                        selected: _filter == category,
+                                        onSelected:
+                                            (_) => setState(
+                                              () => _filter = category,
+                                            ),
+                                        selectedColor: AppColors.yellow,
+                                        backgroundColor: AppColors.surface,
+                                      ),
                                     ),
                                   ),
                                 )
@@ -179,92 +183,94 @@ class _ComponentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final materials =
         dummyMaterials.where((m) => m.componentId == component.id).toList();
-    return InkWell(
-      onTap:
-          materials.isEmpty
-              ? null
-              : () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (_) => MaterialDetailScreen(
-                        component: component,
-                        material: materials.first,
-                      ),
+    return PhysicalButton(
+      child: InkWell(
+        onTap:
+            materials.isEmpty
+                ? null
+                : () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (_) => MaterialDetailScreen(
+                          component: component,
+                          material: materials.first,
+                        ),
+                  ),
                 ),
-              ),
-      child: CompiPanel(
-        padding: EdgeInsets.zero,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(18),
-              ),
-              child: Stack(
-                children: [
-                  HardwareImage(component: component, height: 140),
-                  Positioned(
-                    top: 6,
-                    right: 6,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryDark,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        component.hasModel ? '3D' : 'Materi',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
+        child: CompiPanel(
+          padding: EdgeInsets.zero,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(18),
+                ),
+                child: Stack(
+                  children: [
+                    HardwareImage(component: component, height: 140),
+                    Positioned(
+                      top: 6,
+                      right: 6,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryDark,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          component.hasModel ? '3D' : 'Materi',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${materials.length} MATERI',
-                    style: const TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 11,
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${materials.length} MATERI',
+                      style: const TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 11,
+                      ),
                     ),
-                  ),
-                  Text(
-                    component.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: AppColors.ink,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 17,
+                    Text(
+                      component.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppColors.ink,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 17,
+                      ),
                     ),
-                  ),
-                  Text(
-                    component.shortDescription,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: AppColors.textGray,
-                      fontSize: 12,
+                    Text(
+                      component.shortDescription,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppColors.textGray,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
