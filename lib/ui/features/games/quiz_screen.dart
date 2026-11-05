@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/app_colors.dart';
@@ -13,8 +15,68 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  static const int _questionTimeLimit = 10;
+
   int? _selected;
   bool _submitted = false;
+  int _timeRemaining = _questionTimeLimit;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _timeRemaining = _questionTimeLimit;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted || _submitted) {
+        timer.cancel();
+        return;
+      }
+
+      if (_timeRemaining <= 1) {
+        timer.cancel();
+        final quiz = context.read<QuizProvider>();
+        final question = quiz.currentQuestion;
+        if (question == null) return;
+
+        quiz.answerQuestion(-1);
+        context.read<AudioProvider?>()?.effect('wrong');
+        quiz.nextQuestion();
+        if (quiz.isFinished) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const GameResultScreen()),
+          );
+          return;
+        }
+
+        setState(() {
+          _selected = null;
+          _submitted = false;
+        });
+        _startTimer();
+        return;
+      }
+
+      setState(() => _timeRemaining--);
+    });
+  }
+
+  void _stopTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  @override
+  void dispose() {
+    _stopTimer();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final quiz = context.watch<QuizProvider>();
@@ -87,6 +149,62 @@ class _QuizScreenState extends State<QuizScreen> {
                   borderRadius: BorderRadius.circular(12),
                   color: AppColors.yellow,
                   backgroundColor: AppColors.primaryLight,
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color:
+                        _timeRemaining <= 5
+                            ? const Color(0xFFFFE1E1)
+                            : Colors.white,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color:
+                          _timeRemaining <= 5
+                              ? AppColors.error
+                              : AppColors.border,
+                      width: 2,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.timer_outlined,
+                        color:
+                            _timeRemaining <= 5
+                                ? AppColors.error
+                                : AppColors.primary,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Waktu tersisa untuk soal ini',
+                          style: TextStyle(
+                            color:
+                                _timeRemaining <= 5
+                                    ? AppColors.error
+                                    : AppColors.ink,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '00:${_timeRemaining.toString().padLeft(2, '0')}',
+                        style: TextStyle(
+                          color:
+                              _timeRemaining <= 5
+                                  ? AppColors.error
+                                  : AppColors.primary,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 16),
                 CompiPanel(
@@ -223,10 +341,11 @@ class _QuizScreenState extends State<QuizScreen> {
                           : 'Kirim Jawaban',
                   icon: Icons.send,
                   onPressed:
-                      _selected == null
+                      !_submitted && _selected == null
                           ? null
                           : () {
                             if (!_submitted) {
+                              _stopTimer();
                               quiz.answerQuestion(_selected!);
                               context.read<AudioProvider?>()?.effect(
                                 _selected == question.correctAnswerIndex
@@ -248,7 +367,9 @@ class _QuizScreenState extends State<QuizScreen> {
                               setState(() {
                                 _selected = null;
                                 _submitted = false;
+                                _timeRemaining = _questionTimeLimit;
                               });
+                              _startTimer();
                             }
                           },
                 ),
