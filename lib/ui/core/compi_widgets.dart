@@ -116,46 +116,42 @@ class CompiBrandHeader extends StatelessWidget {
       children: [
         Row(
           children: [
-            Expanded(
+            const Expanded(
               child: Align(
                 alignment: Alignment.centerLeft,
-                // Frame only the artwork in the original transparent PNG.
-                child: SizedBox(
-                  width: 180,
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: ClipRect(
-                      child: Align(
-                        widthFactor: 1417 / 2048,
-                        heightFactor: 426 / 2048,
-                        alignment: const Alignment(243 / 631, 252 / 1622),
-                        child: Image.asset(
-                          'assets/images/compi_header_v2.png',
-                          width: 260,
-                          height: 260,
-                          fit: BoxFit.contain,
-                          semanticLabel: 'COMPI — Computer Interactive 3D',
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                child: _CompiHorizontalLogo(),
               ),
             ),
             if (action != null) ...[const SizedBox(width: 12), action!],
           ],
         ),
-        const SizedBox(height: 6),
-        Text(
-          title,
-          textAlign: TextAlign.left,
-          style: const TextStyle(
-            color: AppColors.primaryDark,
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
+      ],
+    ),
+  );
+}
+
+class _CompiHorizontalLogo extends StatelessWidget {
+  const _CompiHorizontalLogo();
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: 168,
+    child: FittedBox(
+      fit: BoxFit.contain,
+      child: ClipRect(
+        child: Align(
+          widthFactor: 1417 / 2048,
+          heightFactor: 426 / 2048,
+          alignment: const Alignment(243 / 631, 252 / 1622),
+          child: Image.asset(
+            'assets/images/compi_header_v2.png',
+            width: 260,
+            height: 260,
+            fit: BoxFit.contain,
+            semanticLabel: 'COMPI — Computer Interactive 3D',
           ),
         ),
-      ],
+      ),
     ),
   );
 }
@@ -189,59 +185,9 @@ class CompiHeader extends StatelessWidget {
               onPressed: onBack,
               icon: const Icon(Icons.arrow_back),
             ),
-          )
-        else
-          // Remove transparent PNG margins in layout, preserving the artwork.
-          ClipRect(
-            child: Align(
-              widthFactor: .685,
-              heightFactor: .685,
-              child: Image.asset(
-                'assets/images/app_logo.png',
-                width: 82,
-                height: 82,
-                semanticLabel: 'Logo Compi',
-              ),
-            ),
           ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'COMPI 3D',
-                  style: TextStyle(
-                    fontFamily: AppTypography.displayFamily,
-                    color: Colors.white,
-                    fontSize: 24,
-                    height: 1.2,
-                    fontWeight: FontWeight.w400,
-                    shadows: [
-                      Shadow(
-                        color: AppColors.primaryDark,
-                        blurRadius: 3,
-                        offset: Offset(1, 2),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                title,
-                style: const TextStyle(
-                  color: AppColors.primaryDark,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
+        if (leading != null || onBack != null) const SizedBox(width: 12),
+        const Expanded(child: _CompiHorizontalLogo()),
         if (action != null) action!,
       ],
     ),
