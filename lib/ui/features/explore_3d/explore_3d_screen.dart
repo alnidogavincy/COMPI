@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
+import 'package:provider/provider.dart';
 import '../../../data/dummy_data.dart';
 import '../../../data/models/component_model.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
-import '../learning/material_detail_screen.dart';
+import '../../providers/audio_provider.dart';
+import '../../providers/learning_progress_provider.dart';
 
 class Explore3DScreen extends StatefulWidget {
   final ComponentModel? initialComponent;
@@ -27,8 +29,12 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final progress = context.watch<LearningProgressProvider>();
     final lessons =
         dummyMaterials.where((m) => m.componentId == _active.id).toList();
+    final allLessonsCompleted =
+        lessons.isNotEmpty &&
+        lessons.every((lesson) => progress.isMaterialCompleted(lesson.id));
     return Scaffold(
       body: CircuitBackground(
         child: SafeArea(
@@ -100,66 +106,82 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                 ),
                 const SizedBox(height: 14),
                 const SectionBanner(
-                  icon: Icons.settings,
-                  title: 'Komponen Terfokus',
+                  icon: Icons.menu_book,
+                  title: 'Materi Pembelajaran Lengkap',
                 ),
-                CompiPanel(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        _active.name,
-                        style: const TextStyle(
-                          color: AppColors.ink,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 24,
-                        ),
+                ...lessons.map(
+                  (lesson) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: CompiPanel(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            lesson.title,
+                            style: const TextStyle(
+                              color: AppColors.ink,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            lesson.content,
+                            style: const TextStyle(
+                              color: AppColors.ink,
+                              fontSize: 16,
+                              height: 1.5,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _active.fullDescription,
-                        style: const TextStyle(
-                          color: AppColors.textGray,
-                          fontSize: 15,
-                          height: 1.4,
-                        ),
-                      ),
-                      if (_active.specs != null) ...[
-                        const SizedBox(height: 12),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children:
-                              _active.specs!.entries
-                                  .map(
-                                    (e) => Chip(
-                                      label: Text('${e.key}: ${e.value}'),
-                                    ),
-                                  )
-                                  .toList(),
-                        ),
-                      ],
-                      const SizedBox(height: 12),
-                      CompiButton(
-                        label: 'Pelajari Materi Lengkap',
-                        onPressed:
-                            lessons.isEmpty
-                                ? null
-                                : () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (_) => MaterialDetailScreen(
-                                          component: _active,
-                                          material: lessons.first,
-                                        ),
-                                  ),
-                                ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 14),
+                if (_active.hotspots.isNotEmpty) ...[
+                  const SectionBanner(
+                    icon: Icons.place,
+                    title: 'Bagian Komponen',
+                  ),
+                  CompiPanel(
+                    child: Column(
+                      children:
+                          _active.hotspots
+                              .map(
+                                (hotspot) => PhysicalButton(
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    leading: const Icon(
+                                      Icons.memory,
+                                      color: AppColors.primary,
+                                    ),
+                                    title: Text(hotspot.label),
+                                    subtitle: Text(hotspot.description),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                ],
+                if (lessons.isNotEmpty)
+                  CompiButton(
+                    label:
+                        allLessonsCompleted
+                            ? 'Semua Materi Sudah Selesai Dibaca'
+                            : 'Tandai Selesai Dibaca',
+                    onPressed:
+                        allLessonsCompleted
+                            ? null
+                            : () {
+                              for (final lesson in lessons) {
+                                progress.completeMaterial(lesson.id);
+                              }
+                              context.read<AudioProvider?>()?.effect('star');
+                            },
+                  ),
+                if (lessons.isNotEmpty) const SizedBox(height: 14),
                 const SectionBanner(
                   icon: Icons.view_in_ar,
                   title: 'Pilih Model Lain',

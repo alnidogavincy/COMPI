@@ -5,7 +5,6 @@ import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
 import '../../core/hardware_image.dart';
 import '../explore_3d/explore_3d_screen.dart';
-import '../learning/material_detail_screen.dart';
 import '../profile/profile_screen.dart';
 
 class LibraryScreen extends StatefulWidget {
@@ -191,10 +190,7 @@ class _ComponentCard extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder:
-                        (_) => MaterialDetailScreen(
-                          component: component,
-                          material: materials.first,
-                        ),
+                        (_) => Explore3DScreen(initialComponent: component),
                   ),
                 ),
         child: CompiPanel(

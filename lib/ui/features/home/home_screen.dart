@@ -9,7 +9,6 @@ import '../../providers/learning_progress_provider.dart';
 import '../../providers/student_provider.dart';
 import '../explore_3d/explore_3d_screen.dart';
 import '../games/games_screen.dart';
-import '../learning/material_detail_screen.dart';
 import '../profile/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -203,9 +202,8 @@ class HomeScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder:
-                                (_) => MaterialDetailScreen(
-                                  component: nextComponent,
-                                  material: next,
+                                (_) => Explore3DScreen(
+                                  initialComponent: nextComponent,
                                 ),
                           ),
                         ),
