@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../data/dummy_data.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
 import '../../providers/learning_progress_provider.dart';
-import '../../providers/quiz_provider.dart';
 import '../profile/profile_screen.dart';
 import 'match_up_screen.dart';
-import 'quiz_screen.dart';
+import 'quiz_instructions_screen.dart';
 
 class GamesScreen extends StatelessWidget {
   const GamesScreen({super.key});
@@ -93,10 +91,11 @@ class GamesScreen extends StatelessWidget {
                 description:
                     'Asah pemahamanmu dengan soal dari seluruh materi pembelajaran.',
                 action: () {
-                  context.read<QuizProvider>().loadQuiz(dummyQuizQuestions);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const QuizScreen()),
+                    MaterialPageRoute(
+                      builder: (_) => const QuizInstructionsScreen(),
+                    ),
                   );
                 },
               ),
