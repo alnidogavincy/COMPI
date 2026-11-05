@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const CompiHeader(
                 title: 'Media Pembelajaran Perangkat Keras',
-                leading: SoundToggle(),
+                action: SoundToggle(),
               ),
               const SizedBox(height: 10),
               ClipRRect(

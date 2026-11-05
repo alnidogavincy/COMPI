@@ -6,6 +6,9 @@ import 'package:provider/provider.dart';
 import '../providers/student_provider.dart';
 export 'physical_button.dart';
 
+const double _compiLogoWidth = 150;
+const double _compiLogoHeight = 48;
+
 class StudentAvatar extends StatelessWidget {
   const StudentAvatar({super.key, this.radius = 16});
   final double radius;
@@ -135,7 +138,9 @@ class _CompiHorizontalLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    width: 168,
+    key: const ValueKey('compi-header-logo'),
+    width: _compiLogoWidth,
+    height: _compiLogoHeight,
     child: FittedBox(
       fit: BoxFit.contain,
       child: ClipRect(
@@ -173,9 +178,7 @@ class CompiHeader extends StatelessWidget {
     padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
     child: Row(
       children: [
-        if (leading != null)
-          leading!
-        else if (onBack != null)
+        if (onBack != null)
           PhysicalButton(
             child: IconButton.filled(
               style: IconButton.styleFrom(
@@ -186,9 +189,25 @@ class CompiHeader extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
             ),
           ),
-        if (leading != null || onBack != null) const SizedBox(width: 12),
-        const Expanded(child: _CompiHorizontalLogo()),
-        if (action != null) action!,
+        if (onBack != null) ...[
+          const SizedBox(width: 12),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (action != null) ...[action!, const SizedBox(width: 8)],
+                  const _CompiHorizontalLogo(),
+                ],
+              ),
+            ),
+          ),
+        ] else ...[
+          const _CompiHorizontalLogo(),
+          const Spacer(),
+          if (action != null) action! else if (leading != null) leading!,
+        ],
       ],
     ),
   );
