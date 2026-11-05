@@ -94,7 +94,6 @@ class _GameResultScreenState extends State<GameResultScreen> {
                 const SizedBox(height: 20),
                 CompiButton(
                   label: 'Kembali ke Menu Praktik',
-                  icon: Icons.sports_esports,
                   onPressed: () {
                     result.resetQuiz();
                     Navigator.pop(context);

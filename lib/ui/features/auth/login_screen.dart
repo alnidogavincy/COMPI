@@ -88,14 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Text(
-                      'Siswa SMK • Teknik Komputer & Jaringan',
-                      style: TextStyle(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-                    const Text(
                       'Selamat Datang!',
                       style: TextStyle(
                         color: AppColors.primaryDark,
@@ -136,14 +128,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.centerRight,
                       child: PhysicalButton(
                         child: TextButton(
-                          onPressed: () => _controller.text = 'Vikas',
+                          onPressed: () => _controller.text = 'Vika',
                           child: const Text('Contoh identitas: Vika'),
                         ),
                       ),
                     ),
                     CompiButton(
                       label: _busy ? 'Menyimpan...' : 'Mulai Belajar',
-                      icon: Icons.arrow_forward,
                       onPressed: _busy ? null : _start,
                     ),
                   ],

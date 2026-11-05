@@ -158,7 +158,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
                 child: CompiButton(
                   label: 'Eksplorasi Model 3D',
-                  icon: Icons.view_in_ar,
                   onPressed:
                       () => Navigator.push(
                         context,

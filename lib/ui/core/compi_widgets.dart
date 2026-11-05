@@ -314,13 +314,11 @@ class SectionBanner extends StatelessWidget {
 
 class CompiButton extends StatelessWidget {
   final String label;
-  final IconData icon;
   final VoidCallback? onPressed;
   final bool secondary;
   const CompiButton({
     super.key,
     required this.label,
-    required this.icon,
     required this.onPressed,
     this.secondary = false,
   });
@@ -328,10 +326,8 @@ class CompiButton extends StatelessWidget {
   Widget build(BuildContext context) => SizedBox(
     width: double.infinity,
     child: PhysicalButton(
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: onPressed,
-        icon: Icon(icon),
-        label: Text(label),
         style: ElevatedButton.styleFrom(
           backgroundColor:
               secondary ? AppColors.primaryLight : AppColors.orange,
@@ -341,6 +337,7 @@ class CompiButton extends StatelessWidget {
             width: 2,
           ),
         ),
+        child: Text(label),
       ),
     ),
   );

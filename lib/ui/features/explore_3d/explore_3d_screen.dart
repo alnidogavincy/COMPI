@@ -150,7 +150,6 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                             const SizedBox(height: 12),
                             CompiButton(
                               label: 'Pelajari Materi Lengkap',
-                              icon: Icons.menu_book,
                               onPressed:
                                   lessons.isEmpty
                                       ? null

@@ -179,7 +179,7 @@ class _ModeCard extends StatelessWidget {
                 child: PhysicalButton(
                   child: ElevatedButton(
                     onPressed: action,
-                    child: const Text('Mulai →'),
+                    child: const Text('Mulai'),
                   ),
                 ),
               ),

@@ -149,7 +149,6 @@ class MaterialDetailScreen extends StatelessWidget {
                       completed
                           ? 'Sudah Selesai Dibaca'
                           : 'Tandai Selesai Dibaca',
-                  icon: Icons.check_circle,
                   onPressed:
                       completed
                           ? null
@@ -164,7 +163,6 @@ class MaterialDetailScreen extends StatelessWidget {
                 if (component.hasModel)
                   CompiButton(
                     label: 'Lihat Model 3D',
-                    icon: Icons.view_in_ar,
                     secondary: true,
                     onPressed:
                         () => Navigator.push(
@@ -215,7 +213,6 @@ class MaterialDetailScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   CompiButton(
                     label: 'Lanjut ke ${nextComponent.name}',
-                    icon: Icons.arrow_forward,
                     onPressed:
                         () => Navigator.pushReplacement(
                           context,

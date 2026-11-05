@@ -101,7 +101,6 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     CompiButton(
                       label: 'Mulai Eksplorasi 3D',
-                      icon: Icons.play_arrow,
                       onPressed:
                           () => Navigator.push(
                             context,

@@ -202,7 +202,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 20),
                 CompiButton(
                   label: 'Ubah Identitas',
-                  icon: Icons.edit,
                   secondary: true,
                   onPressed: () async {
                     final controller = TextEditingController(
@@ -251,7 +250,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 18),
                 CompiButton(
                   label: 'Identitas Pengembang',
-                  icon: Icons.groups_2_outlined,
                   secondary: true,
                   onPressed:
                       () => Navigator.push(
@@ -264,7 +262,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 12),
                 CompiButton(
                   label: 'Kredit Model 3D',
-                  icon: Icons.attribution,
                   secondary: true,
                   onPressed:
                       () => Navigator.push(

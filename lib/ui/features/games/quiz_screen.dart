@@ -339,7 +339,6 @@ class _QuizScreenState extends State<QuizScreen> {
                               ? 'Lihat Hasil'
                               : 'Soal Berikutnya')
                           : 'Kirim Jawaban',
-                  icon: Icons.send,
                   onPressed:
                       !_submitted && _selected == null
                           ? null

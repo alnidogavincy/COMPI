@@ -199,7 +199,6 @@ class _MatchUpScreenState extends State<MatchUpScreen> {
               const SizedBox(height: 8),
               CompiButton(
                 label: _isSubmitted ? 'Lihat Hasil' : 'Kirim Jawaban',
-                icon: _isSubmitted ? Icons.emoji_events : Icons.send,
                 onPressed:
                     _answers.length != dummyComponents.length
                         ? null
