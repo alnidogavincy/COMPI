@@ -4,7 +4,7 @@ import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
 import '../../providers/learning_progress_provider.dart';
 import '../profile/profile_screen.dart';
-import 'match_up_screen.dart';
+import 'match_up_instructions_screen.dart';
 import 'quiz_instructions_screen.dart';
 
 class GamesScreen extends StatelessWidget {
@@ -107,7 +107,9 @@ class GamesScreen extends StatelessWidget {
                 action:
                     () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const MatchUpScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const MatchUpInstructionsScreen(),
+                      ),
                     ),
               ),
               const SizedBox(height: 14),
