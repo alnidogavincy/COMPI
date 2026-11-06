@@ -50,6 +50,25 @@ void main() {
       MaterialPageRoute(builder: (_) => const ProfileScreen()),
     );
     await tester.pumpAndSettle();
+    expect(find.text('Ubah Foto Profil'), findsNothing);
+    await tester.tap(find.text('Ubah Avatar'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('avatar_3')));
+    await tester.tap(find.text('Batal'));
+    await tester.pumpAndSettle();
+    expect(student.avatarId, 'default');
+    await tester.tap(find.text('Ubah Avatar'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('avatar_2')));
+    await tester.tap(find.text('Simpan'));
+    await tester.pumpAndSettle();
+    expect(student.avatarId, 'avatar_2');
+    expect(StudentProvider(prefs).avatarId, 'avatar_2');
+    expect(
+      find.image(const AssetImage('assets/images/avatars/avatar_2.jpeg')),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
     expect(find.text('Identitas Pengembang'), findsOneWidget);
     expect(find.text('Nama belum diisi'), findsNothing);
     await tester.ensureVisible(find.text('Identitas Pengembang'));

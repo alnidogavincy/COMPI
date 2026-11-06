@@ -1,6 +1,5 @@
+import 'avatar_picker_dialog.dart';
 import 'package:flutter/material.dart';
-import '../../core/profile_photo.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../../data/dummy_data.dart';
 import '../../core/app_colors.dart';
@@ -19,36 +18,28 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _loggingOut = false;
-  bool _savingPhoto = false;
+  bool _savingAvatar = false;
 
-  Future<void> _pickPhoto() async {
-    setState(() => _savingPhoto = true);
+  Future<void> _pickAvatar() async {
+    setState(() => _savingAvatar = true);
     try {
-      final selected = await ImagePicker().pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 512,
-        maxHeight: 512,
-        imageQuality: 80,
+      final student = context.read<StudentProvider>();
+      final selected = await showDialog<String>(
+        context: context,
+        builder: (_) => AvatarPickerDialog(currentId: student.avatarId),
       );
       if (selected == null || !mounted) return;
-      if (await selected.length() > 10 * 1024 * 1024) {
-        throw const FormatException('Pilih gambar di bawah 10 MB.');
-      }
-      final bytes = await prepareProfilePhoto(await selected.readAsBytes());
-      if (!mounted) return;
-      await context.read<StudentProvider>().savePhoto(bytes);
+      await student.saveAvatar(selected);
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text(
-              'Foto gagal disimpan. Pilih JPG/PNG di bawah 10 MB dan izinkan akses galeri.',
-            ),
+            content: Text('Avatar gagal disimpan. Silakan coba lagi.'),
           ),
         );
       }
     } finally {
-      if (mounted) setState(() => _savingPhoto = false);
+      if (mounted) setState(() => _savingAvatar = false);
     }
   }
 
@@ -95,41 +86,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const StudentAvatar(radius: 40),
                       PhysicalButton(
                         child: TextButton.icon(
-                          onPressed: _savingPhoto ? null : _pickPhoto,
-                          icon: const Icon(Icons.add_a_photo_outlined),
+                          onPressed: _savingAvatar ? null : _pickAvatar,
+                          icon: const Icon(Icons.face_retouching_natural),
                           label: Text(
-                            _savingPhoto
-                                ? 'Menyimpan foto...'
-                                : 'Ubah Foto Profil',
+                            _savingAvatar
+                                ? 'Menyimpan avatar...'
+                                : 'Ubah Avatar',
                           ),
                         ),
                       ),
-                      if (student.photo != null)
-                        PhysicalButton(
-                          child: TextButton(
-                            onPressed:
-                                _savingPhoto
-                                    ? null
-                                    : () async {
-                                      try {
-                                        await student.savePhoto(null);
-                                      } catch (_) {
-                                        if (context.mounted) {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                'Foto gagal dihapus. Coba lagi.',
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    },
-                            child: const Text('Hapus Foto'),
-                          ),
-                        ),
                       const SizedBox(height: 10),
                       Text(
                         student.identity.isEmpty

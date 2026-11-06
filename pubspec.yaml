@@ -14,8 +14,6 @@ dependencies:
   model_viewer_plus: ^1.10.0
   shared_preferences: ^2.5.6
   audioplayers: ^6.8.1
-  image_picker: ^1.2.4
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -46,3 +44,4 @@ flutter:
     - assets/audio/
     - assets/models/
     - assets/images/
+    - assets/images/avatars/

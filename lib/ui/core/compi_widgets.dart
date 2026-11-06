@@ -1,3 +1,4 @@
+import '../../data/avatar_catalog.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_typography.dart';
@@ -14,7 +15,7 @@ class StudentAvatar extends StatelessWidget {
   final double radius;
   @override
   Widget build(BuildContext context) {
-    final photo = context.watch<StudentProvider?>()?.photo;
+    final avatar = findAvatar(context.watch<StudentProvider?>()?.avatarId);
     final fallback = Icon(
       Icons.person_outline,
       color: Colors.white,
@@ -24,11 +25,11 @@ class StudentAvatar extends StatelessWidget {
       radius: radius,
       backgroundColor: AppColors.primary,
       child:
-          photo == null
+          avatar == null
               ? fallback
               : ClipOval(
-                child: Image.memory(
-                  photo,
+                child: Image.asset(
+                  avatar.asset,
                   width: radius * 2,
                   height: radius * 2,
                   fit: BoxFit.cover,

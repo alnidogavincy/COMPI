@@ -13,23 +13,23 @@
   PhysicalButton: naik 3 px saat hover, turun ke +1 px saat ditekan, 140 ms.
   Tombol nonaktif dan preferensi reduced-motion tidak dianimasikan.
   Navigasi bawah tidak diubah dan tidak dibungkus efek ini.
-- Profil menyediakan Ubah Foto Profil (galeri/pemilih berkas) dan Hapus Foto.
-  Foto disimpan sebagai PNG lokal maksimal sisi 384 px, rasio asli dipertahankan;
-  tampilan avatar berbentuk lingkaran. Input dibatasi 10 MB, data tersimpan
-  dibatasi 1 MB. Foto tampil juga pada tombol profil di tab utama.
-- Foto tersimpan pada `student_photo`, dihapus saat logout agar identitas
-  berikutnya tidak memakai foto sebelumnya. Key `user_progress` tidak berubah.
+- Profil menyediakan Ubah Avatar: empat karakter dari gambar tertanam pada
+  komponen referensi pengguna, dan avatar default. Panel pilihan memakai
+  Batal/Simpan; perubahan hanya diterapkan setelah Simpan. Seluruh gambar
+  dibundel offline (~35 KB), tanpa izin galeri atau ketergantungan image_picker.
+- ID avatar disimpan pada `student_avatar`; pilihan tidak dikenal kembali ke
+  default. Avatar tampil pada profil dan tombol profil di tab utama.
+  Foto lama tidak lagi ditampilkan; data `student_photo` lama dibersihkan saat
+  logout, bersama pilihan avatar. Key `user_progress` tidak berubah.
 - Catatan sumber audio tersimpan di assets/audio/CREDITS.md; tidak ada panel Kredit Audio di UI.
 
 ## Verifikasi
 
-Tes otomatis mencakup mute/persistensi/background-resume, penyimpanan dan
-penghapusan foto, preservasi rasio, batas ukuran, serta hover/press/disabled.
+Tes otomatis mencakup mute/persistensi/background-resume, pemilihan/batal/simpan avatar, persistensi dan logout, serta hover/press/disabled.
 Tes navigasi layar kecil, profil/logout, kuis, dan Match turut dijalankan.
 
 Uji perangkat yang masih diperlukan: dengarkan loop/transisi audio di Android,
-background/resume saat viewer 3D aktif, pilih foto dari galeri nyata, dan uji
-penolakan izin. Untuk web, klik halaman dahulu sebelum mengharapkan musik.
+background/resume saat viewer 3D aktif, pemilihan avatar, relaunch, dan logout di perangkat nyata. Untuk web, klik halaman dahulu sebelum mengharapkan musik.
 
 Tes katalog hardware lama menemukan kategori tanpa soal; ini tidak berkaitan
 dengan perubahan audio/foto dan konten kuis tidak diubah dalam pekerjaan ini.

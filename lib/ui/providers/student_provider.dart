@@ -1,34 +1,28 @@
 import 'package:flutter/foundation.dart';
-import 'dart:convert';
+import '../../data/avatar_catalog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentProvider extends ChangeNotifier {
   static const key = 'student_identity';
   final SharedPreferences _prefs;
   String _identity;
-  static const photoKey = 'student_photo';
-  Uint8List? _photo;
-  Uint8List? get photo => _photo;
+  static const avatarKey = 'student_avatar';
+  String _avatarId = 'default';
+  String get avatarId => _avatarId;
 
   StudentProvider(this._prefs) : _identity = _prefs.getString(key) ?? '' {
-    try {
-      final saved = _prefs.getString(photoKey);
-      if (saved != null) _photo = base64Decode(saved);
-    } on FormatException {
-      _photo = null;
-    }
+    final saved = _prefs.getString(avatarKey);
+    _avatarId = findAvatar(saved)?.id ?? 'default';
   }
 
-  Future<void> savePhoto(Uint8List? bytes) async {
-    if (bytes != null && bytes.length > 1024 * 1024) {
-      throw ArgumentError('Foto terlalu besar');
+  Future<void> saveAvatar(String id) async {
+    if (id != 'default' && findAvatar(id) == null) {
+      throw ArgumentError('Avatar tidak tersedia');
     }
-    final saved =
-        bytes == null
-            ? await _prefs.remove(photoKey)
-            : await _prefs.setString(photoKey, base64Encode(bytes));
-    if (!saved) throw StateError('Foto gagal disimpan');
-    _photo = bytes;
+    if (!await _prefs.setString(avatarKey, id)) {
+      throw StateError('Avatar gagal disimpan');
+    }
+    _avatarId = id;
     notifyListeners();
   }
 
@@ -36,7 +30,11 @@ class StudentProvider extends ChangeNotifier {
   bool get hasIdentity => _identity.trim().isNotEmpty;
 
   Future<void> logout() async {
-    await savePhoto(null);
+    if (!await _prefs.remove(avatarKey)) {
+      throw StateError('Avatar gagal dihapus');
+    }
+    await _prefs.remove('student_photo');
+    _avatarId = 'default';
     if (!await _prefs.remove(key)) {
       throw StateError('Gagal keluar dari akun');
     }

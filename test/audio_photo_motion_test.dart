@@ -1,7 +1,5 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:compi/ui/core/physical_button.dart';
-import 'package:compi/ui/core/profile_photo.dart';
 import 'package:compi/ui/providers/audio_provider.dart';
 import 'package:compi/ui/providers/student_provider.dart';
 import 'package:flutter/material.dart';
@@ -71,48 +69,22 @@ void main() {
     audio.dispose();
   });
 
-  test(
-    'photo persists locally and logout preserves learning progress',
-    () async {
-      SharedPreferences.setMockInitialValues({'user_progress': 'keep'});
-      final prefs = await SharedPreferences.getInstance();
-      final student = StudentProvider(prefs);
-      await student.save('Vika');
-      final bytes = Uint8List.fromList([1, 2, 3]);
-      await student.savePhoto(bytes);
-      expect(StudentProvider(prefs).photo, bytes);
-      await expectLater(
-        student.savePhoto(Uint8List(1024 * 1024 + 1)),
-        throwsArgumentError,
-      );
-      expect(student.photo, bytes);
-      await student.logout();
-      expect(StudentProvider(prefs).photo, isNull);
-      expect(prefs.getString('user_progress'), 'keep');
-    },
-  );
-
-  testWidgets('photo conversion bounds dimensions without stretching', (
-    tester,
-  ) async {
-    await tester.runAsync(() async {
-      final recorder = ui.PictureRecorder();
-      final canvas = Canvas(recorder);
-      canvas.drawColor(Colors.blue, BlendMode.src);
-      final picture = recorder.endRecording();
-      final input = await picture.toImage(800, 400);
-      final data = await input.toByteData(format: ui.ImageByteFormat.png);
-      final result = await prepareProfilePhoto(data!.buffer.asUint8List());
-      final codec = await ui.instantiateImageCodec(result);
-      final frame = await codec.getNextFrame();
-      expect(frame.image.width, 384);
-      expect(frame.image.height, 192);
-      expect(result.length, lessThan(1024 * 1024));
-      frame.image.dispose();
-      codec.dispose();
-      input.dispose();
-      picture.dispose();
+  test('avatar persists and logout preserves learning progress', () async {
+    SharedPreferences.setMockInitialValues({
+      'user_progress': 'keep',
+      'student_photo': 'legacy',
     });
+    final prefs = await SharedPreferences.getInstance();
+    final student = StudentProvider(prefs);
+    await student.save('Vika');
+    await student.saveAvatar('avatar_2');
+    expect(StudentProvider(prefs).avatarId, 'avatar_2');
+    await expectLater(student.saveAvatar('unknown'), throwsArgumentError);
+    expect(student.avatarId, 'avatar_2');
+    await student.logout();
+    expect(StudentProvider(prefs).avatarId, 'default');
+    expect(prefs.containsKey('student_photo'), isFalse);
+    expect(prefs.getString('user_progress'), 'keep');
   });
 
   testWidgets('hover raises button, press lowers it; disabled stays still', (
