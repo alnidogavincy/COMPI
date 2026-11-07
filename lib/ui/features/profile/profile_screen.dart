@@ -1,7 +1,6 @@
 import 'avatar_picker_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../data/dummy_data.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
 import '../../providers/learning_progress_provider.dart';
@@ -65,7 +64,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final student = context.watch<StudentProvider>();
     final progress = context.watch<LearningProgressProvider>();
-    final total = dummyMaterials.length;
     return Scaffold(
       body: CircuitBackground(
         child: SafeArea(
@@ -74,10 +72,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                CompiHeader(
-                  title: 'Profil & Progress',
-                  onBack: () => Navigator.pop(context),
-                  action: const SoundToggle(),
+                Row(
+                  children: [
+                    PhysicalButton(
+                      child: IconButton.filled(
+                        onPressed: () => Navigator.pop(context),
+                        style: IconButton.styleFrom(
+                          backgroundColor: AppColors.orange,
+                        ),
+                        icon: const Icon(Icons.arrow_back),
+                      ),
+                    ),
+                    const Expanded(child: Center(child: ProfileWordmark())),
+                    const SoundToggle(),
+                  ],
                 ),
                 const SizedBox(height: 20),
                 CompiPanel(
@@ -113,44 +121,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 18),
-                const SectionBanner(
-                  icon: Icons.bar_chart,
-                  title: 'Progress Belajar',
-                ),
-                CompiPanel(
-                  child: Column(
-                    children: [
-                      Text(
-                        '${progress.completedCount} dari $total materi selesai',
-                        style: const TextStyle(
-                          color: AppColors.ink,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      LinearProgressIndicator(
-                        value:
-                            total == 0
-                                ? 0
-                                : (progress.completedCount / total).clamp(0, 1),
-                        minHeight: 12,
-                        color: AppColors.orange,
-                        backgroundColor: AppColors.primaryLight,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Skor tertinggi: ${progress.highestScore}/100',
-                        style: const TextStyle(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 if (progress.badges.isNotEmpty) ...[
                   const SizedBox(height: 18),
                   const SectionBanner(icon: Icons.emoji_events, title: 'Badge'),
@@ -164,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ],
-                const SizedBox(height: 20),
+                const SizedBox(height: 12),
                 CompiButton(
                   label: 'Ubah Identitas',
                   secondary: true,
@@ -212,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     }
                   },
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: 12),
                 CompiButton(
                   label: 'Identitas Pengembang',
                   secondary: true,
@@ -255,4 +225,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+}
+
+/// Clip only transparent margins; retain the supplied PNG unchanged.
+class ProfileWordmark extends StatelessWidget {
+  const ProfileWordmark({super.key});
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: 170,
+    height: 76,
+    child: FittedBox(
+      child: ClipRect(
+        child: Align(
+          widthFactor: 1640 / 2048,
+          heightFactor: 704 / 2048,
+          alignment: const Alignment(32 / 408, 112 / 1344),
+          child: Image.asset(
+            'assets/images/profile_wordmark.png',
+            width: 256,
+            height: 256,
+          ),
+        ),
+      ),
+    ),
+  );
 }

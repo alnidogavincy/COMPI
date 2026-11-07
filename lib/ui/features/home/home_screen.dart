@@ -1,3 +1,4 @@
+import 'learning_achievement_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../data/dummy_data.dart';
@@ -17,8 +18,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final progress = context.watch<LearningProgressProvider>();
     final name = context.watch<StudentProvider>().identity;
-    final total = dummyMaterials.length;
-    final done = progress.completedCount.clamp(0, total);
+
     final next =
         dummyMaterials
             .where((m) => !progress.isMaterialCompleted(m.id))
@@ -96,7 +96,9 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const HardwareShowcase(),
+                    const HardwareShowcase(
+                      asset: 'assets/images/home_workspace.png',
+                    ),
                     const SizedBox(height: 12),
                     CompiButton(
                       label: 'Mulai Eksplorasi 3D',
@@ -116,43 +118,7 @@ class HomeScreen extends StatelessWidget {
                 icon: Icons.bar_chart_rounded,
                 title: 'Progress Belajar',
               ),
-              CompiPanel(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          '${total == 0 ? 0 : (done * 100 ~/ total)}%',
-                          style: const TextStyle(
-                            fontSize: 42,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            '$done dari $total materi selesai',
-                            style: const TextStyle(
-                              color: AppColors.ink,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    LinearProgressIndicator(
-                      value: total == 0 ? 0 : done / total,
-                      minHeight: 12,
-                      borderRadius: BorderRadius.circular(12),
-                      color: AppColors.orange,
-                      backgroundColor: AppColors.primaryLight,
-                    ),
-                  ],
-                ),
-              ),
+              LearningAchievementList(progress: progress),
               const SizedBox(height: 16),
               const SectionBanner(icon: Icons.settings, title: 'Akses Cepat'),
               const SizedBox(height: 8),

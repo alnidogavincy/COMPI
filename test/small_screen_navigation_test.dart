@@ -2,6 +2,7 @@ import 'package:compi/data/repositories/content_repository.dart';
 import 'package:compi/data/repositories/progress_repository.dart';
 import 'package:compi/data/dummy_data.dart';
 import 'package:compi/main.dart';
+import 'package:compi/ui/features/auth/splash_loading_bar.dart';
 import 'package:compi/ui/features/learning/material_detail_screen.dart';
 import 'package:compi/ui/providers/learning_progress_provider.dart';
 import 'package:flutter/material.dart';
@@ -27,16 +28,23 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 1000));
     expect(find.text('Selamat Datang!'), findsNothing);
+    expect(find.byType(SplashLoadingBar), findsNothing);
     expect(
-      find.image(const AssetImage('assets/images/splash_brand.png')),
+      find.image(
+        ResizeImage.resizeIfNeeded(
+          640,
+          null,
+          const AssetImage('assets/images/splash_reveal_logo.png'),
+        ),
+      ),
       findsOneWidget,
     );
-    await tester.pump(const Duration(milliseconds: 2500));
+    await tester.pump(const Duration(milliseconds: 1100));
+    expect(find.byType(SplashLoadingBar), findsOneWidget);
+    expect(find.text('Selamat Datang!'), findsNothing);
+    await tester.pump(const Duration(milliseconds: 1400));
     await tester.pumpAndSettle();
-    expect(find.text('Selamat Datang!'), findsOneWidget);
-    await tester.ensureVisible(find.text('Mulai Belajar'));
-    await tester.tap(find.text('Mulai Belajar'));
-    await tester.pumpAndSettle();
+    expect(find.text('Selamat Datang!'), findsNothing);
     expect(find.textContaining('Halo, Siswa Uji'), findsOneWidget);
     expect(tester.takeException(), isNull);
     await tester.tap(find.text('Materi').last);

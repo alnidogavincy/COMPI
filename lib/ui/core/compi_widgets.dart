@@ -45,6 +45,7 @@ class CircuitBackground extends StatelessWidget {
   const CircuitBackground({super.key, required this.child});
   @override
   Widget build(BuildContext context) => Container(
+    constraints: const BoxConstraints.expand(),
     decoration: const BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topLeft,
@@ -249,14 +250,8 @@ class SectionBanner extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
     decoration: const BoxDecoration(
-      gradient: LinearGradient(
-        colors: [AppColors.yellow, AppColors.orange, AppColors.primary],
-      ),
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-        bottomRight: Radius.circular(12),
-      ),
+      color: AppColors.orange,
+      borderRadius: BorderRadius.all(Radius.circular(20)),
     ),
     child: Row(
       children: [

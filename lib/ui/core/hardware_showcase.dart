@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 /// Keep the complete supplied composition visible at its original proportions.
 class HardwareShowcase extends StatelessWidget {
-  const HardwareShowcase({super.key});
+  const HardwareShowcase({
+    super.key,
+    this.asset = 'assets/images/hardware_showcase.png',
+  });
+  final String asset;
 
   @override
   Widget build(BuildContext context) => ClipRRect(
@@ -10,7 +14,7 @@ class HardwareShowcase extends StatelessWidget {
     child: AspectRatio(
       aspectRatio: 1672 / 941,
       child: Image.asset(
-        'assets/images/hardware_showcase.png',
+        asset,
         fit: BoxFit.contain,
         semanticLabel: 'Komponen komputer: RAM, CPU, GPU, pendingin, dan SSD',
       ),
