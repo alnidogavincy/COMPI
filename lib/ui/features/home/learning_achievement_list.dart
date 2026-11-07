@@ -14,6 +14,12 @@ class LearningAchievementList extends StatelessWidget {
         dummyMaterials.where((m) => progress.isMaterialCompleted(m.id)).length;
     return Column(
       children: [
+        if (progress.saveError != null)
+          TextButton.icon(
+            onPressed: progress.retrySave,
+            icon: const Icon(Icons.sync_problem, color: AppColors.error),
+            label: Text('${progress.saveError} Ketuk untuk simpan ulang.'),
+          ),
         _row(
           'Perjalanan Belajarmu',
           '$done dari $total materi selesai',

@@ -32,11 +32,21 @@ class UserProgressModel {
 
   factory UserProgressModel.fromJson(Map<String, dynamic> json) {
     return UserProgressModel(
-      completedMaterials:
-          List<String>.from(json['completedMaterials'] as List? ?? []),
-      highestQuizScore: json['highestQuizScore'] as int? ?? 0,
-      unlockedBadges:
-          List<String>.from(json['unlockedBadges'] as List? ?? []),
+      completedMaterials: _strings(json['completedMaterials']),
+      highestQuizScore:
+          json['highestQuizScore'] is int
+              ? (json['highestQuizScore'] as int).clamp(0, 100)
+              : 0,
+      unlockedBadges: _strings(json['unlockedBadges']),
     );
   }
+
+  static List<String> _strings(dynamic value) =>
+      value is List
+          ? value
+              .whereType<String>()
+              .where((s) => s.isNotEmpty)
+              .toSet()
+              .toList()
+          : [];
 }

@@ -99,6 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 24),
                           const Text(
                             'Identitas Siswa',
+                            textAlign: TextAlign.left,
                             style: TextStyle(
                               color: AppColors.ink,
                               fontWeight: FontWeight.w700,
@@ -121,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           Align(
-                            alignment: Alignment.centerRight,
+                            alignment: Alignment.center,
                             child: PhysicalButton(
                               child: TextButton(
                                 onPressed: () => _controller.text = 'Vika',

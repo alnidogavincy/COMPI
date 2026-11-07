@@ -178,7 +178,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     if (value != null &&
                         value.trim().isNotEmpty &&
                         context.mounted) {
-                      await student.save(value);
+                      try {
+                        await student.save(value);
+                      } catch (_) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Identitas gagal disimpan. Coba lagi.',
+                              ),
+                            ),
+                          );
+                        }
+                      }
                     }
                   },
                 ),

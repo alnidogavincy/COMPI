@@ -15,20 +15,18 @@ void main() {
     );
 
     expect(
-      find.image(const AssetImage('assets/images/compi_header_v2.png')),
+      find.image(const AssetImage('assets/images/profile_wordmark.png')),
       findsOneWidget,
     );
     expect(
       find.byWidgetPredicate(
         (widget) =>
-            widget is SizedBox && widget.width == 150 && widget.height == 48,
+            widget is SizedBox && widget.width == 138 && widget.height == 58,
       ),
       findsOneWidget,
     );
     expect(find.text('Petunjuk Latihan'), findsNothing);
-    final logoRect = tester.getRect(
-      find.byKey(const ValueKey('compi-header-logo')),
-    );
+    final logoRect = tester.getRect(find.byType(CompiWordmark));
     final logicalWidth =
         tester.view.physicalSize.width / tester.view.devicePixelRatio;
     expect(logoRect.right, greaterThan(logicalWidth / 2));
@@ -92,9 +90,7 @@ void main() {
       ),
     );
 
-    final logoRect = tester.getRect(
-      find.byKey(const ValueKey('compi-header-logo')),
-    );
+    final logoRect = tester.getRect(find.byKey(const ValueKey('compi-header-logo')));
     final actionRect = tester.getRect(
       find.byKey(const ValueKey('sound-action')),
     );

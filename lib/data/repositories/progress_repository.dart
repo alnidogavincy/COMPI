@@ -9,7 +9,9 @@ class ProgressRepository {
   ProgressRepository(this._prefs);
   SharedPreferences get preferences => _prefs;
 
-  Future<UserProgressModel> getProgress() async {
+  Future<UserProgressModel> getProgress() async => readProgress();
+
+  UserProgressModel readProgress() {
     final String? progressJson = _prefs.getString(_progressKey);
     if (progressJson != null) {
       try {
@@ -25,6 +27,8 @@ class ProgressRepository {
 
   Future<void> saveProgress(UserProgressModel progress) async {
     final String progressJson = jsonEncode(progress.toJson());
-    await _prefs.setString(_progressKey, progressJson);
+    if (!await _prefs.setString(_progressKey, progressJson)) {
+      throw StateError('Progres gagal disimpan');
+    }
   }
 }

@@ -1,3 +1,4 @@
+import '../../core/halftone_paper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/app_colors.dart';
@@ -41,54 +42,54 @@ class GamesScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(22),
+                clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      AppColors.primaryDark,
-                      AppColors.primary,
-                      AppColors.cyan,
-                    ],
-                  ),
+                  color: const Color(0xFF167AC6),
                   borderRadius: BorderRadius.circular(22),
                   border: Border.all(color: AppColors.yellow, width: 4),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/practice_trophy.png',
-                      height: 104,
-                      width: 104,
-                      fit: BoxFit.contain,
-                      cacheWidth: 260,
-                      semanticLabel: 'Piala tantangan',
+                child: CustomPaint(
+                  painter: const HalftonePaperPainter(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(22),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/practice_trophy.png',
+                          height: 104,
+                          width: 104,
+                          fit: BoxFit.contain,
+                          cacheWidth: 260,
+                          semanticLabel: 'Piala tantangan',
+                        ),
+                        const Text(
+                          'UJI PEMAHAMAN',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.yellow,
+                            fontSize: 29,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const Text(
+                          'Uji pengetahuanmu tentang perangkat keras komputer!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                        const SizedBox(height: 14),
+                        Text(
+                          'Skor tertinggi: $best/100',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
                     ),
-                    const Text(
-                      'UJI PEMAHAMAN',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: AppColors.yellow,
-                        fontSize: 29,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const Text(
-                      'Uji pengetahuanmu tentang perangkat keras komputer!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    const SizedBox(height: 14),
-                    Text(
-                      'Skor tertinggi: $best/100',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
               const SizedBox(height: 16),

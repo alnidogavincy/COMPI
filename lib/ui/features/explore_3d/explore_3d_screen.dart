@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:model_viewer_plus/model_viewer_plus.dart';
+import 'hardware_model_viewer.dart';
 import 'package:provider/provider.dart';
 import '../../../data/dummy_data.dart';
 import '../../../data/models/component_model.dart';
@@ -70,19 +70,31 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                     child: Stack(
                       children: [
                         Positioned.fill(
-                          child: ModelViewer(
+                          child: HardwareModelViewer(
                             key: ValueKey('${_active.id}-$_viewerRevision'),
                             src: _active.modelPath,
-                            alt: 'Model 3D ${_active.name}',
-                            cameraControls: true,
-                            autoRotate: false,
-                            backgroundColor: AppColors.primaryDark,
+                            name: _active.name,
                           ),
                         ),
                         const Positioned(
                           left: 12,
                           top: 12,
-                          child: Chip(label: Text('MODEL 3D INTERAKTIF')),
+                          child: IgnorePointer(
+                            child: Chip(
+                              visualDensity: VisualDensity.compact,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              padding: EdgeInsets.zero,
+                              labelPadding: EdgeInsets.symmetric(horizontal: 6),
+                              label: Text(
+                                'MODEL 3D INTERAKTIF',
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                         const Positioned(
                           left: 12,
@@ -93,7 +105,8 @@ class _Explore3DScreenState extends State<Explore3DScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 10,
                               shadows: [
                                 Shadow(color: Colors.black, blurRadius: 4),
                               ],

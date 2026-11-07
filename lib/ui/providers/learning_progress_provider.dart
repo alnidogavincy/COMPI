@@ -8,8 +8,14 @@ class LearningProgressProvider extends ChangeNotifier {
   UserProgressModel _progress = const UserProgressModel();
 
   LearningProgressProvider(this._repository) {
-    _loadProgress();
+    _progress = _repository.readProgress();
   }
+
+  Future<void> _pendingSave = Future.value();
+  String? saveError;
+  bool _disposed = false;
+  Future<void> get settled => _pendingSave;
+  Future<void> retrySave() => _saveProgress();
 
   /// Progres belajar saat ini.
   UserProgressModel get progress => _progress;
@@ -23,13 +29,24 @@ class LearningProgressProvider extends ChangeNotifier {
   /// Daftar badge yang sudah dibuka.
   List<String> get badges => _progress.unlockedBadges;
 
-  Future<void> _loadProgress() async {
-    _progress = await _repository.getProgress();
-    notifyListeners();
+  Future<void> _saveProgress() async {
+    final snapshot = _progress;
+    _pendingSave = _pendingSave.then((_) async {
+      try {
+        await _repository.saveProgress(snapshot);
+        saveError = null;
+      } catch (_) {
+        saveError = 'Progres belum tersimpan. Coba lagi.';
+      }
+      if (!_disposed) notifyListeners();
+    });
+    await _pendingSave;
   }
 
-  Future<void> _saveProgress() async {
-    await _repository.saveProgress(_progress);
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 
   /// Tandai sebuah materi sebagai selesai.
@@ -37,7 +54,8 @@ class LearningProgressProvider extends ChangeNotifier {
     if (_progress.completedMaterials.contains(materialId)) return;
 
     _progress = _progress.copyWith(
-      completedMaterials: List<String>.from(_progress.completedMaterials)..add(materialId),
+      completedMaterials: List<String>.from(_progress.completedMaterials)
+        ..add(materialId),
     );
     _saveProgress();
     notifyListeners();
@@ -50,6 +68,7 @@ class LearningProgressProvider extends ChangeNotifier {
 
   /// Update skor kuis tertinggi jika skor baru lebih tinggi.
   void updateQuizScore(int score) {
+    score = score.clamp(0, 100);
     if (score > _progress.highestQuizScore) {
       _progress = _progress.copyWith(highestQuizScore: score);
       _saveProgress();
