@@ -38,6 +38,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
         }).toList();
     return CircuitBackground(
       child: SafeArea(
+        bottom: false,
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
@@ -154,7 +155,12 @@ class _LibraryScreenState extends State<LibraryScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+                padding: EdgeInsets.fromLTRB(
+                  16,
+                  4,
+                  16,
+                  MediaQuery.paddingOf(context).bottom + 24,
+                ),
                 child: CompiButton(
                   label: 'Eksplorasi Model 3D',
                   onPressed:

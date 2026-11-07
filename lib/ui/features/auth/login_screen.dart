@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../../core/app_colors.dart';
 import '../../core/compi_widgets.dart';
 import '../../core/app_typography.dart';
-import '../../core/hardware_showcase.dart';
 import '../../providers/student_provider.dart';
 import '../main/main_navigation_screen.dart';
 
@@ -69,76 +68,94 @@ class _LoginScreenState extends State<LoginScreen> {
                 action: SoundToggle(),
               ),
               const SizedBox(height: 10),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(22),
-                child: const Stack(
-                  children: [
-                    HardwareShowcase(),
-                    Positioned(
-                      bottom: 12,
-                      left: 12,
-                      child: Chip(label: Text('Simulasi Interaktif 3D')),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              CompiPanel(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Text(
-                      'Selamat Datang!',
-                      style: TextStyle(
-                        color: AppColors.primaryDark,
-                        fontSize: 32,
-                        fontFamily: AppTypography.displayFamily,
-                        fontWeight: FontWeight.w400,
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 212),
+                    child: CompiPanel(
+                      padding: const EdgeInsets.fromLTRB(16, 36, 16, 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Text(
+                            'Selamat Datang!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: AppColors.primaryDark,
+                              fontSize: 32,
+                              fontFamily: AppTypography.displayFamily,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const Text(
+                            'Masukkan identitas kamu untuk mulai belajar perangkat keras komputer.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: AppColors.textGray,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          const Text(
+                            'Identitas Siswa',
+                            style: TextStyle(
+                              color: AppColors.ink,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller: _controller,
+                            textInputAction: TextInputAction.done,
+                            onSubmitted: (_) => _start(),
+                            decoration: InputDecoration(
+                              hintText: 'Nama lengkap',
+                              prefixIcon: const Icon(Icons.badge_outlined),
+                              errorText: _error,
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: PhysicalButton(
+                              child: TextButton(
+                                onPressed: () => _controller.text = 'Vika',
+                                child: const Text('Contoh identitas: Vika'),
+                              ),
+                            ),
+                          ),
+                          CompiButton(
+                            label: _busy ? 'Menyimpan...' : 'Mulai Belajar',
+                            onPressed: _busy ? null : _start,
+                          ),
+                        ],
                       ),
                     ),
-                    const Text(
-                      'Masukkan identitas kamu untuk mulai belajar perangkat keras komputer.',
-                      style: TextStyle(color: AppColors.textGray, fontSize: 16),
-                    ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Identitas Siswa',
-                      style: TextStyle(
-                        color: AppColors.ink,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _controller,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (_) => _start(),
-                      decoration: InputDecoration(
-                        hintText: 'Nama lengkap',
-                        prefixIcon: const Icon(Icons.badge_outlined),
-                        errorText: _error,
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: IgnorePointer(
+                      child: SizedBox(
+                        height: 240,
+                        child: Image.asset(
+                          'assets/images/login_welcome_character_compi.png',
+                          fit: BoxFit.contain,
+                          alignment: Alignment.bottomCenter,
+                          cacheWidth: 720,
+                          semanticLabel:
+                              'Karakter COMPI menyambut dan menunjuk ke formulir identitas',
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: PhysicalButton(
-                        child: TextButton(
-                          onPressed: () => _controller.text = 'Vika',
-                          child: const Text('Contoh identitas: Vika'),
-                        ),
-                      ),
-                    ),
-                    CompiButton(
-                      label: _busy ? 'Menyimpan...' : 'Mulai Belajar',
-                      onPressed: _busy ? null : _start,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               const Text(

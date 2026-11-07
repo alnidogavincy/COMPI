@@ -33,7 +33,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 height: 76,
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: .62),
+                  color: Colors.white.withValues(alpha: .22),
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(
                     color: Colors.white.withValues(alpha: .8),
@@ -57,7 +57,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                   colors: [
-                                    Colors.white.withValues(alpha: .75),
+                                    Colors.white.withValues(alpha: .44),
                                     AppColors.cyan.withValues(alpha: .32),
                                   ],
                                 ),

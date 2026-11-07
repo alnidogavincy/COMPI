@@ -23,10 +23,15 @@ class LearningAchievementList extends StatelessWidget {
         Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
+            iconColor: Colors.white,
+            collapsedIconColor: Colors.white,
+            dense: true,
+            visualDensity: VisualDensity.compact,
+            tilePadding: const EdgeInsets.symmetric(horizontal: 10),
             title: const Text(
               'Progres per komponen',
               style: TextStyle(
-                color: AppColors.primaryDark,
+                color: Colors.white,
                 fontWeight: FontWeight.w500,
               ),
             ),

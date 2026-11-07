@@ -193,18 +193,8 @@ class CompiHeader extends StatelessWidget {
           ),
         if (onBack != null) ...[
           const SizedBox(width: 12),
-          Expanded(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (action != null) ...[action!, const SizedBox(width: 8)],
-                  const _CompiHorizontalLogo(),
-                ],
-              ),
-            ),
-          ),
+          const Expanded(child: Center(child: CompiWordmark())),
+          if (action != null) action! else const SizedBox(width: 48),
         ] else ...[
           const _CompiHorizontalLogo(),
           const Spacer(),
@@ -255,7 +245,7 @@ class SectionBanner extends StatelessWidget {
     ),
     child: Row(
       children: [
-        Icon(icon, color: AppColors.primaryDark),
+        Icon(icon, color: Colors.white),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
@@ -299,6 +289,30 @@ class CompiButton extends StatelessWidget {
           ),
         ),
         child: Text(label),
+      ),
+    ),
+  );
+}
+
+/// Clip only transparent margins; retain the supplied PNG unchanged.
+class CompiWordmark extends StatelessWidget {
+  const CompiWordmark({super.key});
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: 138,
+    height: 58,
+    child: FittedBox(
+      child: ClipRect(
+        child: Align(
+          widthFactor: 1640 / 2048,
+          heightFactor: 704 / 2048,
+          alignment: const Alignment(32 / 408, 112 / 1344),
+          child: Image.asset(
+            'assets/images/profile_wordmark.png',
+            width: 256,
+            height: 256,
+          ),
+        ),
       ),
     ),
   );

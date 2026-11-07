@@ -31,8 +31,14 @@ class HomeScreen extends StatelessWidget {
                 .firstOrNull;
     return CircuitBackground(
       child: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 22),
+          padding: EdgeInsets.fromLTRB(
+            16,
+            0,
+            16,
+            MediaQuery.paddingOf(context).bottom + 22,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -97,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     const HardwareShowcase(
-                      asset: 'assets/images/home_workspace.png',
+                      asset: 'assets/images/home_workspace_blue.png',
                     ),
                     const SizedBox(height: 12),
                     CompiButton(
@@ -119,41 +125,44 @@ class HomeScreen extends StatelessWidget {
                 title: 'Progress Belajar',
               ),
               LearningAchievementList(progress: progress),
-              const SizedBox(height: 16),
+              const SizedBox(height: 4),
               const SectionBanner(icon: Icons.settings, title: 'Akses Cepat'),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: _QuickCard(
-                      icon: Icons.view_in_ar,
-                      title: 'Eksplorasi 3D',
-                      detail: 'Putar dan perbesar model',
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const Explore3DScreen(),
+              IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: _QuickCard(
+                        icon: Icons.view_in_ar,
+                        title: 'Eksplorasi 3D',
+                        detail: 'Putar dan perbesar model',
+                        onTap:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const Explore3DScreen(),
+                              ),
                             ),
-                          ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: _QuickCard(
-                      icon: Icons.sports_esports,
-                      title: 'Tantangan Kuis',
-                      detail: 'Uji pemahamanmu',
-                      onTap:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const GamesScreen(),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: _QuickCard(
+                        icon: Icons.sports_esports,
+                        title: 'Tantangan Kuis',
+                        detail: 'Uji pemahamanmu',
+                        onTap:
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const GamesScreen(),
+                              ),
                             ),
-                          ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               if (next != null && nextComponent != null) ...[
                 const SizedBox(height: 16),
@@ -261,12 +270,13 @@ class _QuickCard extends StatelessWidget {
           border: Border.all(color: AppColors.yellow, width: 2),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(icon, color: Colors.white, size: 40),
             const SizedBox(height: 8),
             Text(
               title,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -274,6 +284,7 @@ class _QuickCard extends StatelessWidget {
             ),
             Text(
               detail,
+              textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.white, fontSize: 12),
             ),
           ],

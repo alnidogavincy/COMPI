@@ -14,8 +14,14 @@ class GamesScreen extends StatelessWidget {
     final best = context.watch<LearningProgressProvider>().highestScore;
     return CircuitBackground(
       child: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+          padding: EdgeInsets.fromLTRB(
+            16,
+            0,
+            16,
+            MediaQuery.paddingOf(context).bottom + 24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -48,15 +54,19 @@ class GamesScreen extends StatelessWidget {
                   border: Border.all(color: AppColors.yellow, width: 4),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.emoji_events,
-                      color: AppColors.yellow,
-                      size: 70,
+                    Image.asset(
+                      'assets/images/practice_trophy.png',
+                      height: 104,
+                      width: 104,
+                      fit: BoxFit.contain,
+                      cacheWidth: 260,
+                      semanticLabel: 'Piala tantangan',
                     ),
                     const Text(
                       'UJI PEMAHAMAN',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: AppColors.yellow,
                         fontSize: 29,
@@ -65,11 +75,13 @@ class GamesScreen extends StatelessWidget {
                     ),
                     const Text(
                       'Uji pengetahuanmu tentang perangkat keras komputer!',
+                      textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     const SizedBox(height: 14),
                     Text(
                       'Skor tertinggi: $best/100',
+                      textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,

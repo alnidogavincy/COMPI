@@ -46,6 +46,14 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Selamat Datang!'), findsNothing);
     expect(find.textContaining('Halo, Siswa Uji'), findsOneWidget);
+    final quickCards = find.byWidgetPredicate(
+      (w) => w.runtimeType.toString() == '_QuickCard',
+    );
+    expect(quickCards, findsNWidgets(2));
+    final firstCard = tester.getRect(quickCards.at(0));
+    final secondCard = tester.getRect(quickCards.at(1));
+    expect(firstCard.height, secondCard.height);
+    expect(firstCard.top, secondCard.top);
     expect(tester.takeException(), isNull);
     await tester.tap(find.text('Materi').last);
     await tester.pumpAndSettle();

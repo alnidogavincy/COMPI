@@ -83,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icon: const Icon(Icons.arrow_back),
                       ),
                     ),
-                    const Expanded(child: Center(child: ProfileWordmark())),
+                    const Expanded(child: Center(child: CompiWordmark())),
                     const SoundToggle(),
                   ],
                 ),
@@ -225,28 +225,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-}
-
-/// Clip only transparent margins; retain the supplied PNG unchanged.
-class ProfileWordmark extends StatelessWidget {
-  const ProfileWordmark({super.key});
-  @override
-  Widget build(BuildContext context) => SizedBox(
-    width: 170,
-    height: 76,
-    child: FittedBox(
-      child: ClipRect(
-        child: Align(
-          widthFactor: 1640 / 2048,
-          heightFactor: 704 / 2048,
-          alignment: const Alignment(32 / 408, 112 / 1344),
-          child: Image.asset(
-            'assets/images/profile_wordmark.png',
-            width: 256,
-            height: 256,
-          ),
-        ),
-      ),
-    ),
-  );
 }
